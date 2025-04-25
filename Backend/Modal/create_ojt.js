@@ -18,5 +18,4 @@ const contentSchema = new mongoose.Schema({
   });
 
 const create_ojt_modal = mongoose.model('create_ojt', create_ojt);
-
 module.exports = create_ojt_modal;

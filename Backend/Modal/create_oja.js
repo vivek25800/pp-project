@@ -20,6 +20,5 @@ const create_oja = new mongoose.Schema({
 }, { timestamps: true });
 
 const create_oja_modal = mongoose.model('create_Oja', create_oja);
-
 module.exports = create_oja_modal;
 

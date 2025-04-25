@@ -409,7 +409,7 @@ const TakeAssessmentView = () => {
     }, [id, navigate]);
 
      // Using a fixed ObjectId for testing - this is a valid MongoDB ObjectId format
-     const TEMP_USER_ID = "507f1f77bcf86cd799439011";
+    //  const TEMP_USER_ID = "507f1f77bcf86cd799439011";
 
     useEffect(() => {
         // fetchUserDetails();

@@ -651,252 +651,252 @@ useEffect(() => {
   return (
     <div>
 
-<style>
-{`
-body {
-background-color: #f0f4f8;
-padding: 20px;
-}
-  // .project-container {
-  //   padding: 20px;
-  //   background-color: rgba(46, 7, 63, 0.1);
-  // }
-  
-  .form-wrapper {
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  // .form-title {
-  //   font-size: 24px;
-  //   color: #333;
-  //   margin-bottom: 25px;
-  //   font-weight: 600;
-  // }
+      <style>
+      {`
+      body {
+      background-color: #f0f4f8;
+      padding: 20px;
+      }
+        // .project-container {
+        //   padding: 20px;
+        //   background-color: rgba(46, 7, 63, 0.1);
+        // }
+        
+        .form-wrapper {
+          background-color: #ffffff;
+          border-radius: 10px;
+          padding: 30px;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+        
+        // .form-title {
+        //   font-size: 24px;
+        //   color: #333;
+        //   margin-bottom: 25px;
+        //   font-weight: 600;
+        // }
 
-  .candidate-list-header {
-margin-bottom: 20px;
-border-bottom: 2px solid #e9ecef;
-padding-bottom: 15px;
-}
+        .candidate-list-header {
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e9ecef;
+      padding-bottom: 15px;
+      }
 
-  .candidate-list-header h5 {
-color: #2c3e50;
-font-size: 1.5rem;
-font-weight: 600;
-display: inline-flex;
-align-items: center;
-}
+        .candidate-list-header h5 {
+      color: #2c3e50;
+      font-size: 1.5rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      }
 
-.candidate-list-header h5::before {
-content: "";
-display: inline-block;
-width: 6px;
-height: 24px;
-background-color: #3498db;
-margin-right: 10px;
-border-radius: 3px;
-}
-  
-  .form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin-bottom: 30px;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .form-label {
-    font-size: 14px;
-    color: #555;
-    font-weight: 500;
-  }
-  
-  .form-input {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.3s;
-  }
-  
-  .form-input:focus {
-    border-color: #6b46c1;
-  }
-  
-  .form-select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    background-color: white;
-  }
-  
-  .matrix-section {
-    margin-top: 30px;
-  }
-  
-  .matrix-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .matrix-title {
-    font-size: 20px;
-    color: #333;
-    font-weight: 600;
-  }
-  
-  .button-group {
-    display: flex;
-    gap: 12px;
-  }
-  
-  .button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s;
-  }
-  
-  .button-primary {
-    background-color: #6b46c1;
-    color: white;
-  }
-  
-  .button-secondary {
-    background-color: #4299e1;
-    color: white;
-  }
-  
-  .button:hover {
-    opacity: 0.9;
-  }
-  
-.matrix-table {
-  min-width: 800px;
-  white-space: nowrap;
-}
-  
-  .matrix-table th,
-  .matrix-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-  }
-  
-  .matrix-table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-    color: #333;
-  }
-  
-  .matrix-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .submit-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #6b46c1;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-top: 30px;
-    transition: background-color 0.3s;
-  }
-  
-  .submit-button:hover {
-    background-color: #553c9a;
-  }
+      .candidate-list-header h5::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 24px;
+      background-color: #3498db;
+      margin-right: 10px;
+      border-radius: 3px;
+      }
+        
+        .form-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+          margin-bottom: 30px;
+        }
+        
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        
+        .form-label {
+          font-size: 14px;
+          color: #555;
+          font-weight: 500;
+        }
+        
+        .form-input {
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          font-size: 14px;
+          outline: none;
+          transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+          border-color: #6b46c1;
+        }
+        
+        .form-select {
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          font-size: 14px;
+          background-color: white;
+        }
+        
+        .matrix-section {
+          margin-top: 30px;
+        }
+        
+        .matrix-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+        
+        .matrix-title {
+          font-size: 20px;
+          color: #333;
+          font-weight: 600;
+        }
+        
+        .button-group {
+          display: flex;
+          gap: 12px;
+        }
+        
+        .button {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: 500;
+          transition: background-color 0.3s;
+        }
+        
+        .button-primary {
+          background-color: #6b46c1;
+          color: white;
+        }
+        
+        .button-secondary {
+          background-color: #4299e1;
+          color: white;
+        }
+        
+        .button:hover {
+          opacity: 0.9;
+        }
+        
+      .matrix-table {
+        min-width: 800px;
+        white-space: nowrap;
+      }
+        
+        .matrix-table th,
+        .matrix-table td {
+          border: 1px solid #ddd;
+          padding: 12px;
+          text-align: left;
+        }
+        
+        .matrix-table th {
+          background-color: #f8f9fa;
+          font-weight: 600;
+          color: #333;
+        }
+        
+        .matrix-input {
+          // width: 100%;
+          padding: 8px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 14px;
+        }
+        
+        .submit-button {
+          width: 100%;
+          padding: 12px;
+          background-color: #6b46c1;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-size: 16px;
+          font-weight: 500;
+          cursor: pointer;
+          margin-top: 30px;
+          transition: background-color 0.3s;
+        }
+        
+        .submit-button:hover {
+          background-color: #553c9a;
+        }
 
-  .assigning-section {
-  margin-top: 30px;
-  padding: 20px;
-  border-top: 1px solid #eee;
-}
+        .assigning-section {
+        margin-top: 30px;
+        padding: 20px;
+        border-top: 1px solid #eee;
+      }
 
-.assigning-title {
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 20px;
-  font-weight: 500;
-}
+      .assigning-title {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 20px;
+        font-weight: 500;
+      }
 
-.assigning-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
+      .assigning-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
 
-@media (max-width: 768px) {
-  .assigning-grid {
-    grid-template-columns: 1fr;
-  }
-}
+      @media (max-width: 768px) {
+        .assigning-grid {
+          grid-template-columns: 1fr;
+        }
+      }
 
-.table-container {
-  overflow-x: auto;
-  margin: 20px -20px;
-  padding: 0 20px;
-}
+      .table-container {
+        overflow-x: auto;
+        margin: 20px -20px;
+        padding: 0 20px;
+      }
 
-          .header-input {
-  background: transparent;
-  border: 1px solid transparent;
-  padding: 4px;
-  width: 100%;
-  font-weight: 600;
-  color: #333;
-}
+                .header-input {
+        background: transparent;
+        border: 1px solid transparent;
+        padding: 4px;
+        width: 100%;
+        font-weight: 600;
+        color: #333;
+      }
 
-          .header-input:hover {
-  border-color: #ddd;
-}
+                .header-input:hover {
+        border-color: #ddd;
+      }
 
-.header-input:focus {
-  border-color: #6b46c1;
-  outline: none;
-}
+      .header-input:focus {
+        border-color: #6b46c1;
+        outline: none;
+      }
 
-          .function-input {
-  background: transparent;
-  border: 1px solid transparent;
-  padding: 4px;
-  width: 100%;
-  font-weight: 500;
-}
+                .function-input {
+        background: transparent;
+        border: 1px solid transparent;
+        padding: 4px;
+        width: 100%;
+        font-weight: 500;
+      }
 
-.function-input:hover {
-  border-color: #ddd;
-}
+      .function-input:hover {
+        border-color: #ddd;
+      }
 
-.function-input:focus {
-  border-color: #6b46c1;
-  outline: none;
-}
-`}
-</style>
+      .function-input:focus {
+        border-color: #6b46c1;
+        outline: none;
+      }
+      `}
+      </style>
 
       <div>
         <HRSidebar/>

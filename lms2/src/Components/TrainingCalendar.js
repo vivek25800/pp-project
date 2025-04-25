@@ -15,7 +15,9 @@ import 'datatables.net'; // Import DataTables
 const TrainingCalendar = () => {
     const [trainingData, setTrainingData] = useState({
         training_category: '',
+        training_code: '',
         training_name: '',
+        training_mode: '',
         description: '',
         region: '',
         project_title: '',
@@ -95,7 +97,7 @@ const TrainingCalendar = () => {
         }
     }
 
-    const[event, setevent] = useState({training_category:"",  training_name:"", trainer_name:"", description:"",region:"",  project_title:"", 
+    const[event, setevent] = useState({training_category:"", training_code:"", training_name:"", training_mode:"", description:"",region:"",  project_title:"", 
         job_title:"", from_date:new Date(), to_date:new Date(), from_time:"", to_time:"", participents:"", venue_name:"", status:""})
     const[training,settraining]=useState([])
     const [show,setshow]=useState(false)
@@ -269,7 +271,9 @@ const TrainingCalendar = () => {
                                 <tr>
                                     <th style={{ border: '1px solid #ccc', padding: '10px' }}>Training Name</th>
                                     <th style={{ border: '1px solid #ccc', padding: '10px' }}>Category</th>
+                                    <th style={{ border: '1px solid #ccc', padding: '10px' }}>Project Code</th>
                                     <th style={{ border: '1px solid #ccc', padding: '10px' }}>Project Title</th>
+                                    <th style={{ border: '1px solid #ccc', padding: '10px' }}>Mode</th>
                                     <th style={{ border: '1px solid #ccc', padding: '10px' }}>From Date</th>
                                     <th style={{ border: '1px solid #ccc', padding: '10px' }}>To Date</th>
                                     <th style={{ border: '1px solid #ccc', padding: '10px' }}>From Time</th>
@@ -285,7 +289,9 @@ const TrainingCalendar = () => {
                                     <tr key={index} style={{ border: '1px solid #ccc' }}>
                                         <td style={{ border: '1px solid #ccc', padding: '10px' }}>{training.training_name}</td>
                                         <td style={{ border: '1px solid #ccc', padding: '10px' }}>{training.training_category}</td>
+                                        <td style={{ border: '1px solid #ccc', padding: '10px' }}>{training.training_code}</td>
                                         <td style={{ border: '1px solid #ccc', padding: '10px' }}>{training.project_title}</td>
+                                        <td style={{ border: '1px solid #ccc', padding: '10px' }}>{training.training_mode}</td>
                                         <td style={{ border: '1px solid #ccc', padding: '10px' }}>{new Date(training.from_date).toDateString()}</td>
                                         <td style={{ border: '1px solid #ccc', padding: '10px' }}>{new Date(training.to_date).toDateString()}</td>
                                         <td style={{ border: '1px solid #ccc', padding: '10px' }}>{training.from_time}</td>
@@ -312,7 +318,9 @@ const TrainingCalendar = () => {
 		<tr>
 			<th>Seq No.</th>
 			<th>Training Category</th>
+      <th>Training Code</th>
 			<th>Training Name</th>
+      <th>Mode</th>
       <th>Trainer Name</th>
 			<th>Region</th>
 			<th>Project</th>
@@ -331,7 +339,9 @@ const TrainingCalendar = () => {
                 <tr>
                 <td >{index+1}</td>
                 <td >{item.training_category}</td>
+                <td >{item.training_code}</td>
                 <td >{item.training_name}</td>
+                <td >{item.training_mode}</td>
                 <td >{item.trainer_name}</td>
                 <td >{item.region}</td>
                 <td >{item.project_title}</td>
@@ -372,7 +382,7 @@ const TrainingCalendar = () => {
        
       <div className="training-container">
           <div className="">
-          <div className="form-item">
+              <div className="form-item">
                 <label>Training Category</label>
                 <select name="training-category" id="training_category" onChange={(e) => {setevent((prevprofile)=>({...prevprofile, training_category:e.target.value}))}}>
                 <option >{training.training_category}</option>
@@ -385,6 +395,18 @@ const TrainingCalendar = () => {
                 </select>
               </div>
               <div className="form-item">
+                <label>Training Code</label>
+                <select name="training-code" id="training-code" onChange={(e) => {setevent((prevprofile)=>({...prevprofile, training_code:e.target.value}))}}>
+                <option >{training.training_code}</option>
+                  <option >GJB457</option>
+                  <option >TRK415</option>
+                  <option>Pkl471</option>
+                  <option >TGFDC52</option>
+                  <option >MLKF895</option>
+                  <option >WRSS412</option>
+                </select>
+              </div>
+              <div className="form-item">
                   <label>Training Name</label>
                   <select name="training-name" id="training_name" onChange={(e) => {setevent((prevprofile)=>({...prevprofile, training_name:e.target.value}))}}>
                     <option >{training.training_name}</option>
@@ -394,6 +416,14 @@ const TrainingCalendar = () => {
                     <option >Value4</option>
                     <option >Value5</option>
                     <option >Value6</option>
+                  </select>
+              </div>
+              <div className="form-item">
+                  <label>Training Mode</label>
+                  <select name="training-mode" id="training_mode" onChange={(e) => {setevent((prevprofile)=>({...prevprofile, training_mode:e.target.value}))}}>
+                    <option >{training.training_mode}</option>
+                    <option >Online</option>
+                    <option >Face to Face</option>
                   </select>
               </div>
               <div className="form-item">

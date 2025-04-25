@@ -60,6 +60,10 @@ const UserDetailsModal = ({ user, userType, onClose }) => {
               <p>{user.employee_email}</p>
             </div>
             <div className="detail-item">
+              <label>Function</label>
+              <p>{user.function_title}</p>
+            </div>
+            <div className="detail-item">
               <label>Job Title</label>
               <p>{user.job_title}</p>
             </div>

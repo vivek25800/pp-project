@@ -166,7 +166,6 @@ import { base_url } from "./Utils/base_url";
     // };
 
 
-
     function LoginForm() {
       const navigate = useNavigate();
       const [login, setLogin] = useState({email_id: "", password: ""});
@@ -217,22 +216,22 @@ import { base_url } from "./Utils/base_url";
           } catch (error) {
               console.error("Login error:", error.response?.data);
               
-              if (error.response) {
-                  if (error.response.status === 403) {
-                      toast.error(error.response.data.message);
-                  } else if (error.response.status === 404) {
-                      toast.error("Email ID not registered", {autoClose: 2000});
-                  } else if (error.response.status === 400) {
-                      toast.error("Password does not match", {autoClose: 2000});
-                  } else if (error.response.status === 500) {
-                      toast.error("Server error. Please try again later.", {autoClose: 2000});
-                  } else {
-                      toast.error("An unexpected error occurred.", {autoClose: 2000});
-                  }
-              } else {
-                  console.log(error);
-                  toast.error("An error occurred. Please try again later.", {autoClose: 2000});
-              }
+            //   if (error.response) {
+            //       if (error.response.status === 403) {
+            //           toast.error(error.response.data.message);
+            //       } else if (error.response.status === 404) {
+            //           toast.error("Email ID not registered", {autoClose: 2000});
+            //       } else if (error.response.status === 400) {
+            //           toast.error("Password does not match", {autoClose: 2000});
+            //       } else if (error.response.status === 500) {
+            //           toast.error("Server error. Please try again later.", {autoClose: 2000});
+            //       } else {
+            //           toast.error("An unexpected error occurred.", {autoClose: 2000});
+            //       }
+            //   } else {
+            //       console.log(error);
+            //       toast.error("An error occurred. Please try again later.", {autoClose: 2000});
+            //   }
           } finally {
               setLoading(false);
           }

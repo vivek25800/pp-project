@@ -26,17 +26,17 @@ import EmployeeDashboard from './Components/Employee Dashboard/EmployeeDashboard
 import TrainingCalendarDemo from './Components/TrainingCalendarDemo.js';
 import ViewTrainingDetails from './Components/ViewTrainingDetails.js';
 import Attendence from './Components/Attendence.js';
-import Loader from './Components/DemoComponent/Loader.js';
-import OnJobTraining from './Components/OnJobTraining.js';
-import EmployeeIdsInput from './Components/DemoComponent/EmployeeIdsInput.js';
+// import Loader from './Components/DemoComponent/Loader.js';
+// import OnJobTraining from './Components/OnJobTraining.js';
+// import EmployeeIdsInput from './Components/DemoComponent/EmployeeIdsInput.js';
 import OjtOjaIna from './Components/OjtOjaIna.js';
-import SearchableSelectBox from './Components/DemoComponent/SearchableSelectBox.js';
-import Demo from './Components/DemoComponent/demo.js';
-import SidebarTwo from './Components/DemoComponent/SidebarTwo.js';
+// import SearchableSelectBox from './Components/DemoComponent/SearchableSelectBox.js';
+// import Demo from './Components/DemoComponent/demo.js';
+// import SidebarTwo from './Components/DemoComponent/SidebarTwo.js';
 // import { FileUpload } from '@mui/icons-material';
-import FileUpload from './Components/DemoComponent/FileUpload.js';
-import BulkForm from './Components/DemoComponent/BulkForm.js';
-import AddNomination from './Components/AddNomination.js';
+// import FileUpload from './Components/DemoComponent/FileUpload.js';
+// import BulkForm from './Components/DemoComponent/BulkForm.js';
+// import AddNomination from './Components/AddNomination.js';
 import CourseList from './Components/Courses/CourseList.js';
 import InProgressCourse from './Components/Courses/InProgressCourse.js';
 import SavedCourse from './Components/Courses/SavedCourse.js';
@@ -47,11 +47,11 @@ import StartCourse from './Components/Courses/StartCourse.js';
 import Assessment from './Components/Create Assessment/Assessment.js';
 import TakeAssessment from './Components/Create Assessment/TakeAssessment.js';
 import CreateCAT from './Components/Create CAT/CreateCAT.js';
-import AddInterviewQuestions from './Components/Create CAT/AddInterviewQuestions.js';
+// import AddInterviewQuestions from './Components/Create CAT/AddInterviewQuestions.js';
 import CreateQuize from './Components/Create Quize/CreateQuize.js';
 import ConductCAT from './Components/Conduct CAT/ConductCAT.js';
 import CreateTrainingBudget from './Components/Create Training Budget/CreateTrainingBudget.js';
-import CourseBanner from './Components/Landing Page/CourseBanner.js';
+// import CourseBanner from './Components/Landing Page/CourseBanner.js';
 import LandingPage from './Components/Landing Page/LandingPage.js';
 import CreateAssessment from './Components/Create Assessment/CreateAssessment.js';
 import AddDifferentSection from './Components/Create Assessment/AddDifferentSection.js';
@@ -59,10 +59,10 @@ import TrainingRequestForm from './Components/Training Request Form/TrainingRequ
 import ViewTrainingRequestList from './Components/Training Request Form/ViewTrainingRequestList.js';
 import TRFPendingForApproval from './Components/Training Request Form/TRFPendingForApproval.js';
 import ServiceProviderRegister from './Components/ServiceProviderRegister.js';
-import Video from './Components/Sidebar/Video.js';
+// import Video from './Components/Sidebar/Video.js';
 import ViewOJTOJAINA from './Components/ViewOJTOJAINA.js';
 import Curriculum from './Components/Courses/Curriculum.js';
-import UploadAssessment from './Components/Create Assessment/UploadAssessment.js';
+// import UploadAssessment from './Components/Create Assessment/UploadAssessment.js';
 import DataAssessment from './Components/Create Assessment/DataAssessment.js';
 import PreviewAssessment from './Components/Create Assessment/PreviewAssessment.js';
 import UploadQuize from './Components/Create Quize/UploadQuize.js';
@@ -118,8 +118,19 @@ import CandidateDocuments from './Components/HR Recruitment/CandidateDocuments.j
 import CandidateLoginDocuments from './Components/HR Recruitment/CandidateLoginDocuments.js';
 import CandidateDashboard from './Components/HR Recruitment/CandidateDashboard.js';
 import CandidateDocumentsReview from './Components/HR Recruitment/CandidateDocumentsReview.js';
-import CompetencyMapping from './Components/CompetencyMapping.js';
 import CreateProjectHR from './Components/HR Recruitment/CreateProjectHR.js';
+import CompetencyMapping from './Components/CompetencyMapping/CompetencyMapping.js';
+import CompetencyMappingDashboard from './Components/CompetencyMapping/CompetencyMappingDashboard.js';
+import EmployeeCompetencyDetails from './Components/CompetencyMapping/EmployeeCompetencyDetails.js';
+import CompetencyMappingList from './Components/Employee Dashboard/CompetencyMappingList.js';
+import EmployeeAssessmentPlatform from './Components/Employee Dashboard/EmployeeAssessmentPlatform.js';
+import EmployeeOJTPlatform from './Components/Employee Dashboard/EmployeeOJTPlatform.js';
+import EmployeeOJAPlatform from './Components/Employee Dashboard/EmployeeOJAPlatform.js';
+import EmployeeINAPlatform from './Components/Employee Dashboard/EmployeeINAPlatform.js';
+import ConductTraining from './Components/CompetencyMapping/ConductTraining.js';
+import ConductOJT from './Components/CompetencyMapping/ConductOJT.js';
+import ConductOJA from './Components/CompetencyMapping/ConductOJA.js';
+import ConductINA from './Components/CompetencyMapping/ConductINA.js';
 
 
 
@@ -200,7 +211,13 @@ function App() {
         <Route path='/employeeAssessments/:id' element={<AssessmentList/>}></Route>
         <Route path='employeeCATs/:id' element={<CATList/>}></Route>
         <Route path='employeeQuizes/:id' element={<QuizesList/>}></Route>
+        <Route path='/assignedProject/:employeeId' element={<Assignedproject/>}></Route>
+        <Route path='competencyMappingList/:employeeId' element={<CompetencyMappingList/>}></Route>
         <Route path='/employeeCertificateList/:id' element={<CertificateList/>}></Route>
+        <Route path='/employee-assessment/:employeeId/:assessmentCode/:competencyItemId' element={<EmployeeAssessmentPlatform/>}></Route>
+        <Route path='/employee-ojt/:employeeId/:ojtCode/:competencyItemId' element={<EmployeeOJTPlatform/>}></Route>
+        <Route path='/employee-oja/:employeeId/:ojaCode/:competencyItemId' element={<EmployeeOJAPlatform/>}></Route>
+        <Route path='/employee-ina/:employeeId/:inaCode/:competencyItemId' element={<EmployeeINAPlatform/>}></Route>
 
         <Route path='/maincourse/:id' element={<CourseList/>}></Route>
         <Route path='/maincourse' element={<CourseList/>}></Route>
@@ -215,7 +232,6 @@ function App() {
         <Route path="/confirm-attendance/:trainingId/:employeeId" element={<ConfirmationPage/>}></Route>
 
         <Route path='/createProjectHR' element={<CreateProjectHR/>}></Route>
-        <Route path='/assignedProject/:employeeId' element={<Assignedproject/>}></Route>
         <Route path='/approvalsList' element={<ApprovalsList/>}></Route>
         <Route path='/recruitmentPlan' element={<RecruitmentPlan/>}></Route>
         <Route path='/candidateRegistration' element={<CandidatesRegistration/>}></Route>
@@ -236,8 +252,14 @@ function App() {
         <Route path='/candidateDashboard' element={<CandidateDashboard/>}></Route>
         <Route path='/candidateDocumentsReview' element={<CandidateDocumentsReview/>}></Route>
 
-
         <Route path='/competencyMapping' element={<CompetencyMapping/>}></Route>
+        <Route path='/competencyMappingDashboard' element={<CompetencyMappingDashboard/>}></Route>
+        <Route path='/employeeCompetencymapping' element={<EmployeeCompetencyDetails/>}></Route>
+        <Route path='/conductTraining' element={<ConductTraining/>}></Route>
+        <Route path='/conductOJT' element={<ConductOJT/>}></Route>
+        <Route path='/conductOJA' element={<ConductOJA/>}></Route>
+        <Route path='/conductINA' element={<ConductINA/>}></Route>
+
       </Routes>
 
       {/* <TakeCATTest/> */}

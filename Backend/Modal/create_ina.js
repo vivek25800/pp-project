@@ -20,5 +20,4 @@ const create_ina = new mongoose.Schema({
 }, { timestamps: true });
 
 const create_ina_modal = mongoose.model('create_Ina', create_ina);
-
 module.exports = create_ina_modal;

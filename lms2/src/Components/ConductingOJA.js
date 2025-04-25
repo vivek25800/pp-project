@@ -435,7 +435,7 @@ function ConductingOJA() {
                 </tbody>
               </table>
             </div>
-{selectedOja && selectedOja.activities ? (
+      {selectedOja && selectedOja.activities ? (
         selectedOja.activities.map((activity, activityIndex) => (
           <div key={activityIndex} className="activity-div">
             <div className="info-div-item">
@@ -513,69 +513,3 @@ function ConductingOJA() {
 
 export default ConductingOJA;
 
-
-
-
-
-
-
-
-
-{/* {
-              selectedOja.activities.map((activity, activityIndex) => (
-                <div key={activityIndex} className="activity-div">
-                  <div className="info-div-item">
-                    <h4>Activity {activityIndex + 1}</h4>
-                  </div>
-
-                  <div className="info-div-item">
-                    <label>Title</label>
-                    <p>{activity.activity_oja_title}</p>
-                  </div>
-
-                  <div className="info-div-item">
-                    <label>Content</label>
-                    <table className="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>Sr No.</th>
-                          <th>Description</th>
-                          <th>Rating</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {activity.content.map((content, contentIndex) => (
-                          <tr key={contentIndex}>
-                            <td>{content.srno}</td>
-                            <td>{content.description}</td>
-                            <td>
-                            <select
-                              value={content.rating || ""} // Set a default value if rating is undefined
-                              onChange={(e) =>
-                                handleRatingChange(activityIndex, contentIndex, e.target.value)
-                              }
-                            >
-                              <option value="">--Select Rating--</option>
-                              {ratingRange.map((rating) => (
-                                <option key={rating} value={rating}>
-                                  {rating}
-                                </option>
-                              ))}
-                            </select>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="info-div-item">
-                    <label className="rating-label">Overall Score for this Activity</label>
-                    <p>
-                      {calculateAverageRating(
-                        activity.content.map((c) => c.rating)
-                      )}
-                    </p>
-                  </div>
-                </div>
-              ))} */}

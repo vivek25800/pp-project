@@ -10,7 +10,7 @@ import { base_url } from "./Utils/base_url";
 function EmployeeRegister() {
     const navigate=useNavigate()
 
-    const[employee, setemployee] = useState({employee_id:"", employee_name:"",employee_email:"",employee_password:"", job_title:"", date_of_join:"", project_code:"",
+    const[employee, setemployee] = useState({employee_id:"", employee_name:"",employee_email:"",employee_password:"", function_title:"", job_title:"", date_of_join:"", project_code:"",
         project_name:"", department:"", region:"", project_manger:"", employee_id_two:"", name:"", designation:"", role:"", })
 
         const employee_Infoget = async () => {
@@ -160,14 +160,27 @@ function EmployeeRegister() {
                                 <input type="password" name="employee-password" id="employee-password" placeholder='Enter employee password' onChange={(e) => {setemployee({...employee, employee_password:e.target.value})}}  />
                             </div>
                             <div className="input-items">
+                                <label htmlFor="function_title">Function</label>
+                                {/* <input type="text" name="Job-title" id="Job-title" placeholder='Enter job title' onChange={(e) => {setemployee({...employee, job_title:e.target.value})}}  /> */}
+                                <select id="function_title" onChange={(e) => {setemployee({...employee, function_title:e.target.value})}}>
+                                    <option>-- Select Function --</option>
+                                    <option>HVAC</option>
+                                    <option>MECH</option>
+                                    <option>ELEC</option>
+                                    <option>PLUMB</option>
+                                </select>
+                            </div>
+                            <div className="input-items">
                                 <label htmlFor="Job-title">Job Title</label>
                                 {/* <input type="text" name="Job-title" id="Job-title" placeholder='Enter job title' onChange={(e) => {setemployee({...employee, job_title:e.target.value})}}  /> */}
                                 <select id="Job-title" onChange={(e) => {setemployee({...employee, job_title:e.target.value})}}>
                                     <option>-- Select Job title --</option>
-                                    <option>Business Development Executive</option>
+                                    <option>Service man</option>
                                     <option>Contract Manager</option>
-                                    <option>Software Development</option>
-                                    <option>Web Developer</option>
+                                    <option>Technician II</option>
+                                    <option>Technician I</option>
+                                    <option>Technician IV</option>
+                                    <option>Sr Technician</option>
                                 </select>
                             </div>
                            

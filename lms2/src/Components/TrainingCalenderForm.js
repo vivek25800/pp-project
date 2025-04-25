@@ -13,7 +13,7 @@ function TrainingCalenderForm() {
 
  const navigate=useNavigate();
 
-  const[event, setevent] = useState({training_category:"",  training_name:"", trainer_name:"", description:"",region:[""],  project_title:"", 
+  const[event, setevent] = useState({training_category:"", training_code:"", training_name:"", training_mode:"", trainer_name:"", description:"",region:[""],  project_title:"", 
     job_title:[""], from_date:new Date(), to_date:new Date(), from_time:"", to_time:"", participents:"", venue_name:"", status:"Upcoming"})
 
   const event_details_infoget = async () => {
@@ -128,7 +128,7 @@ function TrainingCalenderForm() {
 
         <div className="training-container">
           <div className="form-section">
-          <div className="form-item">
+              <div className="form-item">
                 <label>Training Category</label>
                 <select name="training-category" id="training_category" onChange={(e) => {setevent({...event, training_category:e.target.value})}} >
                   <option>-- Select Training Category --</option>
@@ -141,6 +141,18 @@ function TrainingCalenderForm() {
                 </select>
               </div>
               <div className="form-item">
+                <label>Training Code</label>
+                <select name="training-code" id="training_code" onChange={(e) => {setevent({...event, training_code:e.target.value})}} >
+                  <option>-- Select Training Code --</option>
+                  <option >GJB457</option>
+                  <option >TRK415</option>
+                  <option>Pkl471</option>
+                  <option >TGFDC52</option>
+                  <option >MLKF895</option>
+                  <option >WRSS412</option>
+                </select>
+              </div>
+              <div className="form-item">
                   <label>Training Name</label>
                   <select name="training-name" id="training_name" onChange={(e) => {setevent({...event, training_name:e.target.value})}} >
                     <option>-- Select Training Name --</option>
@@ -150,6 +162,14 @@ function TrainingCalenderForm() {
                     <option >Value4</option>
                     <option >Value5</option>
                     <option >Value6</option>
+                  </select>
+              </div>
+              <div className="form-item">
+                  <label>Training Mode</label>
+                  <select name="training-mode" id="training_mode" onChange={(e) => {setevent({...event, training_mode:e.target.value})}} >
+                    <option>-- Select Training Mode --</option>
+                    <option >Online</option>
+                    <option >Face to Face</option>
                   </select>
               </div>
               <div className="form-item">

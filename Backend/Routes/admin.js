@@ -26,7 +26,7 @@ const { createResponse, getQuizResponses, getResponse, getQuizStatus } = require
 const { uploadExcelData, getAllExcelData } = require('../Controllers/excel_file_form');
 const AssessmentResponse = '../Modal/assessment_response.js';
 const CAT = '../Modal/create_cat.js';
-const Assessment = require('../Modal/create_assessment');
+// const Assessment = require('../Modal/create_assessment');
 const { assignCAT, getAssignedCATs } = require('../Controllers/assign_cat_form');
 const { assignAssessment, getAssignedAssessments } = require('../Controllers/assign_assessment_form');
 const { assignQuiz, getAssignedQuizes } = require('../Controllers/assigned_quiz_form');
@@ -56,6 +56,15 @@ const { getDocumentRequirementsForCandidate, uploadCandidateDocuments } = requir
 // const { initializeStatus, getAllStatuses, updateStatus, bulkUpdateStatus, getStatusHistory, getStatusByCandidateId, checkCandidateData } = require('../Controllers/candidate_status_form');
 // const { getCandidatesWithCATTest, updateCandidateStatus, getCandidateStatus} = require('../Controllers/candidate_status_form');
 const authMiddleware = require('../MiddleWare/authentication');
+const cron = require('node-cron');
+const { check } = require('express-validator');
+const { getEmployees, getTrainings, getOJT, getOJA, getINA, getAssessments, getCompetencyMappingsByEmployeeId, getCompetencyMappingsByFunctionJob, getCompetencyMappingsByFunctionJobAdvanced, createCompetencyMappings, getAllCompetencyMappings, markCompetencyCompleted, deleteCompetencyMapping, handleAutoReassignments, checkExpiredCompetencies, getAllEmployeeCompetencyMappings, getCourses } = require('../Controllers/competency_mapping_form');
+const { submitAssessmentCM, getSubmissionsByEmployeeCM, getSubmissionByIdCM } = require('../Controllers/assessment_response_CM_form');
+const { getTrainingEventsByTraining, registerForTraining, getEmployeeTrainingRegistrations, cancelTrainingRegistration, deleteTrainingRegistration } = require('../Controllers/training_registraition_CM_form');
+const { getEligibleEmployees, getTrainingRegistration, saveAttendance, getEmployeeAttendance } = require('../Controllers/training_attendance_CM_form');
+const { getOJTList, getOJTDetails, getAssignedEmployees, conductOJT, getTrainerConductHistory, getEmployeeOJTConducts, updateEmployeeOJTChecks } = require('../Controllers/conduct_ojt_CM_form');
+const { getAllOJAs, getOJAById, getEligibleEmployeesForOJA, submitOJARatings, getEmployeeOJAHistory, getOJAConductDetails, getAllEmployees } = require('../Controllers/conduct_oja_CM_form');
+const { getAllINAs, getINAById, getEligibleEmployeesForINA, submitINARatings, getEmployeeINAHistory, getINAConductDetails } = require('../Controllers/conduct_ina_CM_form');
 
 const router = express.Router();
 
@@ -388,6 +397,114 @@ router.put('/visa_documents_status_update', updateDocumentStatus);
 
 router.get('/candidate_documents/:candidateId', getDocumentRequirementsForCandidate);
 router.post('/upload_documents', uploadCandidateDocuments);
+
+
+router.get('/employees', getEmployees);
+router.get('/courses', getCourses);
+router.get('/trainings', getTrainings);
+router.get('/ojt', getOJT);
+router.get('/oja', getOJA)
+router.get('/ina', getINA);
+router.get('/assessments', getAssessments);
+
+// Get competency mappings by employee ID
+router.get('/employee_competency_mappings/:employeeId', getCompetencyMappingsByEmployeeId);
+
+// Get competency mappings by function type and job title
+router.get('/competency-mappings/function-job', getCompetencyMappingsByFunctionJob)
+
+// Route to get competency mappings by function and job title
+router.get('/competency-mappings/by-function-job', getCompetencyMappingsByFunctionJobAdvanced)
+
+// Modified route to handle competency mappings with history preservation
+router.post('/competency_mappings_post', createCompetencyMappings)
+
+// // Route to get all competency mappings with history
+router.get('/competency-mappings', getAllCompetencyMappings)
+
+// Create a route to mark competency as completed
+router.post('/competency-completion', markCompetencyCompleted);
+
+router.delete('/delete_competency_mapping/:id', deleteCompetencyMapping);
+
+router.get('/getAllCompetencyMappings', getAllEmployeeCompetencyMappings);
+
+// router.get('/eligible-employees', getEligibleEmployeesForParticularTraining);
+
+// Schedule daily check for reassignments (runs at midnight)
+cron.schedule('0 0 * * *', handleAutoReassignments);
+
+// Schedule this to run daily as well
+cron.schedule('0 1 * * *', checkExpiredCompetencies); // Run at 1 AM
+
+
+
+// Validation middleware
+const validateSubmission = [
+  check('employeeId', 'Employee ID is required').notEmpty(),
+  check('assessmentCode', 'Assessment code is required').notEmpty(),
+  check('competencyItemId', 'Competency item ID is required').notEmpty(),
+  check('timeSpent', 'Time spent must be a positive number').isNumeric().toInt(),
+  check('answers', 'Answers object is required').notEmpty().isObject()
+];
+
+router.post('/assessment-submissions', validateSubmission, submitAssessmentCM);
+router.get('/assessment-submissions/employee/:employeeId', validateSubmission, getSubmissionsByEmployeeCM);
+router.get('/assessment-submissions/:submissionId', validateSubmission, getSubmissionByIdCM);
+
+router.get('/training_events_by_training/:trainingId', getTrainingEventsByTraining);
+router.post('/register_for_training', registerForTraining);
+router.get('/employee_training_registrations/:employeeId', getEmployeeTrainingRegistrations);
+router.put('/cancel_training_registration/:registrationId', cancelTrainingRegistration);
+router.delete('/delete_training_registration/:registrationId', deleteTrainingRegistration);
+// router.get('/employee_training_registration/:trainingId', getTrainingRegistrations);
+
+router.get('/eligible_employees', getEligibleEmployees);
+router.get('/registrations/:trainingId', getTrainingRegistration);
+router.post('/attendance', saveAttendance);
+router.get('/attendance/:trainingId/:employeeId', getEmployeeAttendance);
+
+// Get list of all OJTs
+router.get('/list', getOJTList);
+// Get details of a specific OJT
+router.get('/get-details/:id', getOJTDetails);
+// Get employees assigned to a specific OJT
+router.get('/assigned-employees/:ojtId', getAssignedEmployees);
+// Create or update OJT conduct session
+router.post('/conduct_OJT', conductOJT);
+// Get OJT conduct history for a trainer
+router.get('/history/trainer', getTrainerConductHistory);
+// New routes for employee OJT responses
+router.get('/employee-ojt-conducts/:employeeId', getEmployeeOJTConducts);
+router.put('/update-employee-ojt-checks/:conductId/:employeeId', updateEmployeeOJTChecks);
+
+// Get all OJAs
+router.get('/ojaList', getAllOJAs);
+router.get('/employees/all', getAllEmployees);
+// Get specific OJA by ID
+router.get('/ojaDetails/:id', getOJAById);
+// Get eligible employees for a specific OJA
+router.get('/competency-mapping/eligible-employees/:ojaId', getEligibleEmployeesForOJA);
+// Submit OJA ratings
+router.post('/oja-conduct/submit', submitOJARatings);
+// Get conducted OJA history for an employee
+router.get('/oja-conduct/employee/:employeeId', getEmployeeOJAHistory);
+// Get conducted OJA details
+router.get('/oja-conduct/:conductId', getOJAConductDetails);
+
+
+// Get all OJAs
+router.get('/inaList', getAllINAs);
+// Get specific OJA by ID
+router.get('/inaDetails/:id', getINAById);
+// Get eligible employees for a specific OJA
+router.get('/competency-mapping/eligible-employe/:inaId', getEligibleEmployeesForINA);
+// Submit OJA ratings
+router.post('/ina-conduct/submit', submitINARatings);
+// Get conducted OJA history for an employee
+router.get('/ina-conduct-employee/:employeeId', getEmployeeINAHistory);
+// Get conducted OJA details
+router.get('/ina-conduct/:conductId', getINAConductDetails);
 
 
 module.exports = router;

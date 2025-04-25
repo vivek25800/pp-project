@@ -90,6 +90,19 @@ function Sidebar() {
     { label: 'Service Provider Register', link: '/serviceProverRegistration'},
   ]
 
+  const assignCompetency = [
+    { label: 'Assign Competency Mapping', link: '/competencyMapping' },
+    { label: 'Competency Mapping Dashboard', link: '/competencyMappingDashboard' },
+    { label: 'Conduct Training', link: '/conductTraining' },
+    { label: 'Conduct Mentorship', 
+      subMenu: [
+        { label: 'OJT', link: '/conductOJT' },
+        { label: 'OJA', link: '/conductOJA' },
+        { label: 'INA', link: '/conductINA' },
+      ]
+     }, 
+  ];
+
   return (
     <div>
 
@@ -225,10 +238,8 @@ ul li {
                 </button>
               </div>
               <div className='dash-options'>
-                <EditNoteIcon/>
-                <button className='dropdown-toggle-button menu-btn'> 
-                <MenuItem label="Competency Mapping" link="/competencyMapping" />
-                </button>
+                <Assessment/>
+                <DropdownMenu title="Competency Mapping" items={assignCompetency} />
               </div>
               <div className='dash-options'>
                 <EditNoteIcon/>

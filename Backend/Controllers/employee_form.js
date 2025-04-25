@@ -50,10 +50,10 @@ const employeebulkregistration = async (req, res) => {
          // Iterate over each employee and save to the database
          const savedEmployees = [];
         for (const employee of employees) {
-        const { employee_id, employee_name, employee_email, employee_password, job_title, date_of_join, project_code, project_name, department, 
+        const { employee_id, employee_name, employee_email, employee_password, function_title, job_title, date_of_join, project_code, project_name, department, 
             region, project_manger, employee_id_two, name, designation, role } = employee;
 
-        const employee_data = new register_modal({employee_id, employee_name, employee_email, employee_password, job_title, date_of_join, project_code, project_name, 
+        const employee_data = new register_modal({employee_id, employee_name, employee_email, employee_password, function_title, job_title, date_of_join, project_code, project_name, 
             department, region, project_manger, employee_id_two, name, designation, role})
 
         const savedEmployee = await employee_data.save();  // Save each employee
@@ -277,6 +277,7 @@ const employee_login = async (req, res) => {
                 employee_id: user.employee_id,
                 employee_name: user.employee_name,
                 employee_email: user.employee_email,
+                function: user.function,
                 job_title: user.job_title,
                 date_of_join: user.date_of_join,
                 project_code: user.project_code,

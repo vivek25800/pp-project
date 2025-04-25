@@ -5,6 +5,7 @@ const employee_register = new mongoose.Schema({
     employee_name:{type:String},
     employee_email:{type:String},
     employee_password:{type:String},
+    function_title:{type:String},
     job_title:{type:String},
     date_of_join:{type:String},
     project_code:{type:String},
@@ -34,5 +35,4 @@ const employee_register = new mongoose.Schema({
 });
 
 const register_modal = mongoose.model('employee-info', employee_register);
-
 module.exports = register_modal;
