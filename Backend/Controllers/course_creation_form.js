@@ -212,7 +212,8 @@ const post_course_creation = async (req, res) => {
         const { 
             course_title_main, 
             add_main_category, 
-            add_sub_category, 
+            add_sub_category,
+            add_tag,
             creation_date, 
             description, 
             course_code, 
@@ -259,6 +260,7 @@ const post_course_creation = async (req, res) => {
             course_title_main,
             add_main_category,
             add_sub_category,
+            add_tag,
             creation_date,
             description,
             course_price,

@@ -21,6 +21,10 @@ app.use('/api', catResponseRoutes);
 
 app.use('/api/questions', require('./Routes/admin'));
 
+app.get('/', (req, res) => {
+    res.send('Hello World');
+})
+
 app.listen(5000,()=>
 {
     console.log("server is running on 5000");

@@ -53,6 +53,7 @@ const createCourse = new mongoose.Schema({
     course_title_main: { type: String },
     add_main_category: { type: String },
     add_sub_category: { type: String },
+    add_tag: { type: String },
     creation_date: { type: String},
     description: { type: String },
     course_price: { type: String},
