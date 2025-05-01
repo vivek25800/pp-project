@@ -95,11 +95,12 @@ const assignCAT = async (req, res) => {
 
 //         // Filter out completed CATs and transform data
 //         const availableCATs = assignments
-//             .filter(assignment => 
-//                 assignment.catId && // Ensure catId exists
-//                 !completedCATIds.has(assignment.catId._id.toString()) &&
-//                 new Date(assignment.catId.validTill) > new Date() // Check if CAT is still valid
-//             )
+//             .filter(assignment => {
+//               return assignment.catId && // Check if assessment exists
+//               !completedCATIds.has(assignment.catId._id.toString()) &&
+//               (!assignment.catId.validTill || // Check if validTill exists
+//               new Date(assignment.catId.validTill) > new Date());
+//             })
 //             .map(assignment => ({
 //                 _id: assignment.catId._id,
 //                 title: assignment.catId.title,
@@ -127,19 +128,21 @@ const assignCAT = async (req, res) => {
 // Get assigned CATs for an employee
 const getAssignedCATs = async (req, res) => {
   try {
-      const { userId } = req.params;
+      const { employeeId } = req.params; // Changed from userId to employeeId to match route
 
-      // Validate userId
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
+      // Validate employeeId
+      if (!mongoose.Types.ObjectId.isValid(employeeId)) {
           return res.status(400).json({
               success: false,
-              message: 'Invalid user ID format'
+              message: 'Invalid employee ID format'
           });
       }
 
+      console.log('Fetching CATs for employee:', employeeId);
+
       // Find all assignments for this employee
       const assignments = await AssignedCAT.find({ 
-          employeeId: userId,
+          employeeId: employeeId,
           status: 'pending' // Only get pending assignments
       }).populate({
           path: 'catId',
@@ -150,7 +153,7 @@ const getAssignedCATs = async (req, res) => {
 
       // Get completed CATs
       const completedResponses = await CATResponse.find({ 
-          userId,
+          userId: employeeId, // Changed from userId to employeeId for consistency
           status: 'completed'
       });
       
@@ -162,18 +165,111 @@ const getAssignedCATs = async (req, res) => {
       const availableCATs = assignments
           .filter(assignment => {
               // Check if catId exists and is populated
-              if (!assignment.catId) return false;
+              if (!assignment.catId) {
+                  console.log('Skipping assignment with no catId:', assignment._id);
+                  return false;
+              }
               
               // Debug logging
               console.log(`Processing assignment for CAT: ${assignment.catId._id}`);
               console.log(`Is completed? ${completedCATIds.has(assignment.catId._id.toString())}`);
               
-              const isStillValid = assignment.catId.validTill ? 
-                  new Date(assignment.catId.validTill) > new Date() : true;
+              // Check if the CAT has a validTill date
+              let isStillValid = true;
+              if (assignment.catId.validTill) {
+                  const validTillDate = new Date(assignment.catId.validTill);
+                  const currentDate = new Date();
+                  isStillValid = validTillDate >= currentDate;
+                  console.log(`ValidTill date: ${validTillDate}, Current date: ${currentDate}`);
+              }
               console.log(`Is still valid? ${isStillValid}`);
 
-              // Return availability status
+              // For testing purposes - let's include it regardless of validity date
+              // Comment this out in production when you want to enforce validity dates
+              // return !completedCATIds.has(assignment.catId._id.toString());
+              
+              // Production code - enforce validity date
               return !completedCATIds.has(assignment.catId._id.toString()) && isStillValid;
+          })
+          .map(assignment => ({
+              _id: assignment.catId._id,
+              title: assignment.catId.title,
+              code: assignment.catId.code,
+              timeLimit: assignment.catId.timeLimit,
+              assignedDate: assignment.assignedDate
+          }));
+
+      console.log('Available CATs:', availableCATs);
+
+      return res.status(200).json({
+          success: true,
+          data: availableCATs
+      });
+  } catch (error) {
+      console.error('Error fetching assigned CATs:', error);
+      return res.status(500).json({
+          success: false,
+          message: 'Error fetching assigned CATs',
+          error: error.message
+      });
+  }
+};
+
+
+// Alternative version that ignores the validity date check
+// Use this temporarily if you need to test with expired CATs
+
+const getAssignedCATsIgnoreValidity = async (req, res) => {
+  try {
+      const { employeeId } = req.params;
+
+      // Validate employeeId
+      if (!mongoose.Types.ObjectId.isValid(employeeId)) {
+          return res.status(400).json({
+              success: false,
+              message: 'Invalid employee ID format'
+          });
+      }
+
+      console.log('Fetching CATs for employee:', employeeId);
+
+      // Find all assignments for this employee
+      const assignments = await AssignedCAT.find({ 
+          employeeId: employeeId,
+          status: 'pending' // Only get pending assignments
+      }).populate({
+          path: 'catId',
+          select: 'title code timeLimit validTill' // Select only needed fields
+      });
+
+      console.log('Found assignments:', assignments);
+
+      // Get completed CATs
+      const completedResponses = await CATResponse.find({ 
+          userId: employeeId,
+          status: 'completed'
+      });
+      
+      const completedCATIds = new Set(
+          completedResponses.map(r => r.catId.toString())
+      );
+
+      // Filter out only completed CATs, ignore validity date for testing
+      const availableCATs = assignments
+          .filter(assignment => {
+              // Check if catId exists and is populated
+              if (!assignment.catId) {
+                  console.log('Skipping assignment with no catId:', assignment._id);
+                  return false;
+              }
+              
+              // Debug logging
+              console.log(`Processing assignment for CAT: ${assignment.catId._id}`);
+              console.log(`Is completed? ${completedCATIds.has(assignment.catId._id.toString())}`);
+              
+              // IMPORTANT: We're ignoring the validity date check here
+              // Only check if the CAT has been completed
+              return !completedCATIds.has(assignment.catId._id.toString());
           })
           .map(assignment => ({
               _id: assignment.catId._id,
@@ -201,5 +297,6 @@ const getAssignedCATs = async (req, res) => {
 
 module.exports = {
   assignCAT,
-  getAssignedCATs
+  getAssignedCATs,
+  getAssignedCATsIgnoreValidity
 };

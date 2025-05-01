@@ -1,87 +1,315 @@
-import React from 'react'
-import EmployeeHeader from './EmployeeHeader'
-import EmployeeSidebar from './EmployeeSidebar'
+// import React from 'react'
+// import EmployeeHeader from './EmployeeHeader'
+// import EmployeeSidebar from './EmployeeSidebar'
+
+// function TrainingList() {
+//   return (
+
+//     <div>
+
+//         <style>
+//             {
+//                 `
+//                 body{
+//                 background-color: #e9ecef;
+//                 padding: 20px;
+//                 }
+//                 .training-list{
+//                 background-color: #fff;
+//                 width: 100%;
+//                 border-radius: 10px;
+//                 padding: 1.5rem;
+//                 }
+//                 .training-list-header{
+//                 background-color: #2E073F;
+//                 width: 100%;
+//                 height: 80px;
+//                 border-top-left-radius: 10px;
+//                 border-top-right-radius: 10px;
+//                 display: flex;
+//                 justify-content: left;
+//                 align-items: center;
+//                 padding-left: 2rem
+//                 }
+//                 .training-list-body{
+//                 margin-top: 2rem;}
+//                 `
+//             }
+//         </style>
+
+//        <EmployeeSidebar/>
+
+//        <section className="main-content-section">
+//             <EmployeeHeader/>
+
+//             <div className="header-div header-two">
+//               <div className='title-name'>
+//                 <h5>Training List</h5>
+//                 <p><a onClick={() => window.location.reload()} style={{cursor:"pointer", color:"#099ded"}}>Home</a> <i class="fa-solid fa-caret-right"></i> Training List</p>
+//               </div>
+//             </div>
+
+//             <div className="training-list">
+//               <div className="training-list-header">
+//                 <h4 style={{color: "#fff"}}>All Avallable Training</h4>
+//               </div>
+
+            
+//             </div>
+
+//         </section> 
+
+//     </div>
+//   )
+// }
+
+// export default TrainingList
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import EmployeeHeader from './EmployeeHeader';
+import EmployeeSidebar from './EmployeeSidebar';
+import { base_url } from '../Utils/base_url'; // Adjust the import based on your project structure
+import { useNavigate } from 'react-router-dom';
 
 function TrainingList() {
+  const [trainings, setTrainings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  
+  // Get the base URL from your environment
+  // const base_url = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  
+  useEffect(() => {
+    // Fetch employee's training nominations
+    const fetchTrainings = async () => {
+      try {
+        setLoading(true);
+        
+        // Get employee data from localStorage
+        const employeeData = JSON.parse(localStorage.getItem('employeeData'));
+        const employeeId = employeeData?._id || employeeData?.employee_id;
+
+        if (!employeeId) {
+          toast.error("Employee ID not found. Please login again.");
+          return;
+        }
+
+        // Fetch nominations for this employee
+        const response = await axios.get(`${base_url}/employee-nominations/${employeeId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        if (response.data && response.data.nominations) {
+          setTrainings(response.data.nominations);
+        } else {
+          setTrainings([]);
+        }
+      } catch (err) {
+        console.error("Error fetching training data:", err);
+        setError("Failed to load training data. Please try again later.");
+        toast.error("Failed to load training data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrainings();
+  }, []);
+
+  // Format date function
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
-
     <div>
+      <style>
+        {`
+          body {
+            background-color: #e9ecef;
+            padding: 20px;
+          }
+          .training-list {
+            background-color: #fff;
+            width: 100%;
+            border-radius: 10px;
+            // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+          }
+          .training-list-header {
+            background-color: #2E073F;
+            width: 100%;
+            height: 80px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            padding-left: 2rem;
+          }
+          .training-list-body {
+            padding: 1.5rem;
+          }
+          .training-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+          }
+          .training-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+          }
+          .training-title {
+            // color: #4B0082;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+          }
+          .training-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 10px;
+          }
+          .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+          .info-item i {
+            color: #4B0082;
+          }
+          .no-trainings {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+          }
+          .loading {
+            text-align: center;
+            padding: 30px;
+            color: #4B0082;
+          }
+          .view-details-btn {
+            background-color: #4B0082;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+          }
+          .view-details-btn:hover {
+            background-color: #380061;
+          }
+          .notification-link {
+            color: #099ded;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        `}
+      </style>
 
-        <style>
-            {
-                `
-                body{
-                background-color: #e9ecef;
-                padding: 20px;
-                }
-                .training-list{
-                background-color: #fff;
-                width: 100%;
-                border-radius: 10px;
-                padding: 1.5rem;
-                }
-                .training-list-header{
-                background-color: #2E073F;
-                width: 100%;
-                height: 80px;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                display: flex;
-                justify-content: left;
-                align-items: center;
-                padding-left: 2rem
-                }
-                .training-list-body{
-                margin-top: 2rem;}
-                `
-            }
-        </style>
+      <EmployeeSidebar />
 
-       <EmployeeSidebar/>
+      <section className="main-content-section">
+        <EmployeeHeader />
 
-       <section className="main-content-section">
-            <EmployeeHeader/>
+        <div className="header-div header-two">
+          <div className='title-name'>
+            <h5>Training List</h5>
+            <p>
+              <a onClick={() => window.location.reload()} style={{cursor:"pointer", color:"#099ded"}}>Home</a> 
+              <i className="fa-solid fa-caret-right"></i> Training List
+            </p>
+          </div>
+        </div>
 
-            <div className="header-div header-two">
-              <div className='title-name'>
-                <h5>Training List</h5>
-                <p><a onClick={() => window.location.reload()} style={{cursor:"pointer", color:"#099ded"}}>Home</a> <i class="fa-solid fa-caret-right"></i> Training List</p>
+        <div className="training-list">
+          <div className="training-list-header">
+            <h4 style={{color: "#fff"}}>My Training Nominations</h4>
+          </div>
+
+          <div className="training-list-body">
+            {loading ? (
+              <div className="loading">
+                <i className="fa-solid fa-spinner fa-spin fa-2x"></i>
+                <p>Loading your trainings...</p>
               </div>
-            </div>
-
-            <div className="training-list">
-              <div className="training-list-header">
-                <h4 style={{color: "#fff"}}>All Avallable Training</h4>
+            ) : error ? (
+              <div className="no-trainings">
+                <p>{error}</p>
               </div>
-
-              <div className="training-list-body">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th scope="col">Training Name</th>
-                      <th scope="col">Training Type</th>
-                      <th scope="col">Training Date</th>
-                      <th scope="col">Training Time</th>
-                      <th scope="col">Training Duration</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>John Doe</td>
-                    </tr>
-                  </tbody>
-                </table>
+            ) : trainings.length === 0 ? (
+              <div className="no-trainings">
+                <p>You haven't been nominated for any training sessions yet.</p>
               </div>
-            </div>
+            ) : (
+              trainings.map((training, index) => (
+                <div key={index} className="training-card">
+                  <h3 className="training-title">{training.training_name}</h3>
+                  
+                  <div className="training-info">
+                    <div className="info-item">
+                      <i className="fa-solid fa-calendar"></i>
+                      <span>
+                        {formatDate(training.from_date)} to {formatDate(training.to_date)}
+                      </span>
+                    </div>
+                    
+                    <div className="info-item">
+                      <i className="fa-solid fa-clock"></i>
+                      <span>
+                        {training.from_time} - {training.to_time}
+                      </span>
+                    </div>
+                  </div>
 
-        </section> 
-
+                  {training.notification_link && (
+                    <div className="info-item" style={{marginBottom: '10px'}}>
+                      <i className="fa-solid fa-file-lines"></i>
+                      <a
+                        href={training.notification_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="notification-link"
+                      >
+                        View Notification
+                      </a>
+                    </div>
+                  )}
+                  
+                  <button 
+                    className="view-details-btn"
+                    onClick={() => {
+                      navigate(`/training-details/${training._id}`);
+                    }}
+                  >
+                    View Details
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+        <ToastContainer />
+      </section>
     </div>
-  )
+  );
 }
 
-export default TrainingList
+export default TrainingList;
 
 
 // import React, { useState, useEffect } from 'react';

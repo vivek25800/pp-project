@@ -43,7 +43,7 @@ import { toast } from 'react-toastify'
 //             }
 
 //             const response = await axios.get(`${base_url}/get_assigned_cats/${id}`);
-//             console.log('Assigned CATs response:', response.data);
+//             console.log('Assigned CATs response:', response);
             
 //             if (response.data.success && Array.isArray(response.data.data)) {
 //                 setCatData(response.data.data);
@@ -176,7 +176,8 @@ function CATList() {
             }
     
             console.log('Fetching CATs for employee ID:', employeeId);
-            const response = await axios.get(`${base_url}/get_assigned_cats/${employeeId}`, {
+            // Updated URL to match backend route parameter name
+            const response = await axios.get(`${base_url}/get_all_assigned_cats/${employeeId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -195,6 +196,7 @@ function CATList() {
             } else {
                 console.log('Invalid response format:', response.data);
                 setCatData([]);
+                toast.error("Unexpected data format received from server");
             }
         } catch (error) {
             console.error('Error fetching CAT data:', error);
@@ -216,10 +218,63 @@ function CATList() {
         if (id) {
             fetchAssignedCATs();
         }
-    }, [id]);
+    }, [id, navigate]); // Added navigate to dependency array
       
     return (
         <div>
+
+            <style>
+            {
+                `
+                body{
+                background-color: #e9ecef;
+                padding: 20px;
+                }
+                .training-list{
+                background-color: #fff;
+                width: 100%;
+                border-radius: 10px;
+                padding: 1.5rem;
+                }
+                .training-list-header{
+                background-color: #2E073F;
+                width: 100%;
+                height: 80px;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                display: flex;
+                justify-content: left;
+                align-items: center;
+                padding-left: 2rem
+                }
+                .training-list-body{
+                margin-top: 1rem 2rem;
+                }
+                .assessment-data{
+            padding: 2rem;
+            }
+            .assessment-header{
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 2rem;
+                border-radius: 1.5rem;
+                border: 1px solid #2E073F;
+                margin-bottom: 2rem;
+                }
+            .assessment-items{
+                border-bottom: 1px solid rgba(0,0,0,0.4);
+                display: flex;
+                justify-content: space-between;
+                margin: 1rem;
+                padding: 5px 1rem;
+                }
+                h5{
+                margin-bottom: 0px;
+                }
+                `
+            }
+            </style> 
+
             <EmployeeSidebar/>
 
             <section className="main-content-section">
@@ -288,59 +343,4 @@ function CATList() {
 
 export default CATList;
 
-
-
-
-
-{/* <style>
-{
-    `
-    body{
-    background-color: #e9ecef;
-    padding: 20px;
-    }
-    .training-list{
-    background-color: #fff;
-    width: 100%;
-    border-radius: 10px;
-    padding: 1.5rem;
-    }
-    .training-list-header{
-    background-color: #2E073F;
-    width: 100%;
-    height: 80px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    padding-left: 2rem
-    }
-    .training-list-body{
-    margin-top: 1rem 2rem;
-    }
-    .assessment-data{
-padding: 2rem;
-}
-.assessment-header{
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 2rem;
-    border-radius: 1.5rem;
-    border: 1px solid #2E073F;
-    margin-bottom: 2rem;
-    }
-.assessment-items{
-    border-bottom: 1px solid rgba(0,0,0,0.4);
-    display: flex;
-    justify-content: space-between;
-    margin: 1rem;
-    padding: 5px 1rem;
-    }
-    h5{
-    margin-bottom: 0px;
-    }
-    `
-}
-</style> */}
 

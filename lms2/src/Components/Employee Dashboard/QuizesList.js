@@ -40,43 +40,43 @@ function QuizesList() {
           }
         };
 
-        // const fetchAssignedQuizes = async () => {
-        //     try {
-        //       setLoading(true);
-        //       const employeeData = JSON.parse(localStorage.getItem('employeeData'));
+        const fetchAssignedQuizes = async () => {
+            try {
+              setLoading(true);
+              const employeeData = JSON.parse(localStorage.getItem('employeeData'));
               
-        //       if (!employeeData || !employeeData._id) {
-        //         toast.error('Please login again');
-        //         navigate('/');
-        //         return;
-        //       }
+              if (!employeeData || !employeeData._id) {
+                toast.error('Please login again');
+                navigate('/');
+                return;
+              }
         
-        //       if (id !== employeeData._id) {
-        //         toast.error('Unauthorized access');
-        //         navigate('/');
-        //         return;
-        //       }
+              if (id !== employeeData._id) {
+                toast.error('Unauthorized access');
+                navigate('/');
+                return;
+              }
         
-        //       const response = await axios.get(`${base_url}/get_assigned_quizes/${id}`);
+              const response = await axios.get(`${base_url}/get_assigned_quizes/${id}`);
               
-        //       if (response.data.success && Array.isArray(response.data.data)) {
-        //         setQuizData(response.data.data);
-        //         // Fetch status for each assessment
-        //         response.data.data.forEach(item => {
-        //             fetchQuizStatus(employeeData.employee_id, item._id);
-        //         });
-        //       } else {
-        //         console.log('Invalid response format:', response.data);
-        //         setQuizData([]);
-        //       }
-        //     } catch (error) {
-        //       console.error('Error fetching Quiz data:', error);
-        //       toast.error(error.response?.data?.message || "Error fetching assigned Quizes");
-        //       setQuizData([]);
-        //     } finally {
-        //       setLoading(false);
-        //     }
-        //   };
+              if (response.data.success && Array.isArray(response.data.data)) {
+                setQuizData(response.data.data);
+                // Fetch status for each assessment
+                response.data.data.forEach(item => {
+                    fetchQuizStatus(employeeData.employee_id, item._id);
+                });
+              } else {
+                console.log('Invalid response format:', response.data);
+                setQuizData([]);
+              }
+            } catch (error) {
+              console.error('Error fetching Quiz data:', error);
+              toast.error(error.response?.data?.message || "Error fetching assigned Quizes");
+              setQuizData([]);
+            } finally {
+              setLoading(false);
+            }
+          };
 
               // Add effect to handle employee data
               
@@ -156,7 +156,8 @@ function QuizesList() {
     }
 
     useEffect(() =>{
-        fetchQuizeData();
+        // fetchQuizeData();
+        fetchAssignedQuizes();
     }, []);
 
   return (
@@ -297,7 +298,7 @@ function QuizesList() {
                         <h5>Actions</h5>
                     </div> 
 
-                {/* {loading ? (
+                {loading ? (
                   <div style={{margin:"1rem 2rem"}}>
                     <h5>Loading...</h5>
                   </div>
@@ -315,7 +316,7 @@ function QuizesList() {
                       <div className='assessment-actions' 
                            style={{display:"flex", alignItems:"center", gap:"20px"}}>
                         <button
-                          onClick={() => handleTakeQuize(item._id)}
+                          onClick={() => handleTakeQuiz(item._id)}
                           disabled={quizStatus[item._id] === 'completed'}
                           className={`take-assessment-btn ${
                             quizStatus[item._id] === 'completed' ? 'disabled' : ''
@@ -332,9 +333,9 @@ function QuizesList() {
                   <div style={{margin:"1rem 2rem"}}>
                     <h5>No Quizes available.</h5>
                   </div>
-                )} */}
+                )}
 
-            {loading ? (
+            {/* {loading ? (
                 <div>Loading...</div>
             ) : (
                 <div className="quiz-items">
@@ -358,7 +359,7 @@ function QuizesList() {
                         </div>
                     ))}
                 </div>
-            )}
+            )} */}
 
                 </div>
             </div>

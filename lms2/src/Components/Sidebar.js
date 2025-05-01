@@ -204,7 +204,7 @@ ul li {
               <div className='dash-options'>
               <i class="fa-solid fa-clipboard-user"></i>
                 <button className='dropdown-toggle-button menu-btn'>
-                <MenuItem label="Attendence" link="/attendence" />
+                <MenuItem label="Attendence" link="/attendance-form" />
                 </button>
               </div>
               <div className='dash-options'>

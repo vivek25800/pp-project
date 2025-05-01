@@ -1,6 +1,7 @@
 const AssessmentResponse = require('../Modal/assessment_response');
 const register_modal = require('../Modal/employee_register');  // Adjust the path as needed
 const Assessment = require('../Modal/create_assessment');
+const mongoose = require('mongoose')
 
 // Save Assessment Response
 // const saveAssessmentResponse = async (req, res) => {
@@ -393,29 +394,72 @@ const getAssessmentResponseById = async (req, res) => {
     }
 };
 
+// const getAssessmentStatus = async (req, res) => {
+//     try {
+//         const { assessmentId, employeeId } = req.params;
+
+//         const existingResponse = await AssessmentResponse.findOne({
+//             assessmentId,
+//             employee_id: employeeId,
+//             status: 'completed'
+//         });
+
+//         res.json({
+//             success: true,
+//             status: existingResponse ? 'completed' : 'pending',
+//             completed: !!existingResponse
+//         });
+//     } catch (error) {
+//         console.error('Error checking assessment status:', error);
+//         res.status(500).json({
+//             success: false,
+//             message: 'Error checking assessment status'
+//         });
+//     }
+// };
+
 const getAssessmentStatus = async (req, res) => {
     try {
-        const { assessmentId, employeeId } = req.params;
-
-        const existingResponse = await AssessmentResponse.findOne({
-            assessmentId,
-            employee_id: employeeId,
-            status: 'completed'
+      const { assessmentId, employeeId } = req.params;
+      
+      console.log('Assessment status check:', { assessmentId, employeeId });
+      
+      // Validate that assessmentId is a valid ObjectId
+      if (!mongoose.Types.ObjectId.isValid(assessmentId)) {
+        return res.status(400).json({
+          success: false,
+          message: `Invalid assessment ID format: ${assessmentId}`
         });
-
-        res.json({
-            success: true,
-            status: existingResponse ? 'completed' : 'pending',
-            completed: !!existingResponse
+      }
+      
+      // Find any completed responses for this employee and assessment
+      const response = await AssessmentResponse.findOne({
+        assessmentId: assessmentId, // Using the validated ID
+        employee_id: employeeId,
+        status: 'completed'
+      });
+      
+      if (response) {
+        return res.status(200).json({
+          success: true,
+          status: 'completed',
+          score: response.scorePercentage
         });
+      } else {
+        return res.status(200).json({
+          success: true,
+          status: 'pending'
+        });
+      }
     } catch (error) {
-        console.error('Error checking assessment status:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Error checking assessment status'
-        });
+      console.error('Error getting assessment status:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Error checking assessment status',
+        error: error.message
+      });
     }
-};
+  };
 
 module.exports = {
     saveAssessmentResponse,

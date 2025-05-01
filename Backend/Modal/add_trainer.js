@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const addTrainer = new mongoose.Schema({
+    trainer_id: {type: String},
     first_name: {type: String},
     last_name: {type: String},
     specialization: {type: String},

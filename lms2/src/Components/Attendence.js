@@ -46,22 +46,6 @@ function Attendence() {
       console.log(error);
     }
   };
-
-  // function getTrainer() {
-  //   const trainerId = document.getElementById("trainer").value;
-
-  //   if (trainerId === "If Internal") {
-  //     setattendence({ ...attendence, trainer: "Internal" });
-  //     document.getElementById("employee-div").style.display = "block";
-  //     document.getElementById("service-provider").style.display = "none";
-  //   } else if (trainerId === "If External") {
-  //     setattendence({ ...attendence, trainer: "External" });
-  //     document.getElementById("service-provider").style.display = "block";
-  //     document.getElementById("employee-div").style.display = "none";
-  //   }
-  // }
-
-  // Get training details
  
   const getTrainer = (e) => {
     const selectedValue = e.target.value;
@@ -126,22 +110,6 @@ function Attendence() {
     fetchOptions();
   }, []);
 
-  // Add selected employee to the table
-  // const handleAddEmployee = (event) => {
-  //   if (selectedOption) {
-  //     const employeeExists = selectedEmployees.some(
-  //       (emp) => emp.value === selectedOption.value
-  //     );
-  //     if (!employeeExists) {
-  //       setSelectedEmployees([...selectedEmployees, selectedOption]);
-  //       setattendence({
-  //             ...attendence,
-  //             employee_id_atten:[...selectedEmployees,selectedOption] ,
-  //           });
-  //     }
-  //   }
-  // };
-
   const handleAddEmployee = () => {
     if (!selectedOption) {
       alert('Please select an employee first');
@@ -158,11 +126,6 @@ function Attendence() {
     setSelectedEmployees([...selectedEmployees, selectedOption]);
     setSelectedOption(null);
   };
-
-  // Remove employee from the table
-  // const handleRemoveEmployee = (id) => {
-  //   setSelectedEmployees(selectedEmployees.filter((emp) => emp.value !== id));
-  // };
 
   const handleRemoveEmployee = (employeeId) => {
     setSelectedEmployees(selectedEmployees.filter(emp => emp.value !== employeeId));
@@ -258,123 +221,6 @@ function Attendence() {
               </div>
             </div>
           )}
-          <style>
-              {`
-              .custom-select-container {
-                  position: relative;
-                  width: 100%;
-                  margin-bottom: 1rem;
-              }
-  
-              .select-input-container {
-                  padding: 0.75rem;
-                  border: 1px solid #e2e8f0;
-                  border-radius: 0.375rem;
-                  background-color: white;
-                  cursor: pointer;
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  min-height: 42px;
-              }
-  
-              .select-input-container:hover {
-                  border-color: #cbd5e0;
-              }
-  
-              .selected-value {
-                  color: #1a202c;
-                  font-size: 0.875rem;
-              }
-  
-              .arrow {
-                  font-size: 0.75rem;
-                  transition: transform 0.2s;
-                  color: #718096;
-              }
-  
-              .arrow.open {
-                  transform: rotate(180deg);
-              }
-  
-              .dropdown-container {
-                  position: absolute;
-                  top: 100%;
-                  left: 0;
-                  right: 0;
-                  margin-top: 0.25rem;
-                  background-color: white;
-                  border: 1px solid #e2e8f0;
-                  border-radius: 0.375rem;
-                  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-                  z-index: 50;
-                  max-height: 300px;
-              }
-  
-              .search-container {
-                  padding: 0.5rem;
-                  border-bottom: 1px solid #e2e8f0;
-              }
-  
-              .dropdown-search {
-                  width: 100%;
-                  padding: 0.5rem;
-                  border: 1px solid #e2e8f0;
-                  border-radius: 0.25rem;
-                  font-size: 0.875rem;
-              }
-  
-              .dropdown-search:focus {
-                  outline: none;
-                  border-color: #4299e1;
-                  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-              }
-  
-              .options-container {
-                  max-height: 250px;
-                  overflow-y: auto;
-              }
-  
-              .options-container::-webkit-scrollbar {
-                  width: 6px;
-              }
-  
-              .options-container::-webkit-scrollbar-track {
-                  background: #f7fafc;
-              }
-  
-              .options-container::-webkit-scrollbar-thumb {
-                  background: #cbd5e0;
-                  border-radius: 3px;
-              }
-  
-              .option {
-                  padding: 0.75rem;
-                  cursor: pointer;
-                  font-size: 0.875rem;
-                  color: #1a202c;
-              }
-  
-              .option:hover {
-                  background-color: #f7fafc;
-              }
-  
-              .no-options {
-                  padding: 0.75rem;
-                  color: #718096;
-                  text-align: center;
-                  font-size: 0.875rem;
-              }
-  
-              .details-card {
-                  margin-top: 1rem;
-                  padding: 1rem;
-                  background-color: #f8fafc;
-                  border-radius: 0.375rem;
-                  border: 1px solid #e2e8f0;
-              }
-              `}
-          </style>
         </div>
       );
   }
@@ -441,215 +287,6 @@ function Attendence() {
 
   return (
     <div>
-      <style>
-        {`
-          body {
-            background-color: rgba(46, 7, 63, 0.1);
-            padding: 20px;
-          }
-
-          /* Attendance Component Styles */
-
-/* Container styling */
-.attendance-container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9fafb;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-/* Info div item styling */
-.info-div-item {
-  // margin-bottom: 1.5rem;
-}
-
-.info-div-item label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.9rem;
-}
-
-/* Select dropdown styling */
-select.trainer, select.service-provider {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background-color: white;
-  font-size: 0.95rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-}
-
-select.trainer:focus, select.service-provider:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
-
-/* Trainer div styling (default hidden) */
-.trainer-div {
-  background-color: white;
-  padding: 20px;
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  margin-top: 10px;
-  transition: all 0.3s ease;
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-}
-
-/* Visible trainer div */
-.trainer-div.visible {
-  opacity: 1;
-  max-height: 2000px; /* Arbitrary large value */
-  margin-bottom: 20px;
-}
-
-/* Input styling */
-.trainer-div input[type="text"] {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.trainer-div input[type="text"]:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
-
-/* Employee selection area */
-.employee-selection {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-/* Add button styling */
-button.add-btn {
-  padding: 10px 16px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-button.add-btn:hover {
-  background-color: #2563eb;
-}
-
-/* Employee list styling */
-.all-added-employee-list {
-  margin-top: 25px;
-}
-
-.all-added-employee-list h5 {
-  font-size: 1rem;
-  color: #111827;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-.employee-lists {
-  border-radius: 6px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-table#employeeTable {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-}
-
-table#employeeTable th {
-  background-color: #f3f4f6;
-  padding: 12px 16px;
-  text-align: left;
-  font-weight: 600;
-  color: #374151;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-table#employeeTable td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #e5e7eb;
-  color: #4b5563;
-}
-
-table#employeeTable tr:last-child td {
-  border-bottom: none;
-}
-
-table#employeeTable tr:hover {
-  background-color: #f9fafb;
-}
-
-/* Remove button styling */
-button.remove-btn {
-  padding: 6px 12px;
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-button.remove-btn:hover {
-  background-color: #dc2626;
-}
-
-/* File upload area */
-.file-upload {
-  margin-bottom: 20px;
-  border: 2px dashed #d1d5db;
-  padding: 20px;
-  border-radius: 6px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.file-upload:hover {
-  border-color: #3b82f6;
-}
-
-.file-upload p {
-  color: #6b7280;
-  margin: 10px 0 0;
-}
-
-/* Transition animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.trainer-div.visible {
-  animation: fadeIn 0.3s ease forwards;
-}
-        `}
-      </style>
-
       <div>
         <Sidebar />
 
@@ -811,119 +448,6 @@ button.remove-btn:hover {
                         ))}
                 </select>
               </div>
-              
-            {/* <div>
-              <div className="info-div-item">
-                <label>Trainer</label>
-                <select
-                  className="trainer"
-                  name="trainer"
-                  id="trainer"
-                  onChange={getTrainer}
-                >
-                  <option>-- Select Trainer --</option>
-                  <option>If Internal</option>
-                  <option>If External</option>
-                </select>
-              </div>
-              <div
-                className="info-div-item trainer-div"
-                style={{ display: "none" }}
-                id="employee-div"
-              >
-                <div>
-                  <label style={{display:"block"}}>Trainer Employee Id</label>
-                  <input type="text" id="trainer_emp_id" placeholder="Trainer employee Id" onChange={(e) => {
-                      setattendence({
-                        ...attendence,
-                        trainer_emp_id: e.target.value,
-                      });
-                    }} />
-                </div>
-                <div>
-                  <label>Employee's Id</label>
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                          <Select
-                            options={options}
-                            value={selectedOption}
-                            id="employee_id_atten"
-                            onChange={(selected) => setSelectedOption(selected)}
-                            placeholder="Search Employee"
-                            isSearchable
-                            styles={{
-                              container: (base) => ({
-                                ...base,
-                                flex: 1,
-                              }),
-                            }}
-                          />
-                          <button onClick={handleAddEmployee} style={{ padding: "8px 12px" }}>
-                            Add
-                          </button>
-                  </div>
-                </div>
-
-                <label>Upload bulk employee</label>
-                <FileUpload/>
-
-                <div className='all-added-employee-list'>
-                    <h5 style={{marginBottom:"1.5rem"}}>All added employee's list</h5>
-
-                    <div className='employee-lists'>
-                      <table id="employeeTable" className="table table-striped table-bordered" style={{ fontSize: '14px' }}>
-                        <thead>
-                          <tr>
-                            <th>Sr. No.</th>
-                            <th>Employee Name</th>
-                            <th>Employee ID</th>
-                            <th>Date of join</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                      {selectedEmployees.map((emp, index) => (
-                        <tr key={emp.value}>
-                          <td>{index + 1}</td>
-                          <td>{emp.details.employee_name}</td>
-                          <td>{emp.details.employee_id}</td>
-                          <td>{emp.details.date_of_join}</td>
-                          <td>
-                            <button onClick={() => handleRemoveEmployee(emp.value)}>
-                              Remove
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                      </table>
-                    </div>
-                </div>
-              </div>
-              <div
-                className="info-div-item trainer-div"
-                style={{ display: "none" }}
-                id="service-provider"
-              >
-                <label>Service Provider Name</label>
-                <select
-                  className="service-provider"
-                  name="service-provider"
-                  id="service_provider"
-                  onChange={(e) => {
-                    setattendence({
-                      ...attendence,
-                      service_provider: e.target.value,
-                    });
-                  }}
-                >
-                  <option>-- Select Service Provider --</option>
-                  <option>Provider 1</option>
-                  <option>Provider 2</option>
-                  <option>Provider 3</option>
-                  <option>Provider 4</option>
-                </select>
-              </div>
-            </div> */}
 
     <div className="attendance-container">
       <div className="info-div-item">
@@ -1115,3 +639,333 @@ button.remove-btn:hover {
 }
 
 export default Attendence;
+
+
+
+{/* <style>
+{`
+.custom-select-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.select-input-container {
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    background-color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 42px;
+}
+
+.select-input-container:hover {
+    border-color: #cbd5e0;
+}
+
+.selected-value {
+    color: #1a202c;
+    font-size: 0.875rem;
+}
+
+.arrow {
+    font-size: 0.75rem;
+    transition: transform 0.2s;
+    color: #718096;
+}
+
+.arrow.open {
+    transform: rotate(180deg);
+}
+
+.dropdown-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.25rem;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    max-height: 300px;
+}
+
+.search-container {
+    padding: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.dropdown-search {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.dropdown-search:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.options-container {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.options-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.options-container::-webkit-scrollbar-track {
+    background: #f7fafc;
+}
+
+.options-container::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+}
+
+.option {
+    padding: 0.75rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #1a202c;
+}
+
+.option:hover {
+    background-color: #f7fafc;
+}
+
+.no-options {
+    padding: 0.75rem;
+    color: #718096;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+.details-card {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f8fafc;
+    border-radius: 0.375rem;
+    border: 1px solid #e2e8f0;
+}
+`}
+</style> */}
+
+
+<style>
+{`
+  body {
+    background-color: rgba(46, 7, 63, 0.1);
+    padding: 20px;
+  }
+
+  /* Attendance Component Styles */
+
+/* Container styling */
+.attendance-container {
+width: 100%;
+margin: 0 auto;
+padding: 20px;
+background-color: #f9fafb;
+border-radius: 8px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Info div item styling */
+.info-div-item {
+// margin-bottom: 1.5rem;
+}
+
+.info-div-item label {
+display: block;
+margin-bottom: 8px;
+font-weight: 600;
+color: #374151;
+font-size: 0.9rem;
+}
+
+/* Select dropdown styling */
+select.trainer, select.service-provider {
+width: 100%;
+padding: 12px;
+border: 1px solid #d1d5db;
+border-radius: 6px;
+background-color: white;
+font-size: 0.95rem;
+transition: border-color 0.2s, box-shadow 0.2s;
+appearance: none;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 12px center;
+background-size: 16px;
+}
+
+select.trainer:focus, select.service-provider:focus {
+outline: none;
+border-color: #3b82f6;
+box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Trainer div styling (default hidden) */
+.trainer-div {
+background-color: white;
+padding: 20px;
+border-radius: 6px;
+border: 1px solid #e5e7eb;
+margin-top: 10px;
+transition: all 0.3s ease;
+opacity: 0;
+max-height: 0;
+overflow: hidden;
+}
+
+/* Visible trainer div */
+.trainer-div.visible {
+opacity: 1;
+max-height: 2000px; /* Arbitrary large value */
+margin-bottom: 20px;
+}
+
+/* Input styling */
+.trainer-div input[type="text"] {
+width: 100%;
+padding: 10px 12px;
+border: 1px solid #d1d5db;
+border-radius: 6px;
+font-size: 0.95rem;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.trainer-div input[type="text"]:focus {
+outline: none;
+border-color: #3b82f6;
+box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Employee selection area */
+.employee-selection {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 15px;
+}
+
+/* Add button styling */
+button.add-btn {
+padding: 10px 16px;
+background-color: #3b82f6;
+color: white;
+border: none;
+border-radius: 6px;
+font-weight: 500;
+cursor: pointer;
+transition: background-color 0.2s;
+}
+
+button.add-btn:hover {
+background-color: #2563eb;
+}
+
+/* Employee list styling */
+.all-added-employee-list {
+margin-top: 25px;
+}
+
+.all-added-employee-list h5 {
+font-size: 1rem;
+color: #111827;
+margin-bottom: 1rem;
+font-weight: 600;
+}
+
+.employee-lists {
+border-radius: 6px;
+overflow: hidden;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+table#employeeTable {
+width: 100%;
+border-collapse: collapse;
+background-color: white;
+}
+
+table#employeeTable th {
+background-color: #f3f4f6;
+padding: 12px 16px;
+text-align: left;
+font-weight: 600;
+color: #374151;
+border-bottom: 2px solid #e5e7eb;
+}
+
+table#employeeTable td {
+padding: 12px 16px;
+border-bottom: 1px solid #e5e7eb;
+color: #4b5563;
+}
+
+table#employeeTable tr:last-child td {
+border-bottom: none;
+}
+
+table#employeeTable tr:hover {
+background-color: #f9fafb;
+}
+
+/* Remove button styling */
+button.remove-btn {
+padding: 6px 12px;
+background-color: #ef4444;
+color: white;
+border: none;
+border-radius: 4px;
+font-size: 0.85rem;
+cursor: pointer;
+transition: background-color 0.2s;
+}
+
+button.remove-btn:hover {
+background-color: #dc2626;
+}
+
+/* File upload area */
+.file-upload {
+margin-bottom: 20px;
+border: 2px dashed #d1d5db;
+padding: 20px;
+border-radius: 6px;
+text-align: center;
+cursor: pointer;
+transition: border-color 0.2s;
+}
+
+.file-upload:hover {
+border-color: #3b82f6;
+}
+
+.file-upload p {
+color: #6b7280;
+margin: 10px 0 0;
+}
+
+/* Transition animations */
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(-10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.trainer-div.visible {
+animation: fadeIn 0.3s ease forwards;
+}
+`}
+</style>

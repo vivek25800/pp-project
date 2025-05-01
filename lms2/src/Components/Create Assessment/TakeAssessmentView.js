@@ -1,246 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import { useLocation, useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-// import { base_url } from '../Utils/base_url';
-
-// function TakeAssessmentView() {
-
-//     const location = useLocation();
-//   const navigate = useNavigate();
-//   const [assessment, setAssessment] = useState(null);
-//   const [answers, setAnswers] = useState({});
-//   const [timer, setTimer] = useState(null);
-
-//   useEffect(() => {
-//     if (location.state?.assessment) {
-//       const { assessment_timer, ...data } = location.state.assessment;
-//       setAssessment(data);
-//       setTimer(assessment_timer);
-//     } else {
-//       // Fetch assessment details if not passed via state
-//       const fetchAssessment = async () => {
-//         const id = location.pathname.split('/').pop();
-//         try {
-//           const response = await axios.get(`${base_url}/assessments_fetch_byid/${id}`);
-//           const { assessment_timer, ...data } = response.data.assessments;
-//           setAssessment(data);
-//           setTimer(assessment_timer);
-//         } catch (error) {
-//           console.error(error);
-//         }
-//       };
-//       fetchAssessment();
-//     }
-//   }, [location]);
-
-//   const handleAnswerChange = (sectionId, questionId, answer) => {
-//     setAnswers({
-//       ...answers,
-//       [sectionId]: {
-//         ...answers[sectionId],
-//         [questionId]: answer,
-//       },
-//     });
-//   };
-
-//   const handleSubmit = async () => {
-//     try {
-//       const response = await axios.post(`${base_url}/submit_assessment`, {
-//         assessmentId: assessment._id,
-//         answers,
-//       });
-//       alert('Assessment submitted successfully!');
-//       navigate('/assessments');
-//     } catch (error) {
-//       console.error(error);
-//       alert('Failed to submit assessment.');
-//     }
-//   };
-
-//   return (
-//     <div>
-//         <div className="assessment-view-container">
-//         <h2>{assessment?.assessment_title}</h2>
-//         <p>Timer: {timer} minutes</p>
-
-//         {assessment?.sections?.map((section) => (
-//             <div key={section.id}>
-//                 <h3>{section.title}</h3>
-//                 {section.questions?.length > 0 ? (
-//                 section.questions.map((question, idx) => (
-//                     <div key={question.id || idx}>
-//                     <h4>{question.title}</h4>
-
-//                     {/* Handle MCQ */}
-//                     {question.type === 'MCQ' && question.questionMCQ?.options?.length > 0 && (
-//                         question.questionMCQ.options.map((option, optIdx) => (
-//                         <label key={optIdx}>
-//                             <input
-//                             type="radio"
-//                             name={`section-${section.id}-question-${question.id || idx}`}
-//                             value={option.text}
-//                             onChange={(e) =>
-//                                 handleAnswerChange(section.id, question.id || idx, e.target.value)
-//                             }
-//                             />
-//                             {option.text}
-//                         </label>
-//                         ))
-//                     )}
-
-//                     {/* Handle Text */}
-//                     <h4>{question.title}</h4>
-//                     {question.type === 'Text' && (
-//                         <textarea
-//                         name={`section-${section.id}-question-${question.id || idx}`}
-//                         onChange={(e) =>
-//                             handleAnswerChange(section.id, question.id || idx, e.target.value)
-//                         }
-//                         placeholder="Write your answer here..."
-//                         />
-//                     )}
-
-//                     {/* Handle Match the Following */}
-//                     {question.type === 'Match' && question.questionMatch?.pairs?.length > 0 && (
-//                         <div className="match-the-following">
-//                         {question.questionMatch.pairs.map((pair, pairIdx) => (
-//                             <div key={pairIdx} className="pair">
-//                             <div className="left-item">{pair.left}</div>
-//                             <select
-//                                 name={`section-${section.id}-question-${question.id || idx}-pair-${pairIdx}`}
-//                                 onChange={(e) =>
-//                                 handleAnswerChange(section.id, `${question.id || idx}-${pairIdx}`, e.target.value)
-//                                 }
-//                             >
-//                                 <option value="">Select an answer</option>
-//                                 {pair.rightOptions.map((option, optIdx) => (
-//                                 <option key={optIdx} value={option}>
-//                                     {option}
-//                                 </option>
-//                                 ))}
-//                             </select>
-//                             </div>
-//                         ))}
-//                         </div>
-//                     )}
-//                     </div>
-//                 ))
-//                 ) : (
-//                 <p>No questions available in this section.</p>
-//                 )}
-//             </div>
-//         ))}
-
-//         <button onClick={handleSubmit}>Submit Assessment</button>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default TakeAssessmentView
-
-
- // const handleSubmit = async (isTimeout = false) => {
-    //     try {
-    //         if (!userId) {
-    //             toast.error('User not authenticated');
-    //             navigate('/login');
-    //             return;
-    //         }
-
-    //         const timeSpent = assessment.assessment_timer * 60 - timeLeft;
-            
-    //         // Format the responses by section
-    //         const formattedResponses = assessment.sections.map(section => {
-    //             const sectionAnswers = [];
-                
-    //             section.questions.forEach(questionSet => {
-    //                 // Handle MCQ questions
-    //                 questionSet.questionMCQ?.forEach(question => {
-    //                     if (answers[question._id]) {
-    //                         sectionAnswers.push({
-    //                             questionId: question._id,
-    //                             questionType: 'MCQ',
-    //                             answer: answers[question._id],
-    //                             points: question.points || 0 // Include points
-    //                         });
-    //                     }
-    //                 });
-                    
-    //                 // Handle Text questions
-    //                 questionSet.questionText?.forEach(question => {
-    //                     if (answers[question._id]) {
-    //                         sectionAnswers.push({
-    //                             questionId: question._id,
-    //                             questionType: 'Text',
-    //                             answer: answers[question._id],
-    //                             points: question.points || 0
-    //                         });
-    //                     }
-    //                 });
-                    
-    //                 // Handle Match the Following questions
-    //                 questionSet.questionMTF?.forEach(question => {
-    //                     if (answers[question._id]) {
-    //                         sectionAnswers.push({
-    //                             questionId: question._id,
-    //                             questionType: 'MTF',
-    //                             answer: answers[question._id],
-    //                             points: question.points || 0
-    //                         });
-    //                     }
-    //                 });
-    //             });
-                
-    //             return {
-    //                 sectionId: section.id,
-    //                 title: section.title,
-    //                 answers: sectionAnswers
-    //             };
-    //         });
-    
-    //         const responseData = {
-    //             assessmentId: assessment._id,
-    //             userId: userId, // Use the actual userId from state
-    //             sections: formattedResponses,
-    //             timeSpent: timeSpent,
-    //             isTimeout: isTimeout
-    //         };
-    
-    //         // Submit the response to your backend
-    //         const response = await axios.post(`${base_url}/assessment_responses`, responseData);
-            
-    //         if (response.data.success) {
-    //             toast.success('Assessment submitted successfully.');
-    //             navigate('/takeAssessment');
-    //         } else {
-    //             toast.error(response.data.message || 'Error submitting assessment');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error submitting assessment:', error);
-    //         toast.error(error.response?.data?.message || 'Error submitting assessment');
-    //     }
-    // };
-
-
-        // For logged user 
-    // const fetchUserDetails = async () => {
-    //     try {
-    //         // Fetch user details from localStorage or your auth system
-    //         const userInfo = localStorage.getItem('userInfo');
-    //         if (userInfo) {
-    //             const user = JSON.parse(userInfo);
-    //             setUserId(user._id); // Assuming your user object has _id field
-    //         } else {
-    //             // Redirect to login if user is not authenticated
-    //             navigate('/');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching user details:', error);
-    //         navigate('/login');
-    //     }
-    // };
-
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -828,287 +585,397 @@ export default TakeAssessmentView;
 
 
 
-// import React, { useState, useEffect } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-// import Swal from 'sweetalert2';
-// import { toast, ToastContainer } from 'react-toastify';
-// import { DndProvider } from 'react-dnd';
-// import { HTML5Backend } from 'react-dnd-html5-backend';
-// import { base_url } from '../Utils/base_url';
 
-// const MatchQuestion = ({ question, onAnswerChange }) => {
-//   const [state, setState] = useState({
-//     questions: question.questions || Array(5).fill({ text: '' }),
-//     answers: question.answers || Array(5).fill({ text: '' }),
-//     matchedPairs: [],
-//   });
 
-//   // Update parent component when matches change
-//   useEffect(() => {
-//     onAnswerChange(question._id, state.matchedPairs);
-//   }, [state.matchedPairs]);
-
-//   const handleMatch = (questionIndex, answerIndex) => {
-//     setState(prev => {
-//       const newPairs = [...prev.matchedPairs];
-//       // Remove any existing pairs with this question or answer
-//       const filteredPairs = newPairs.filter(pair => 
-//         pair.questionIndex !== questionIndex && pair.answerIndex !== answerIndex
-//       );
-//       // Add the new pair
-//       filteredPairs.push({ questionIndex, answerIndex });
-//       return { ...prev, matchedPairs: filteredPairs };
-//     });
-//   };
-
-//   return (
-//     <div className="match-question p-4 border rounded">
-//       <h6 className="mb-4">{question.title}</h6>
-//       <div className="grid grid-cols-2 gap-4">
-//         <div className="questions">
-//           {state.questions.map((q, index) => (
-//             <div key={`q-${index}`} className="p-2 border rounded mb-2">
-//               {q.text}
-//             </div>
-//           ))}
-//         </div>
-//         <div className="answers">
-//           {state.answers.map((a, index) => (
-//             <div key={`a-${index}`} className="p-2 border rounded mb-2">
-//               {a.text}
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//       <p className="mt-2">Score: {question.points}</p>
-//     </div>
-//   );
-// };
 
 // const TakeAssessmentView = () => {
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const [assessment, setAssessment] = useState(null);
-//   const [answers, setAnswers] = useState({});
-//   const [matchingAnswers, setMatchingAnswers] = useState({});
-//   const [timeLeft, setTimeLeft] = useState(0);
-//   const [loading, setLoading] = useState(true);
+//     const { id } = useParams();
+//     const navigate = useNavigate();
+//     const location = useLocation();
+//     const [assessment, setAssessment] = useState(null);
+//     const [assessmentStatus, setAssessmentStatus] = useState('pending');
+//     const [answers, setAnswers] = useState({});
+//     const [timeLeft, setTimeLeft] = useState(0);
+//     const [loading, setLoading] = useState(true);
+//     const [matchingAnswers, setMatchingAnswers] = useState({});
+//     const [employeeData, setEmployeeData] = useState(null);
+//     const [isCompleted, setIsCompleted] = useState(false);
+//     const [attendanceId, setAttendanceId] = useState(null);
 
-//   const TEMP_USER_ID = "507f1f77bcf86cd799439011";
+//     // Parse query parameters to get attendanceId if present
+//     useEffect(() => {
+//         const params = new URLSearchParams(location.search);
+//         const attendanceIdParam = params.get('attendanceId');
+//         if (attendanceIdParam) {
+//             console.log('Attendance ID from URL:', attendanceIdParam);
+//             setAttendanceId(attendanceIdParam);
+//         }
+//     }, [location]);
 
-//   useEffect(() => {
-//     fetchAssessment();
-//   }, [id]);
+//     const checkAssessmentStatus = async (employeeId, assessmentId) => {
+//         try {
+//             console.log('Checking assessment status:', { employeeId, assessmentId });
+            
+//             // Make sure assessmentId is a valid string, not an object
+//             if (typeof assessmentId === 'object') {
+//                 console.error('Assessment ID is an object, not a string:', assessmentId);
+//                 toast.error("Invalid assessment reference");
+//                 return false;
+//             }
+            
+//             const response = await axios.get(`${base_url}/assessment_status/${assessmentId}/${employeeId}`);
+//             const status = response.data.status;
+//             setIsCompleted(status === 'completed');
+//             setAssessmentStatus(status);
+            
+//             if (status === 'completed') {
+//                 toast.info("You have already completed this assessment.");
+//                 navigate('/takeAssessment');
+//                 return true;
+//             }
+//             return false;
+//         } catch (error) {
+//             console.error("Error checking assessment status:", error);
+//             if (error.response?.status === 404) {
+//                 // Assessment not found or user hasn't taken it yet
+//                 return false;
+//             } else {
+//                 toast.error("Error checking assessment status");
+//                 return false;
+//             }
+//         }
+//     };
 
-//   useEffect(() => {
-//     if (assessment && assessment.assessment_timer) {
-//       const minutes = parseInt(assessment.assessment_timer);
-//       setTimeLeft(minutes * 60);
+//     useEffect(() => {
+//         const fetchEmployeeData = async () => {
+//             try {
+//                 const storedData = localStorage.getItem('employeeData');
+//                 if (!storedData) {
+//                     toast.error("Please login to take the assessment");
+//                     navigate('/');
+//                     return;
+//                 }
+
+//                 const employeeData = JSON.parse(storedData);
+//                 setEmployeeData({
+//                     employee_id: employeeData.employee_id,
+//                     employee_name: employeeData.employee_name,
+//                     job_title: employeeData.job_title || "Employee", // Ensure job_title exists
+//                     _id: employeeData._id
+//                 });
+
+//                 // Make sure we have a valid ID before checking status
+//                 if (id && typeof id === 'string') {
+//                     // Check initial status
+//                     await checkAssessmentStatus(employeeData.employee_id, id);
+//                 } else {
+//                     console.error("Invalid assessment ID:", id);
+//                     toast.error("Invalid assessment reference");
+//                     navigate('/takeAssessment');
+//                 }
+//             } catch (error) {
+//                 console.error("Error fetching employee data:", error);
+//                 toast.error("Error loading employee data");
+//                 navigate('/');
+//             }
+//         };
+
+//         fetchEmployeeData();
+//     }, [id, navigate]);
+
+//     useEffect(() => {
+//         if (id && typeof id === 'string') {
+//             fetchAssessment();
+//         }
+//     }, [id]);
+
+//     useEffect(() => {
+//         if (assessment && assessment.assessment_timer) {
+//             // Convert timer string (e.g., "30 minutes") to seconds
+//             const minutes = parseInt(assessment.assessment_timer);
+//             setTimeLeft(minutes * 60);
+//         }
+//     }, [assessment]);
+
+//     useEffect(() => {
+//         if (timeLeft > 0) {
+//             const timer = setInterval(() => {
+//                 setTimeLeft(prev => {
+//                     if (prev <= 1) {
+//                         clearInterval(timer);
+//                         handleSubmit(true);
+//                         return 0;
+//                     }
+//                     return prev - 1;
+//                 });
+//             }, 1000);
+//             return () => clearInterval(timer);
+//         }
+//     }, [timeLeft]);
+
+//     const fetchAssessment = async () => {
+//         try {
+//             console.log(`Fetching assessment with ID: ${id}`);
+//             const response = await axios.get(`${base_url}/assessments_fetch_byid/${id}`);
+//             if (response.data.assessment) {
+//                 console.log('Assessment data retrieved:', response.data.assessment.assessment_title);
+//                 setAssessment(response.data.assessment);
+//             } else {
+//                 console.error('No assessment found in response');
+//                 toast.error("Could not find the assessment");
+//                 navigate('/takeAssessment');
+//             }
+//         } catch (error) {
+//             console.error('Error fetching assessment:', error);
+//             toast.error("Error loading assessment");
+//             navigate('/takeAssessment');
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     const handleAnswerChange = (questionId, value, isMultiple = false) => {
+//         if (isMultiple) {
+//             const currentAnswers = answers[questionId] || [];
+//             const newAnswers = currentAnswers.includes(value)
+//                 ? currentAnswers.filter(v => v !== value)
+//                 : [...currentAnswers, value];
+//             setAnswers(prev => ({ ...prev, [questionId]: newAnswers }));
+//         } else {
+//             setAnswers(prev => ({ ...prev, [questionId]: value }));
+//         }
+//     };
+
+//     const handleSubmit = async (isTimeout = false) => {
+//         try {
+//             if (!employeeData) {
+//                 toast.error("Employee data not found. Please login again.");
+//                 navigate('/');
+//                 return;
+//             }
+
+//             const timeSpent = assessment.assessment_timer * 60 - timeLeft;
+            
+//             // Format the responses by section
+//             const formattedResponses = assessment.sections.map(section => {
+//                 const sectionAnswers = [];
+                
+//                 section.questions.forEach(questionSet => {
+//                     // Handle MCQ questions
+//                     questionSet.questionMCQ?.forEach(question => {
+//                         if (answers[question._id]) {
+//                             sectionAnswers.push({
+//                                 questionId: question._id,
+//                                 questionType: 'MCQ',
+//                                 answer: answers[question._id],
+//                                 points: question.points || 0
+//                             });
+//                         }
+//                     });
+                    
+//                     // Handle Text questions
+//                     questionSet.questionText?.forEach(question => {
+//                         if (answers[question._id]) {
+//                             sectionAnswers.push({
+//                                 questionId: question._id,
+//                                 questionType: 'Text',
+//                                 answer: answers[question._id],
+//                                 points: question.points || 0
+//                             });
+//                         }
+//                     });
+                    
+//                     // Handle Match the Following questions
+//                     questionSet.questionMTF?.forEach(question => {
+//                         if (matchingAnswers[question._id]) {
+//                             sectionAnswers.push({
+//                                 questionId: question._id,
+//                                 questionType: 'MTF',
+//                                 answer: matchingAnswers[question._id],
+//                                 points: question.points || 0
+//                             });
+//                         }
+//                     });
+//                 });
+                
+//                 return {
+//                     sectionId: section.id,
+//                     title: section.title,
+//                     answers: sectionAnswers
+//                 };
+//             });
+    
+//             const responseData = {
+//                 assessmentId: assessment._id, // Using assessment._id, not ID object
+//                 userId: employeeData.employee_id,
+//                 employee_id: employeeData.employee_id,
+//                 employee_name: employeeData.employee_name,
+//                 job_title: employeeData.job_title || "Employee",
+//                 sections: formattedResponses,
+//                 timeSpent: timeSpent,
+//                 isTimeout: isTimeout,
+//                 status: 'completed',
+//                 // Include attendanceId if it exists
+//                 ...(attendanceId && { attendanceId: attendanceId })
+//             };
+    
+//             console.log('Submitting assessment response:', {
+//                 assessmentId: assessment._id,
+//                 employeeId: employeeData.employee_id,
+//                 sectionCount: formattedResponses.length
+//             });
+            
+//             // Submit the response to your backend
+//             const response = await axios.post(`${base_url}/assessment_responses`, responseData);
+            
+//             if (response.data.success) {
+//                 // Verify the submission by checking status again
+//                 await checkAssessmentStatus(employeeData.employee_id, assessment._id);
+                
+//                 Swal.fire({
+//                     title: "Success",
+//                     text: "Assessment submitted successfully!",
+//                     icon: "success",
+//                     confirmButtonText: "OK"
+//                 }).then(() => {
+//                     navigate(`/employeeDashboard/${employeeData._id}`);
+//                 });
+//             } else {
+//                 toast.error(response.data.message || 'Error submitting assessment');
+//             }
+//         } catch (error) {
+//             console.error('Error submitting assessment:', error);
+//             toast.error(error.response?.data?.message || 'Error submitting assessment');
+//         }
+//     };
+
+//     const formatTime = (seconds) => {
+//         const minutes = Math.floor(seconds / 60);
+//         const remainingSeconds = seconds % 60;
+//         return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+//     };
+
+//     if (loading) {
+//         return <div className="loading-container">Loading assessment...</div>;
 //     }
-//   }, [assessment]);
 
-//   useEffect(() => {
-//     if (timeLeft > 0) {
-//       const timer = setInterval(() => {
-//         setTimeLeft(prev => {
-//           if (prev <= 1) {
-//             clearInterval(timer);
-//             handleSubmit(true);
-//             return 0;
-//           }
-//           return prev - 1;
-//         });
-//       }, 1000);
-//       return () => clearInterval(timer);
+//     if (isCompleted) {
+//         return (
+//             <div className="text-center p-8">
+//                 <h2 className="text-xl font-bold mb-4">Assessment Completed</h2>
+//                 <p>You have already completed this assessment.</p>
+//                 <button 
+//                     onClick={() => navigate('/takeAssessment')}
+//                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+//                 >
+//                     Back to Assessments
+//                 </button>
+//             </div>
+//         );
 //     }
-//   }, [timeLeft]);
 
-//   const fetchAssessment = async () => {
-//     try {
-//       const response = await axios.get(`${base_url}/assessments_fetch_byid/${id}`);
-//       setAssessment(response.data.assessment);
-//       setLoading(false);
-//     } catch (error) {
-//       console.error('Error fetching assessment:', error);
-//       setLoading(false);
+//     if (!assessment) {
+//         return (
+//             <div className="error-container">
+//                 <h2>Assessment not found</h2>
+//                 <button 
+//                     onClick={() => navigate('/takeAssessment')}
+//                     className="back-button"
+//                 >
+//                     Back to Assessments
+//                 </button>
+//             </div>
+//         );
 //     }
-//   };
 
-//   const handleAnswerChange = (questionId, value, isMultiple = false) => {
-//     if (isMultiple) {
-//       setAnswers(prev => ({
-//         ...prev,
-//         [questionId]: prev[questionId]?.includes(value)
-//           ? prev[questionId].filter(v => v !== value)
-//           : [...(prev[questionId] || []), value]
-//       }));
-//     } else {
-//       setAnswers(prev => ({ ...prev, [questionId]: value }));
-//     }
-//   };
-
-//   const handleMatchingAnswerChange = (questionId, matches) => {
-//     setMatchingAnswers(prev => ({ ...prev, [questionId]: matches }));
-//   };
-
-//   const handleSubmit = async (isTimeout = false) => {
-//     try {
-//       const timeSpent = assessment.assessment_timer * 60 - timeLeft;
-      
-//       const formattedResponses = assessment.sections.map(section => ({
-//         sectionId: section.id,
-//         title: section.title,
-//         answers: section.questions.flatMap(questionSet => [
-//           ...(questionSet.questionMCQ?.map(q => ({
-//             questionId: q._id,
-//             questionType: 'MCQ',
-//             answer: answers[q._id],
-//             points: q.points || 0
-//           })) || []),
-//           ...(questionSet.questionText?.map(q => ({
-//             questionId: q._id,
-//             questionType: 'Text',
-//             answer: answers[q._id],
-//             points: q.points || 0
-//           })) || []),
-//           ...(questionSet.questionMTF?.map(q => ({
-//             questionId: q._id,
-//             questionType: 'MTF',
-//             answer: matchingAnswers[q._id],
-//             points: q.points || 0
-//           })) || [])
-//         ])
-//       }));
-
-//       const responseData = {
-//         assessmentId: assessment._id,
-//         userId: TEMP_USER_ID,
-//         sections: formattedResponses,
-//         timeSpent,
-//         isTimeout
-//       };
-
-//       const response = await axios.post(`${base_url}/assessment_responses`, responseData);
-      
-//       if (response.data.success) {
-//         Swal.fire("Success", "Assessment submitted successfully!", "success");
-//         setTimeout(() => {
-//           navigate('/takeAssessment');
-//         }, 3000);
-//       } else {
-//         toast.error(response.data.message || 'Error submitting assessment');
-//       }
-//     } catch (error) {
-//       console.error('Error submitting assessment:', error);
-//       toast.error(error.response?.data?.message || 'Error submitting assessment');
-//     }
-//   };
-
-//   const formatTime = (seconds) => {
-//     const minutes = Math.floor(seconds / 60);
-//     const remainingSeconds = seconds % 60;
-//     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-//   };
-
-//   if (loading) {
-//     return <div>Loading assessment...</div>;
-//   }
-
-//   return (
-//     <div>
-//     <DndProvider backend={HTML5Backend}>
-//       <div className="assessment-container">
-//         <div className="assessment-header">
-//           <div>
-//             <h4>{assessment?.assessment_title}</h4>
-//             <p style={{marginBottom: "0px"}}>{assessment?.assessment_description}</p>
-//           </div>
-//           <div className="timer">
-//             Time Remaining: {formatTime(timeLeft)}
-//           </div>
-//         </div>
-
-//         {assessment?.sections.map((section, sectionIndex) => (
-//           <div key={sectionIndex} className="section">
-//             <h4>{section.title}</h4>
-//             <p>{section.subtitle}</p>
-
-//             {section.questions.map((questionSet, questionIndex) => (
-//               <div key={questionIndex}>
-//                 {/* MCQ Questions */}
-//                 {questionSet.questionMCQ?.map((question, index) => (
-//                   <div key={index} className="question">
-//                     <h6>{sectionIndex + 1}.{index + 1} {question.title}</h6>
-//                     <div className="options">
-//                       {question.options.map((option, optionIndex) => (
-//                         <div
-//                           key={optionIndex}
-//                           className="option"
-//                           onClick={() => handleAnswerChange(
-//                             question._id,
-//                             option.text,
-//                             question.multipleAnswers
-//                           )}
-//                         >
-//                           <input
-//                             type={question.multipleAnswers ? "checkbox" : "radio"}
-//                             checked={question.multipleAnswers
-//                               ? answers[question._id]?.includes(option.text)
-//                               : answers[question._id] === option.text
-//                             }
-//                             readOnly
-//                           />
-//                           <span style={{marginLeft: '10px'}}>{option.text}</span>
-//                         </div>
-//                       ))}
+//     return (
+//         <div>
+//             <div className="assessment-container">
+//                 <div className="assessment-header">
+//                     <div>
+//                         <h4>{assessment?.assessment_title}</h4>
+//                         <p style={{marginBottom:"0px"}}>{assessment?.assessment_description}</p>
 //                     </div>
-//                     <p>Score: {question.points}</p>
-//                   </div>
+//                     <div className="timer">
+//                         Time Remaining: {formatTime(timeLeft)}
+//                     </div>
+//                 </div>
+
+//                 {assessment?.sections.map((section, sectionIndex) => (
+//                     <div key={sectionIndex} className="section">
+//                         <h4>{section.title}</h4>
+//                         <p>{section.subtitle}</p>
+
+//                         {section.questions.map((questionSet, questionIndex) => (
+//                             <div key={questionIndex}>
+//                                 {/* MCQ Questions */}
+//                                 {questionSet.questionMCQ?.map((question, index) => (
+//                                     <div key={index} className="question">
+//                                         <h6>{sectionIndex + 1}.{index + 1} {question.title}</h6>
+//                                         <div className="options">
+//                                             {question.options.map((option, optionIndex) => (
+//                                                 <div
+//                                                     key={optionIndex}
+//                                                     className="option"
+//                                                     onClick={() => handleAnswerChange(
+//                                                         question._id,
+//                                                         option.text,
+//                                                         question.multipleAnswers
+//                                                     )}
+//                                                 >
+//                                                     <input
+//                                                         type={question.multipleAnswers ? "checkbox" : "radio"}
+//                                                         checked={question.multipleAnswers
+//                                                             ? answers[question._id]?.includes(option.text)
+//                                                             : answers[question._id] === option.text
+//                                                         }
+//                                                         readOnly
+//                                                     />
+//                                                     <span style={{marginLeft: '10px'}}>{option.text}</span>
+//                                                 </div>
+//                                             ))}
+//                                         </div>
+//                                         <p>Score. {question.points}</p>
+//                                     </div>
+//                                 ))}
+
+//                                 {/* Text Questions */}
+//                                 {questionSet.questionText?.map((question, index) => (
+//                                     <div key={index} className="question">
+//                                         <h6>{sectionIndex + 1}.{index + 1} {question.title}</h6>
+//                                         <textarea
+//                                             className="text-answer"
+//                                             rows={question.answerType === 'long' ? 6 : 2}
+//                                             value={answers[question._id] || ''}
+//                                             onChange={(e) => handleAnswerChange(question._id, e.target.value)}
+//                                             placeholder={`Enter your ${question.answerType} answer here...`}
+//                                         />
+//                                         <p> Score. {question.points}</p>
+//                                     </div>
+//                                 ))}
+
+//                                 {/* Match the Following Questions */}
+//                                 {questionSet.questionMTF?.map((question, index) => (
+//                                 <div key={index} className="question mtf-question">
+//                                     <h6>{sectionIndex + 1}.{index + 1} {question.title}</h6>
+//                                     {/* Replace with your MatchingQuestion component or implement inline */}
+//                                     <div className="mtf-container">
+//                                         <p>Matching question component would go here</p>
+//                                     </div>
+//                                     <p>Score. {question.points}</p>
+//                                 </div>
+//                                 ))}
+//                             </div>
+//                         ))}
+//                     </div>
 //                 ))}
 
-//                 {/* Text Questions */}
-//                 {questionSet.questionText?.map((question, index) => (
-//                   <div key={index} className="question">
-//                     <h6>{sectionIndex + 1}.{index + 1} {question.title}</h6>
-//                     <textarea
-//                       className="text-answer"
-//                       rows={question.answerType === 'long' ? 6 : 2}
-//                       value={answers[question._id] || ''}
-//                       onChange={(e) => handleAnswerChange(question._id, e.target.value)}
-//                       placeholder={`Enter your ${question.answerType} answer here...`}
-//                     />
-//                     <p>Score: {question.points}</p>
-//                   </div>
-//                 ))}
-
-//                 {/* Match Questions */}
-//                 {questionSet.questionMTF?.map((question, index) => (
-//                   <MatchQuestion
-//                     key={index}
-//                     question={{
-//                       _id: question._id,
-//                       title: `${sectionIndex + 1}.${index + 1} ${question.title}`,
-//                       questions: question.questions,
-//                       answers: question.answers,
-//                       points: question.points
-//                     }}
-//                     onAnswerChange={handleMatchingAnswerChange}
-//                   />
-//                 ))}
-//               </div>
-//             ))}
-//           </div>
-//         ))}
-
-//         <button className="submit-btn" onClick={() => handleSubmit(false)}>
-//           Submit Assessment
-//         </button>
-//       </div>
-//     </DndProvider>
-//      <ToastContainer/>
-//     </div>
-//   );
+//                 <button className="submit-btn" onClick={() => handleSubmit(false)}>
+//                     Submit Assessment
+//                 </button>
+//             </div>
+//         </div>
+//     );
 // };
 
 // export default TakeAssessmentView;

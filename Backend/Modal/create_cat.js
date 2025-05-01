@@ -251,7 +251,7 @@ const textQuestionSchema = new mongoose.Schema({
 const CATSchema = new mongoose.Schema({
   title: { type: String, required: true },
   code: { type: String, required: true },
-  validTill: { type: Date, required: true },
+  validTill: { type: Date, required: false },
   tag: { type: String, required: true },
   description: { type: String },
   timeLimit: { type: String },

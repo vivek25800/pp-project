@@ -131,6 +131,11 @@ import ConductTraining from './Components/CompetencyMapping/ConductTraining.js';
 import ConductOJT from './Components/CompetencyMapping/ConductOJT.js';
 import ConductOJA from './Components/CompetencyMapping/ConductOJA.js';
 import ConductINA from './Components/CompetencyMapping/ConductINA.js';
+import AddNomination from './Components/AddNomination.js';
+import TrainingDetails from './Components/Employee Dashboard/TrainingDetails.js';
+import AttendanceForm from './Components/AttendanceForm.js';
+import Home from './Components/Landing Page/Home.js';
+import Header from './Components/Landing Page/Header.js';
 
 
 
@@ -159,9 +164,11 @@ function App() {
         <Route path='/AllStudentList' element={<AllStudentsList/>}></Route>
         <Route path='/Studentdash' element={<StudentDashboard/>}></Route>
         <Route path='/createtraining' element={<TrainingCalendarDemo />}></Route>
+        <Route path='/add-nomination/:trainingId' element={<AddNomination/>}></Route>
         <Route path='/AddEvent' element={<TrainingCalenderForm/>}></Route>
         <Route path='/viewTraining' element={<ViewTrainingDetails/>}></Route>
         <Route path='/attendence' element={<Attendence/>}></Route>
+        <Route path='/attendance-form' element={<AttendanceForm/>}></Route>
         <Route path='/jobtraining' element={<OjtOjaIna/>}></Route>
         <Route path='/assessment' element={<Assessment/>}></Route>
         <Route path='/takeAssessment' element={<TakeAssessment/>}></Route>
@@ -169,7 +176,6 @@ function App() {
         <Route path='/createQuize' element={<CreateQuize/>}></Route>
         <Route path='/conductcat' element={<ConductCAT/>}></Route>
         <Route path='/createTrainingBudget' element={<CreateTrainingBudget/>}></Route>
-        <Route path='/landingpage' element={<LandingPage/>}></Route>
         <Route path='/createAssessment' element={<CreateAssessment/>}></Route>
         <Route path='/addsection' element={<AddDifferentSection/>}></Route>
         <Route path='/trainingrequestform' element={<TrainingRequestForm/>}></Route>
@@ -206,6 +212,11 @@ function App() {
         <Route path='/quize-results/:quizId' element={<SeeQuizResults/>}></Route>
         <Route path='/quiz-response/:responseId' element={<QuizResponseDetails/>}></Route>
 
+        {/* <Header/> */}
+
+        <Route path='/landingpage' element={<LandingPage/>}></Route>
+        <Route path='/landingPage-home' element={<Home/>}></Route>
+
         <Route path='/employeeDashboard/:id' element={<EmployeeDashboard/>}></Route>
         <Route path='/employeeTraining/:id' element={<TrainingList/>}></Route>
         <Route path='/employeeAssessments/:id' element={<AssessmentList/>}></Route>
@@ -218,6 +229,7 @@ function App() {
         <Route path='/employee-ojt/:employeeId/:ojtCode/:competencyItemId' element={<EmployeeOJTPlatform/>}></Route>
         <Route path='/employee-oja/:employeeId/:ojaCode/:competencyItemId' element={<EmployeeOJAPlatform/>}></Route>
         <Route path='/employee-ina/:employeeId/:inaCode/:competencyItemId' element={<EmployeeINAPlatform/>}></Route>
+        <Route path='/training-details/:trainingId' element={<TrainingDetails/>}></Route>
 
         <Route path='/maincourse/:id' element={<CourseList/>}></Route>
         <Route path='/maincourse' element={<CourseList/>}></Route>

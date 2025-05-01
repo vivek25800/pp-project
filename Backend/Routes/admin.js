@@ -27,16 +27,16 @@ const { uploadExcelData, getAllExcelData } = require('../Controllers/excel_file_
 const AssessmentResponse = '../Modal/assessment_response.js';
 const CAT = '../Modal/create_cat.js';
 // const Assessment = require('../Modal/create_assessment');
-const { assignCAT, getAssignedCATs } = require('../Controllers/assign_cat_form');
+const { assignCAT, getAssignedCATs, getAssignedCATsIgnoreValidity } = require('../Controllers/assign_cat_form');
 const { assignAssessment, getAssignedAssessments } = require('../Controllers/assign_assessment_form');
 const { assignQuiz, getAssignedQuizes } = require('../Controllers/assigned_quiz_form');
 const { getWaitlistedUsers, approveWaitlistedUser } = require('../Controllers/waitlistController');
 const { assignAssessmentAttendies, getEmployeeAssignments } = require('../Controllers/assign_assessment_attendies_form');
 const { saveProject, getProject, updateProjectMatrix, getEmployeeProjects, submitTenderResponse, submitContractResponse, getApprovalProjects } = require('../Controllers/hr_create_project_form');
-const { saveTrainer, getTrainer } = require('../Controllers/add_trainer_form');
+const { saveTrainer, getTrainer, updateTrainer } = require('../Controllers/add_trainer_form');
 // const {authMiddleware} = require('../MiddleWare/auth');
 const { nominationValidator } = require('../MiddleWare/validator');
-const nominationController = require('../Controllers/add_nomination_form');
+// const nominationController = require('../Controllers/add_nomination_form');
 // const { submitTenderResponse, submitContractResponse, getApprovalsByProject } = require('../Controllers/project_approvals_form');
 const EmployeeInfo = require('../Modal/employee_register');
 const { saveRecruitmentPlan, getAllRecruitmentPlans, getRecruitmentPlanById, updateRecruitmentPlan, deleteRecruitmentPlan, getRecruitmentPlanByProject } = require('../Controllers/recruitment_plan_form');
@@ -65,6 +65,8 @@ const { getEligibleEmployees, getTrainingRegistration, saveAttendance, getEmploy
 const { getOJTList, getOJTDetails, getAssignedEmployees, conductOJT, getTrainerConductHistory, getEmployeeOJTConducts, updateEmployeeOJTChecks } = require('../Controllers/conduct_ojt_CM_form');
 const { getAllOJAs, getOJAById, getEligibleEmployeesForOJA, submitOJARatings, getEmployeeOJAHistory, getOJAConductDetails, getAllEmployees } = require('../Controllers/conduct_oja_CM_form');
 const { getAllINAs, getINAById, getEligibleEmployeesForINA, submitINARatings, getEmployeeINAHistory, getINAConductDetails } = require('../Controllers/conduct_ina_CM_form');
+const { createNomination, getAllNominations, getNominationsByTraining, updateAttendance, deleteNomination, resendEmailNotification, getNominationsById, getTrainingDetails } = require('../Controllers/add_nomination_form');
+const { getAllTrainings, getEmployeesForTraining, getAssessmentsForTraining, getAttendanceById, createAttendance, assignAssessmentToEmployee, updateAttendanceStatus, getEmployeeAttendanceAssessments, getAttendanceAssessmentStatus, submitAttendanceAssessment } = require('../Controllers/attendance_training_form');
 
 const router = express.Router();
 
@@ -95,15 +97,38 @@ router.get('/get_events_by_date', getEventsByDate);
 
 router.post('/addtrainer', saveTrainer);
 router.get('/getTrainer', getTrainer);
+router.put('/update_trainers/:id', updateTrainer);
 
-router.post('/send-nomination-emails',
-  protect,
-  nominationValidator,
-  nominationController.sendNominationEmails
-);
-router.get('/confirm-training/:trainingId/:employeeId',
-  nominationController.confirmAttendance,
-)
+// router.post('/send-nomination-emails',
+//   protect,
+//   nominationValidator,
+//   nominationController.sendNominationEmails
+// );
+// router.get('/confirm-training/:trainingId/:employeeId',
+//   nominationController.confirmAttendance,
+// )
+
+// Create a new nomination
+router.post('/create_nomination', createNomination);
+
+// Get all nominations
+router.get('/nominations', getAllNominations);
+
+router.get('/employee-nominations/:employeeId', getNominationsById);
+
+// Get nominations by training ID
+router.get('/nominations/:trainingId', getNominationsByTraining);
+
+router.get('/training-details/:trainingId', getTrainingDetails);
+
+// Update attendance
+router.put('/update_attendance/:nominationId', updateAttendance);
+
+// Delete nomination
+router.delete('/delete_nomination/:nominationId', deleteNomination);
+
+// Resend email notifications
+router.post('/resend_notification', resendEmailNotification);
 
 router.post('/add_attendence_details', post_attendence_details);
 
@@ -188,7 +213,8 @@ router.put('/update-cat-response/:responseId', updateCATResponse);
 router.get('/cat_response/:catId/:employeeId', getCATResponseByEmployee);
 
 router.post('/assign_cat', assignCAT);
-router.get('/get_assigned_cats/:userId', getAssignedCATs);
+router.get('/get_assigned_cats/:employeeId', getAssignedCATs);
+router.get('/get_all_assigned_cats/:employeeId', getAssignedCATsIgnoreValidity);
 
 router.post('/assessment_responses', saveAssessmentResponse);
 router.get('/assessment-responses/:assessmentId', getAllSubmittedAssessments);
@@ -505,6 +531,26 @@ router.post('/ina-conduct/submit', submitINARatings);
 router.get('/ina-conduct-employee/:employeeId', getEmployeeINAHistory);
 // Get conducted OJA details
 router.get('/ina-conduct/:conductId', getINAConductDetails);
+
+
+// GET routes
+router.get('/trainings_for_attendance', getAllTrainings);
+router.get('/employees_for_attendance', getEmployeesForTraining);
+router.get('/assessments_for_attendance', getAssessmentsForTraining);
+router.get('/attendance/:id', getAttendanceById);
+
+// POST routes
+router.post('/create/attendance', createAttendance);
+router.post('/attendance/assign-assessment', assignAssessmentToEmployee);
+
+// PUT routes
+router.put('/:id/status', updateAttendanceStatus);
+// Get all attendance assessments for an employee
+router.get('/employee-attendance-assessments/:employeeId', getEmployeeAttendanceAssessments);
+// Check status of an assessment for a specific attendance and employee
+router.get('/attendance-assessment-status/:attendanceId/:employeeId', getAttendanceAssessmentStatus);
+// Submit assessment for an attendance record
+router.post('/submit-attendance-assessment', submitAttendanceAssessment);
 
 
 module.exports = router;

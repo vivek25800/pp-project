@@ -448,7 +448,7 @@ const Curriculum = () => {
                 {showCurriculum && (
                     <div className="curriculum-sidebar">
                         <div className="curriculum-header">
-                            <h3>📖 Curriculum</h3>
+                            <h3 style={{color:"#ffffff"}}>📖 Curriculum</h3>
                             <button onClick={() => setShowCurriculum(false)}>
                                 <i className="fa-solid fa-xmark"></i>
                             </button>
