@@ -300,7 +300,7 @@ function AssessmentList() {
     }
     
     // Navigate to take assessment with additional attendance context
-    navigate(`/takeAssessmentView/${assessmentId}?attendanceId=${attendanceId}`);
+    navigate(`/takeAssessmentPlatform/${assessmentId}?attendanceId=${attendanceId}`);
   };
 
   const fetchAssessmentStatus = async (employeeId, assessmentId) => {
@@ -420,12 +420,18 @@ function AssessmentList() {
   };
 
   // Calculate assessment status
-  const getAttendanceAssessmentStatus = (assessment) => {
-    if (!assessment || !assessment.assessment) return "pending";
-    
-    // Here you'd implement logic based on your data structure
-    // For example, checking if the employee has completed the assessment
-    return assessment.status || "pending";
+  const getAttendanceAssessmentStatus = () => {
+    switch (assessmentStatus) {
+      case 'loading':
+        return 'Loading...';
+      case 'completed':
+        return 'Completed';
+      case 'error':
+        return 'Error loading status';
+      case 'pending':
+      default:
+        return 'Pending';
+    }
   };
 
   return (
@@ -585,63 +591,63 @@ function AssessmentList() {
 
 
            {/* Training Attendance Assessment Section - Updated */}
-        <div className='training-attendance-assessments'>
-          <div className="" style={{}}>
-            <h5 style={{margin:"0px 24px", paddingBottom:"16px", borderBottom:"1px solid rgba(0,0,0,0.2)"}}>Training Attendance Assessments</h5>
-          </div>
-          
-          <div className="training-list-body">
-            {attendanceLoading ? (
-              <div style={{margin:"1rem 2rem"}}>
-                <h5>Loading attendance assessments...</h5>
-              </div>
-            ) : attendanceAssessments.length > 0 ? (
-              <div className="attendance-assessment-grid">
-                {attendanceAssessments.map((item, index) => (
-                  <div key={index} className="attendance-assessment-card">
-                    <div className="training-details">
-                      <h4>{item.training_name}</h4>
-                      <div className="training-info">
-                        <p><strong>Duration:</strong> {formatDate(item.date_from)} - {formatDate(item.date_to)}</p>
-                        <p><strong>Time:</strong> {item.time_from} - {item.time_to}</p>
-                        <p><strong>Venue:</strong> {item.venue}</p>
-                        {item.trainer_name && <p><strong>Trainer:</strong> {item.trainer_name}</p>}
-                      </div>
-                    </div>
-                    
-                    {item.assessment ? (
-                      <div className="assessment-details">
-                        <h5>{item.assessment.assessment_title}</h5>
-                        <div className="assessment-info">
-                          <p><strong>Status:</strong> <span className={`status-${getAttendanceAssessmentStatus(item)}`}>
-                            {getAttendanceAssessmentStatus(item)}
-                          </span></p>
-                          <p><strong>Attempts Allowed:</strong> {item.assessment.attempt_limitation}</p>
-                          <p><strong>Passing Marks:</strong> {item.assessment.passing_marks}%</p>
+          <div className='training-attendance-assessments'>
+            <div className="" style={{}}>
+              <h5 style={{margin:"0px 24px", paddingBottom:"16px", borderBottom:"1px solid rgba(0,0,0,0.2)"}}>Training Attendance Assessments</h5>
+            </div>
+            
+            <div className="training-list-body">
+              {attendanceLoading ? (
+                <div style={{margin:"1rem 2rem"}}>
+                  <h5>Loading attendance assessments...</h5>
+                </div>
+              ) : attendanceAssessments.length > 0 ? (
+                <div className="attendance-assessment-grid">
+                  {attendanceAssessments.map((item, index) => (
+                    <div key={index} className="attendance-assessment-card">
+                      <div className="training-details">
+                        <h4>{item.training_name}</h4>
+                        <div className="training-info">
+                          <p><strong>Duration:</strong> {formatDate(item.date_from)} - {formatDate(item.date_to)}</p>
+                          <p><strong>Time:</strong> {item.time_from} - {item.time_to}</p>
+                          <p><strong>Venue:</strong> {item.venue}</p>
+                          {item.trainer_name && <p><strong>Trainer:</strong> {item.trainer_name}</p>}
                         </div>
-                        <button 
-                          className="start-assessment-btn"
-                          onClick={() => handleStartAttendanceAssessment(item._id, item.assessment.assessment_id)}
-                          disabled={getAttendanceAssessmentStatus(item) === 'completed'}
-                        >
-                          {getAttendanceAssessmentStatus(item) === 'completed' ? 'Completed' : 'Start Assessment'}
-                        </button>
                       </div>
-                    ) : (
-                      <div className="no-assessment">
-                        <p>No assessment has been assigned for this training yet.</p>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div style={{margin:"1rem 2rem"}}>
-                <h5>No training attendance assessments available.</h5>
-              </div>
-            )}
+                      
+                      {item.assessment ? (
+                        <div className="assessment-details">
+                          <h5>{item.assessment.assessment_title}</h5>
+                          <div className="assessment-info">
+                            <p><strong>Status:</strong> <span className={`status-${getAttendanceAssessmentStatus(item)}`}>
+                              {getAttendanceAssessmentStatus(item)}
+                            </span></p>
+                            <p><strong>Attempts Allowed:</strong> {item.assessment.attempt_limitation}</p>
+                            <p><strong>Passing Marks:</strong> {item.assessment.passing_marks}%</p>
+                          </div>
+                          <button 
+                            className="start-assessment-btn"
+                            onClick={() => handleStartAttendanceAssessment(item._id, item.assessment.assessment_id)}
+                            disabled={getAttendanceAssessmentStatus(item) === 'completed'}
+                          >
+                            {getAttendanceAssessmentStatus(item) === 'completed' ? 'Completed' : 'Start Assessment'}
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="no-assessment">
+                          <p>No assessment has been assigned for this training yet.</p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{margin:"1rem 2rem"}}>
+                  <h5>No training attendance assessments available.</h5>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
         </div>
         
         <ToastContainer />

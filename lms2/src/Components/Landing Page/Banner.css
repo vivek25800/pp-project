@@ -1,0 +1,146 @@
+.home{
+    position: relative !important;
+}
+.banner-contenter{
+    position: absolute !important;
+    z-index: 1 !important;
+}
+.one{
+    background: black !important;
+    color: white !important;    
+}
+.animated-gradient-text {
+    background: linear-gradient(
+      to right,
+      hsl(184, 74%, 44%),
+      hsl(332, 87%, 70%),
+      hsl(184, 74%, 44%)
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+    animation: shine 3s linear infinite;
+  }
+  
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+  h1{
+    font-size: 45px !important;
+    font-weight: 620;
+  }
+  .headline-container {
+    overflow: hidden; /* Ensures that the animated text does not overflow */
+}
+
+h1 {
+    opacity: 0; /* Start hidden */
+    transform: translateY(20px); /* Start slightly below */
+    animation: fadeInUp 0.5s forwards; /* Animation applied */
+}
+/* styles.css */
+.headline-container h1 {
+  font-size: 2.5rem; /* Default font size */
+}
+
+@media (max-width: 1200px) {
+  .headline-container h1 {
+      font-size: 2rem; /* Font size for medium devices */
+  }
+}
+
+@media (max-width: 992px) {
+  .headline-container h1 {
+      font-size: 1.75rem; /* Font size for small devices */
+  }
+}
+
+@media (max-width: 768px) {
+  .headline-container h1 {
+      font-size: 1.5rem; /* Font size for extra small devices */
+  }
+}
+
+@media (max-width: 576px) {
+  .headline-container h1 {
+      font-size: 1.25rem; /* Font size for very small devices */
+  }
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1; /* Fully visible */
+        transform: translateY(0); /* Move to original position */
+    }
+}
+
+h1:nth-child(1) {
+    animation-delay: 0.5s; /* Delay for the first headline */
+}
+
+h1:nth-child(2) {
+    animation-delay: 1s; /* Delay for the second headline */
+}
+
+h1:nth-child(3) {
+    animation-delay: 1.5s; /* Delay for the third headline */
+}
+  .custom-button {
+    color: black;
+    background: linear-gradient(to left, transparent 50%, black 50%) !important;
+    background-size: 200% 100% !important;
+    background-position: right bottom !important;
+    transition: background-position 0.5s ease, color 0.3s ease;
+    border-color: black !important;
+  }
+  
+  .custom-button:hover {
+    background-position: left bottom !important;
+    color: white !important;
+    border-color: black !important;
+  }
+  
+  .custom-button:focus, .custom-button:active {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: black !important;
+  }
+  .btn-text{
+    font-size: 18px !important;
+    font-weight: 600 !important;
+  
+  }
+
+
+  /* styles.css */
+.responsive-heading {
+  font-size: 30px; /* Default font size */
+}
+
+@media (max-width: 1200px) {
+  .responsive-heading {
+      font-size: 25px; /* Font size for medium devices */
+  }
+}
+
+@media (max-width: 992px) {
+  .responsive-heading {
+      font-size: 20px; /* Font size for small devices */
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-heading {
+      font-size: 15px; /* Font size for extra small devices */
+  }
+}
+
+@media (max-width: 576px) {
+  .responsive-heading {
+      font-size: 10px; /* Font size for very small devices */
+  }
+}

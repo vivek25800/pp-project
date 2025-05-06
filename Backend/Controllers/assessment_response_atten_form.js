@@ -1,4 +1,4 @@
-const AssessmentResponse = require('../Modal/assessment_response');
+const AssessmentResponseAtten = require('../Modal/assessment_response_Atten');
 const register_modal = require('../Modal/employee_register');  // Adjust the path as needed
 const Assessment = require('../Modal/create_assessment');
 const mongoose = require('mongoose')
@@ -148,7 +148,7 @@ const mongoose = require('mongoose')
 //     }
 // };
 
-const saveAssessmentResponse = async (req, res) => {
+const saveAssessmentResponseAtten = async (req, res) => {
     try {
         const { assessmentId, employeeId, userId, employee_id, employee_name, sections, timeSpent, isTimeout } = req.body;
 
@@ -299,13 +299,14 @@ const saveAssessmentResponse = async (req, res) => {
         };
 
         // Create and save the response
-        const newResponse = new AssessmentResponse({
+        const newResponse = new AssessmentResponseAtten({
             assessmentId,
             employeeId: employee._id,
             userId: userId.toString(),
             employee_id,
             employee_name: employee.employee_name,
             job_title: employee.job_title,
+            status: 'completed',
             sections: processedSections,
             timeSpent,
             submittedAt: new Date(),
@@ -314,8 +315,7 @@ const saveAssessmentResponse = async (req, res) => {
             maxPossibleScore: overallMaxPossibleScore,
             scorePercentage: Math.round(overallScorePercentage * 100) / 100,
             typeScores,
-            scoreBreakdown,
-            status: 'completed',
+            scoreBreakdown
         });
 
         await newResponse.save();
@@ -323,8 +323,6 @@ const saveAssessmentResponse = async (req, res) => {
         res.status(201).json({ 
             success: true, 
             message: 'Assessment response saved successfully.',
-            newResponse,
-            status: 'completed',
             score: {
                 earned: overallEarnedScore,
                 maximum: overallMaxPossibleScore,
@@ -343,7 +341,7 @@ const saveAssessmentResponse = async (req, res) => {
 };
 
 // Get All Submitted Assessments
-const getAllSubmittedAssessments = async (req, res) => {
+const getAllSubmittedAssessmentsAtten = async (req, res) => {
     try {
         const { assessmentId } = req.params;
         const responses = await AssessmentResponse.find({ assessmentId })
@@ -356,9 +354,9 @@ const getAllSubmittedAssessments = async (req, res) => {
     }
 };
 
-const getAssessmentDetails = async (req, res) => {
+const getAssessmentDetailsAtten = async (req, res) => {
     try {
-        const response = await AssessmentResponse.findById(req.params.responseId);
+        const response = await AssessmentResponseAtten.findById(req.params.responseId);
         if (!response) {
             return res.status(404).json({ 
                 success: false, 
@@ -379,11 +377,11 @@ const getAssessmentDetails = async (req, res) => {
 
 
 // Get Assessment Response by ID
-const getAssessmentResponseById = async (req, res) => {
+const getAssessmentResponseByIdAtten = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const response = await AssessmentResponse.findById(id)
+        const response = await AssessmentResponseAtten.findById(id)
             .populate('assessmentId', 'title code')
             .populate('userId', 'name email');
 
@@ -398,12 +396,12 @@ const getAssessmentResponseById = async (req, res) => {
     }
 };
 
-const getAssessmentStatus = async (req, res) => {
+const getAssessmentStatusAtten = async (req, res) => {
     try {
         const { assessmentId, employeeId } = req.params;
 
-        const existingResponse = await AssessmentResponse.findOne({
-            assessmentId: assessmentId,
+        const existingResponse = await AssessmentResponseAtten.findOne({
+            assessmentId,
             employeeId: employeeId,
             status: 'completed'
         });
@@ -422,7 +420,7 @@ const getAssessmentStatus = async (req, res) => {
     }
 };
 
-// const getAssessmentStatus = async (req, res) => {
+// const getAssessmentStatusAtten = async (req, res) => {
 //     try {
 //       const { assessmentId, employeeId } = req.params;
       
@@ -437,15 +435,11 @@ const getAssessmentStatus = async (req, res) => {
 //       }
       
 //       // Find any completed responses for this employee and assessment
-//       const response = await AssessmentResponse.findOne({
-//         assessmentId: assessmentId,
-//         employee_id: employeeId,  // Using the string employee_id field
+//       const response = await AssessmentResponseAtten.findOne({
+//         assessmentId: assessmentId, // Using the validated ID
+//         employee_id: employeeId,
 //         status: 'completed'
 //       });
-      
-//       // Debug - log the found response or null
-//       console.log('Found response:', response ? 
-//         { id: response._id, status: response.status, employee: response.employee_id } : 'No response found');
       
 //       if (response) {
 //         return res.status(200).json({
@@ -453,17 +447,7 @@ const getAssessmentStatus = async (req, res) => {
 //           status: 'completed',
 //           score: response.scorePercentage
 //         });
-//       } 
-//       else {
-//         // Check if there are any responses for this assessment/employee combination
-//         const anyResponse = await AssessmentResponse.findOne({
-//           assessmentId: assessmentId,
-//           employee_id: employeeId
-//         });
-        
-//         console.log('Any response found:', anyResponse ? 
-//           { id: anyResponse._id, status: anyResponse.status } : 'No response at all');
-        
+//       } else {
 //         return res.status(200).json({
 //           success: true,
 //           status: 'pending'
@@ -480,9 +464,9 @@ const getAssessmentStatus = async (req, res) => {
 // };
 
 module.exports = {
-    saveAssessmentResponse,
-    getAllSubmittedAssessments,
-    getAssessmentDetails,
-    getAssessmentResponseById,
-    getAssessmentStatus,
+    saveAssessmentResponseAtten,
+    getAllSubmittedAssessmentsAtten,
+    getAssessmentDetailsAtten,
+    getAssessmentResponseByIdAtten,
+    getAssessmentStatusAtten,
 };

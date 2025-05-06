@@ -10,143 +10,203 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 // import DuplicateQuestion from './DuplicateAssessment'; // Adjust the path as needed
 
-//  MCQ Type Components
- const MCQQuestion = ({ questionData, onUpdate }) => {
-  const [state, setState] = useState({
-    question: '',
-    options: [{ text: '', correct: false }],
-    points: 1,
-    multipleAnswers: false,
-    correctAnswers: 1,
-    mainCategory: '',
-    subCategory: '',
-    ...questionData // Merge with provided data
-  });
 
-  useEffect(() => {
-    // When questionData changes, update the state
-    if (questionData) {
-      setState(prevState => ({
-        ...prevState,
-        ...questionData
-      }));
-    }
-  }, [questionData]);
-  
-  const updateState = (key, value) => {
-    setState(prevState => {
-      const newState = { ...prevState, [key]: value };
-      onUpdate(newState);
-      return newState;
+  //  MCQ Type Components
+  const MCQQuestion = ({ questionData, onUpdate }) => {
+    const [state, setState] = useState({
+      question: '',
+      options: [{ text: '', correct: false }],
+      points: 1,
+      multipleAnswers: false,
+      correctAnswers: 1,
+      mainCategory: '',
+      subCategory: '',
+      ...questionData // Merge with provided data
     });
-  };
   
-  const updateOption = (index, field, value) => {
-    const updatedOptions = [...state.options];
-    updatedOptions[index][field] = value;
-    updateState('options', updatedOptions);
-  };
-  
-  const toggleCorrect = (index) => {
-    const updatedOptions = [...state.options];
-    if (state.multipleAnswers) {
-      const currentCorrectCount = updatedOptions.filter(opt => opt.correct).length;
-      const willBeCorrect = !updatedOptions[index].correct;
-
-      if (willBeCorrect && currentCorrectCount >= state.correctAnswers) {
-        toast.error(`You can only select up to ${state.correctAnswers} correct answers.`);
-        return;
-      }
-
-      updatedOptions[index].correct = willBeCorrect;
-    } else {
-      // For single answer, uncheck all others and check the selected one
-      updatedOptions.forEach((opt, i) => {
-        opt.correct = i === index;
+      // Add validation state
+      const [validationErrors, setValidationErrors] = useState({
+        correctOption: false
       });
-    }
-    updateState('options', updatedOptions);
-  };
-
-  const handleMultipleAnswersToggle = (checked) => {
-    if (!checked) {
-      // When switching to single answer, ensure only one option is correct
-      const updatedOptions = state.options.map((opt, index) => ({
-        ...opt,
-        correct: index === 0 // Make the first option correct by default
-      }));
+  
+    useEffect(() => {
+      // When questionData changes, update the state
+      if (questionData) {
+        setState(prevState => ({
+          ...prevState,
+          ...questionData
+        }));
+      }
+    }, [questionData]);
+    
+    const updateState = (key, value) => {
+      setState(prevState => {
+        const newState = { ...prevState, [key]: value };
+        // Clear validation errors when user makes changes
+        setValidationErrors({
+          ...validationErrors,
+          correctOption: false
+        });
+        
+        onUpdate(newState);
+        return newState;
+      });
+    };
+    
+    const updateOption = (index, field, value) => {
+      const updatedOptions = [...state.options];
+      updatedOptions[index][field] = value;
+      updateState('options', updatedOptions);
+    };
+    
+    const toggleCorrect = (index) => {
+      const updatedOptions = [...state.options];
+      if (state.multipleAnswers) {
+        const currentCorrectCount = updatedOptions.filter(opt => opt.correct).length;
+        const willBeCorrect = !updatedOptions[index].correct;
+  
+        if (willBeCorrect && currentCorrectCount >= state.correctAnswers) {
+          toast.error(`You can only select up to ${state.correctAnswers} correct answers.`);
+          return;
+        }
+  
+        updatedOptions[index].correct = willBeCorrect;
+      } else {
+        // For single answer, uncheck all others and check the selected one
+        updatedOptions.forEach((opt, i) => {
+          opt.correct = i === index;
+        });
+      }
+      updateState('options', updatedOptions);
+  
+      // Clear validation error when user selects a correct option
+      setValidationErrors({
+        ...validationErrors,
+        correctOption: false
+      });
+    };
+  
+    const handleMultipleAnswersToggle = (checked) => {
+      if (!checked) {
+        // When switching to single answer, ensure only one option is correct
+        const updatedOptions = state.options.map((opt, index) => ({
+          ...opt,
+          correct: index === 0 // Make the first option correct by default
+        }));
+        setState(prevState => ({
+          ...prevState,
+          multipleAnswers: checked,
+          correctAnswers: 1,
+          options: updatedOptions
+        }));
+      } else {
+        // When switching to multiple answers
+        setState(prevState => ({
+          ...prevState,
+          multipleAnswers: checked,
+          correctAnswers: Math.min(2, prevState.options.length) // Default to 2 correct answers or less if fewer options
+        }));
+      }
+  
+      // Clear validation errors when changing multiple answers setting
+      setValidationErrors({
+        ...validationErrors,
+        correctOption: false
+      });
+    };
+    
+    const handleCorrectAnswersChange = (value) => {
+      const newCorrectAnswers = Math.min(Math.max(1, Number(value)), state.options.length);
+      
+      // Adjust currently selected correct answers if necessary
+      const updatedOptions = [...state.options];
+      const currentCorrectCount = updatedOptions.filter(opt => opt.correct).length;
+      
+      if (currentCorrectCount > newCorrectAnswers) {
+        // Uncheck excess correct answers from the end
+        let remaining = currentCorrectCount - newCorrectAnswers;
+        for (let i = updatedOptions.length - 1; i >= 0 && remaining > 0; i--) {
+          if (updatedOptions[i].correct) {
+            updatedOptions[i].correct = false;
+            remaining--;
+          }
+        }
+      }
+  
       setState(prevState => ({
         ...prevState,
-        multipleAnswers: checked,
-        correctAnswers: 1,
+        correctAnswers: newCorrectAnswers,
         options: updatedOptions
       }));
-    } else {
-      // When switching to multiple answers
-      setState(prevState => ({
-        ...prevState,
-        multipleAnswers: checked,
-        correctAnswers: Math.min(2, prevState.options.length) // Default to 2 correct answers or less if fewer options
-      }));
-    }
-  };
-  
-  const handleCorrectAnswersChange = (value) => {
-    const newCorrectAnswers = Math.min(Math.max(1, Number(value)), state.options.length);
+    };
     
-    // Adjust currently selected correct answers if necessary
-    const updatedOptions = [...state.options];
-    const currentCorrectCount = updatedOptions.filter(opt => opt.correct).length;
-    
-    if (currentCorrectCount > newCorrectAnswers) {
-      // Uncheck excess correct answers from the end
-      let remaining = currentCorrectCount - newCorrectAnswers;
-      for (let i = updatedOptions.length - 1; i >= 0 && remaining > 0; i--) {
-        if (updatedOptions[i].correct) {
-          updatedOptions[i].correct = false;
-          remaining--;
-        }
+    const addOption = () => {
+      if (state.options.length < 10) { // Limit maximum options
+        updateState('options', [...state.options, { text: '', correct: false }]);
+      } else {
+        toast.warning('Maximum 10 options allowed');
       }
-    }
-
-    setState(prevState => ({
-      ...prevState,
-      correctAnswers: newCorrectAnswers,
-      options: updatedOptions
-    }));
-  };
+    };
   
-  const addOption = () => {
-    if (state.options.length < 10) { // Limit maximum options
-      updateState('options', [...state.options, { text: '', correct: false }]);
-    } else {
-      toast.warning('Maximum 10 options allowed');
-    }
-  };
-
-  const removeOption = (index) => {
-    if (state.options.length > 1) { // Maintain at least one option
-      const updatedOptions = state.options.filter((_, i) => i !== index);
-      
-      // Ensure we still have correct answers selected
-      if (state.multipleAnswers) {
-        const correctCount = updatedOptions.filter(opt => opt.correct).length;
-        if (correctCount === 0 && updatedOptions.length > 0) {
+    const removeOption = (index) => {
+      if (state.options.length > 1) { // Maintain at least one option
+        const updatedOptions = state.options.filter((_, i) => i !== index);
+        
+        // Ensure we still have correct answers selected
+        if (state.multipleAnswers) {
+          const correctCount = updatedOptions.filter(opt => opt.correct).length;
+          if (correctCount === 0 && updatedOptions.length > 0) {
+            updatedOptions[0].correct = true;
+          }
+        } else if (!updatedOptions.some(opt => opt.correct) && updatedOptions.length > 0) {
           updatedOptions[0].correct = true;
         }
-      } else if (!updatedOptions.some(opt => opt.correct) && updatedOptions.length > 0) {
-        updatedOptions[0].correct = true;
-      }
-
-      updateState('options', updatedOptions);
-    } else {
-      toast.warning('At least one option is required');
-    }
-  };
   
-
-    return (
-        <div>
+        updateState('options', updatedOptions);
+      } else {
+        toast.warning('At least one option is required');
+      }
+    };
+  
+    // Add validation function to check correct options
+    const validateMCQ = () => {
+      const correctOptionsCount = state.options.filter(opt => opt.correct).length;
+      
+      if (correctOptionsCount === 0) {
+        setValidationErrors({
+          ...validationErrors,
+          correctOption: true
+        });
+        toast.error('Please select at least one correct option');
+        return false;
+      }
+      
+      if (state.multipleAnswers && correctOptionsCount !== state.correctAnswers) {
+        setValidationErrors({
+          ...validationErrors,
+          correctOption: true
+        });
+        toast.error(`Please select exactly ${state.correctAnswers} correct options`);
+        return false;
+      }
+      
+      return true;
+    };
+  
+      // Expose validation function to parent component
+      useEffect(() => {
+        if (onUpdate && typeof onUpdate === 'function') {
+          // Add the validation function to the state so parent can access it
+          onUpdate({
+            ...state,
+            validate: validateMCQ
+          });
+        }
+      }, [state, validationErrors]);
+    
+  
+      return (
+          <div>
 
 <style>
 {`
@@ -224,105 +284,106 @@ input {
 }
 `}
     </style>
-           
-      <div className="question-form">
-        <div className="question-input">
-          <input
-            type="text"
-            value={state.question}
-            onChange={(e) => updateState('question', e.target.value)}
-            placeholder="Enter your question"
-            style={{ width: '100%' }}
-          />
-        </div>
-        <div className="options-list">
-          {state.options.map((option, idx) => (
-            <div key={idx} className="option-item">
+             
+        <div className="question-form">
+          <div className="question-input">
+            <input
+              type="text"
+              value={state.question}
+              onChange={(e) => updateState('question', e.target.value)}
+              placeholder="Enter your question"
+              style={{ width: '100%' }}
+            />
+          </div>
+          <div className="options-list">
+            {state.options.map((option, idx) => (
+              <div key={idx} className="option-item">
+                  <input
+                  type="checkbox"
+                  checked={option.correct}
+                  onChange={() => toggleCorrect(idx)}
+                />
+  
                 <input
-                type="checkbox"
-                checked={option.correct}
-                onChange={() => toggleCorrect(idx)}
-              />
-
-              <input
-                type="text"
-                value={option.text}
-                onChange={(e) => updateOption(idx, 'text', e.target.value)}
-                placeholder={`Option ${idx + 1}`}
-              />
-              <button className="desc-del-btn" onClick={() => removeOption(idx)}>
-                <i className="fa-regular fa-trash-can"></i>
-              </button>
+                  type="text"
+                  value={option.text}
+                  onChange={(e) => updateOption(idx, 'text', e.target.value)}
+                  placeholder={`Option ${idx + 1}`}
+                />
+                <button className="desc-del-btn" onClick={() => removeOption(idx)}>
+                  <i className="fa-regular fa-trash-can"></i>
+                </button>
+              </div>
+            ))}
+            <button className="add-option-btn" onClick={addOption}>
+              <i className="fa-solid fa-plus"></i> Add Option
+            </button>
+          </div>
+          <div className="dropdowns">
+            <div>
+              <label>Main Category:</label>
+              <select
+                value={state.mainCategory}
+                onChange={(e) => updateState('mainCategory', e.target.value)}
+              >
+                <option value="">Select Main Category</option>
+                <option value="Category 1">Category 1</option>
+                <option value="Category 2">Category 2</option>
+              </select>
             </div>
-          ))}
-          <button className="add-option-btn" onClick={addOption}>
-            <i className="fa-solid fa-plus"></i> Add Option
-          </button>
-        </div>
-        <div className="dropdowns">
-          <div>
-            <label>Main Category:</label>
-            <select
-              value={state.mainCategory}
-              onChange={(e) => updateState('mainCategory', e.target.value)}
-            >
-              <option value="">Select Main Category</option>
-              <option value="Category 1">Category 1</option>
-              <option value="Category 2">Category 2</option>
-            </select>
+            <div>
+              <label>Sub Category:</label>
+              <select
+                value={state.subCategory}
+                onChange={(e) => updateState('subCategory', e.target.value)}
+              >
+                <option value="">Select Sub Category</option>
+                <option value="Sub Category 1">Sub Category 1</option>
+                <option value="Sub Category 2">Sub Category 2</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <label>Sub Category:</label>
-            <select
-              value={state.subCategory}
-              onChange={(e) => updateState('subCategory', e.target.value)}
-            >
-              <option value="">Select Sub Category</option>
-              <option value="Sub Category 1">Sub Category 1</option>
-              <option value="Sub Category 2">Sub Category 2</option>
-            </select>
-          </div>
-        </div>
-        <div className="footer-controls">
-          <div className="control-item">
-            <label>Points:</label>
-            <input
-              type="number"
-              value={state.points}
-              // onChange={(e) => updateState('points', Number(e.target.value))}
-              onChange={(e) => updateState('points', Math.max(1, Number(e.target.value)))}
+          <div className="footer-controls">
+            <div className="control-item">
+              <label>Points:</label>
+              <input
+                type="number"
+                value={state.points}
+                // onChange={(e) => updateState('points', Number(e.target.value))}
+                onChange={(e) => updateState('points', Math.max(1, Number(e.target.value)))}
+              />
+            </div>
+            <div className="control-item">
+              <label>Multiple Answers:</label>
+              <Form>
+              <Form.Check
+              type="switch"
+              id="multiple-answers-switch"
+              label="Multiple answers"
+              checked={state.multipleAnswers}
+              onChange={(e) => handleMultipleAnswersToggle(e.target.checked)}
             />
+            </Form>
+            </div>
+            {state.multipleAnswers && (
+            <div className="control-item">
+              <label className="mr-2">Correct Answers:</label>
+              <input
+                type="number"
+                value={state.correctAnswers}
+                min="1"
+                max={state.options.length}
+                onChange={(e) => handleCorrectAnswersChange(e.target.value)}
+                className="border rounded p-1 w-20"
+              />
+            </div>
+          )}
           </div>
-          <div className="control-item">
-            <label>Multiple Answers:</label>
-            <Form>
-            <Form.Check
-            type="switch"
-            id="multiple-answers-switch"
-            label="Multiple answers"
-            checked={state.multipleAnswers}
-            onChange={(e) => handleMultipleAnswersToggle(e.target.checked)}
-          />
-          </Form>
-          </div>
-          {state.multipleAnswers && (
-          <div className="control-item">
-            <label className="mr-2">Correct Answers:</label>
-            <input
-              type="number"
-              value={state.correctAnswers}
-              min="1"
-              max={state.options.length}
-              onChange={(e) => handleCorrectAnswersChange(e.target.value)}
-              className="border rounded p-1 w-20"
-            />
-          </div>
-        )}
         </div>
-      </div>
-      </div>
-    );
-  };
+        </div>
+      );
+    };
+
 
 // Text Type Components
 const TextQuestion = ({ questionData, onUpdate }) => {
@@ -698,328 +759,298 @@ const MatchQuestion = ({ questionData, onUpdate }) => {
   )
 };
 
-// const MCQQuestion = ({ questionData, onUpdate }) => {
-//   const [state, setState] = useState({
-//     question: '',
-//     options: [{ text: '', correct: false }],
-//     points: 1,
-//     multipleAnswers: false,
-//     correctAnswers: 1,
-//     mainCategory: '',
-//     subCategory: '',
-//     ...questionData // Merge with provided data
-//   });
+const DuplicateQuestion = ({ onUpdate, onClose }) => {
+  const [mainCategory, setMainCategory] = useState('');
+  const [subCategory, setSubCategory] = useState('');
+  const [questionType, setQuestionType] = useState('');
+  const [showQuestionTypes, setShowQuestionTypes] = useState(false);
+  const [questions, setQuestions] = useState([]);
+  const [selectedQuestions, setSelectedQuestions] = useState([]);
+  const [expandedQuestion, setExpandedQuestion] = useState(null);
 
-//   useEffect(() => {
-//     // When questionData changes, update the state
-//     if (questionData) {
-//       setState(prevState => ({
-//         ...prevState,
-//         ...questionData
-//       }));
-//     }
-//   }, [questionData]);
+  useEffect(() => {
+    if (mainCategory && subCategory && questionType) {
+      fetchQuestions();
+    }
+  }, [mainCategory, subCategory, questionType]);
 
-//   const updateState = (key, value) => {
-//     setState(prevState => {
-//       const newState = { ...prevState, [key]: value };
-//       onUpdate(newState);
-//       return newState;
-//     });
-//   };
+  const fetchQuestions = async () => {
+    try {
+      const response = await axios.get(
+        `${base_url}/questions?mainCategory=${mainCategory}&subCategory=${subCategory}&type=${questionType}`
+      );
+      setQuestions(response.data);
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+    }
+  };
 
-//   const updateOption = (index, field, value) => {
-//     const updatedOptions = [...state.options];
-//     updatedOptions[index][field] = value;
-//     updateState('options', updatedOptions);
-//   };
+  const handleQuestionTypeSelect = (type) => {
+    setQuestionType(type);
+    setQuestions([]);
+    setShowQuestionTypes(false);
+    setExpandedQuestion(null);
+  };
 
-//   const toggleCorrect = (index) => {
-//     const updatedOptions = [...state.options];
-//     if (state.multipleAnswers) {
-//       const currentCorrectCount = updatedOptions.filter(opt => opt.correct).length;
-//       const willBeCorrect = !updatedOptions[index].correct;
+  const handleAddQuestion = (question) => {
+    // First ensure we have the required data
+    if (!question || !question.type) {
+      console.error('Invalid question data');
+      return;
+    }
+  
+    // Create a properly structured data object based on question type
+    let formattedData = {
+      type: question.type,
+      data: {
+        // Ensure mainCategory and subCategory are defined
+        mainCategory: mainCategory || '',
+        subCategory: subCategory || ''
+      }
+    };
+  
+    // Add type-specific data
+    switch (question.type) {
+      case 'MCQ':
+        formattedData.data = {
+          ...formattedData.data,
+          question: question.title || '',
+          options: question.options || [],
+          points: question.points || 1,
+          multipleAnswers: question.multipleAnswers || false,
+          correctAnswers: question.correctAnswers || 1
+        };
+        break;
+      case 'Text':
+        formattedData.data = {
+          ...formattedData.data,
+          question: question.title || '',
+          options: question.options || [],
+          points: question.points || 1,
+          answerType: question.answerType || 'short'
+        };
+        break;
+      case 'Match':
+        formattedData.data = {
+          ...formattedData.data,
+          questions: question.questions || []
+        };
+        break;
+      default:
+        console.error('Unknown question type:', question.type);
+        return;
+    }
+  
+    onUpdate(formattedData);
+    setSelectedQuestions(prev => [...prev, question]);
+  };
 
-//       if (willBeCorrect && currentCorrectCount >= state.correctAnswers) {
-//         toast.error(`You can only select up to ${state.correctAnswers} correct answers.`);
-//         return;
-//       }
+  const toggleQuestionDetails = (questionId) => {
+    setExpandedQuestion(expandedQuestion === questionId ? null : questionId);
+  };
 
-//       updatedOptions[index].correct = willBeCorrect;
-//     } else {
-//       // For single answer, uncheck all others and check the selected one
-//       updatedOptions.forEach((opt, i) => {
-//         opt.correct = i === index;
-//       });
-//     }
-//     updateState('options', updatedOptions);
-//   };
+  const renderQuestionDetails = (question) => {
+    switch (question.type) {
+      case 'MCQ':
+        return (
+          <div className="question-details p-4">
+            <h6 className="font-medium">Question: {question.data.question}</h6>
+            <div className="options-list mt-2">
+              {question.data.options.map((opt, idx) => (
+                <div key={idx} className={`option-item ${opt.correct ? 'text-green-600' : ''}`}>
+                  <span className="mr-2">• </span>
+                  {opt.text}
+                  {opt.correct && ' (Correct)'}
+                </div>
+              ))}
+            </div>
+            <div className="mt-2">
+              <p>Points: {question.data.points}</p>
+              <p>Multiple Answers: {question.data.multipleAnswers ? 'Yes' : 'No'}</p>
+              {question.data.multipleAnswers && (
+                <p>Correct Answers Required: {question.data.correctAnswers}</p>
+              )}
+              <p>Main Category: {question.data.mainCategory}</p>
+              <p>Sub Category: {question.data.subCategory}</p>
+            </div>
+          </div>
+        );
 
-//   const handleMultipleAnswersToggle = (checked) => {
-//     if (!checked) {
-//       // When switching to single answer, ensure only one option is correct
-//       const updatedOptions = state.options.map((opt, index) => ({
-//         ...opt,
-//         correct: index === 0 // Make the first option correct by default
-//       }));
-//       setState(prevState => ({
-//         ...prevState,
-//         multipleAnswers: checked,
-//         correctAnswers: 1,
-//         options: updatedOptions
-//       }));
-//     } else {
-//       // When switching to multiple answers
-//       setState(prevState => ({
-//         ...prevState,
-//         multipleAnswers: checked,
-//         correctAnswers: Math.min(2, prevState.options.length) // Default to 2 correct answers or less if fewer options
-//       }));
-//     }
-//   };
+      case 'Text':
+        return (
+          <div className="question-details p-4">
+            <h6 className="font-medium">Question: {question.data.question}</h6>
+            <div className="mt-2">
+              <p>Answer Type: {question.data.answerType}</p>
+              <p>Points: {question.data.points}</p>
+              {question.data.options.length > 0 && (
+                <div>
+                  <p className="font-medium mt-2">Sample Answers:</p>
+                  <ul className="list-disc pl-4">
+                    {question.data.options.map((opt, idx) => (
+                      <li key={idx}>{opt}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <p>Main Category: {question.data.mainCategory}</p>
+              <p>Sub Category: {question.data.subCategory}</p>
+            </div>
+          </div>
+        );
 
-//   const handleCorrectAnswersChange = (value) => {
-//     const newCorrectAnswers = Math.min(Math.max(1, Number(value)), state.options.length);
-    
-//     // Adjust currently selected correct answers if necessary
-//     const updatedOptions = [...state.options];
-//     const currentCorrectCount = updatedOptions.filter(opt => opt.correct).length;
-    
-//     if (currentCorrectCount > newCorrectAnswers) {
-//       // Uncheck excess correct answers from the end
-//       let remaining = currentCorrectCount - newCorrectAnswers;
-//       for (let i = updatedOptions.length - 1; i >= 0 && remaining > 0; i--) {
-//         if (updatedOptions[i].correct) {
-//           updatedOptions[i].correct = false;
-//           remaining--;
-//         }
-//       }
-//     }
+      case 'Match':
+        return (
+          <div className="question-details p-4">
+            {question.data.questions.map((q, idx) => (
+              <div key={idx} className="match-item mb-2">
+                <p><strong>Question {idx + 1}:</strong> {q.question}</p>
+                <p><strong>Correct Answer:</strong> {q.correctAnswer}</p>
+                <p><strong>Points:</strong> {q.points}</p>
+              </div>
+            ))}
+            <div className="mt-2">
+              <p>Main Category: {question.data.mainCategory}</p>
+              <p>Sub Category: {question.data.subCategory}</p>
+            </div>
+          </div>
+        );
 
-//     setState(prevState => ({
-//       ...prevState,
-//       correctAnswers: newCorrectAnswers,
-//       options: updatedOptions
-//     }));
-//   };
+      default:
+        return null;
+    }
+  };
 
-//   const addOption = () => {
-//     if (state.options.length < 10) { // Limit maximum options
-//       updateState('options', [...state.options, { text: '', correct: false }]);
-//     } else {
-//       toast.warning('Maximum 10 options allowed');
-//     }
-//   };
+  return (
+    <div className="duplicate-question-container p-6">
+      <div className="mb-6">
+        <div className="flex gap-8 mb-6">
+          <div>
+            <label className="block text-sm font-medium mb-2">Main Category:</label>
+            <select 
+              className="p-2 border rounded w-48"
+              value={mainCategory}
+              onChange={(e) => setMainCategory(e.target.value)}
+            >
+              <option value="">Select Main Category</option>
+              <option value="Category 1">Category 1</option>
+              <option value="Category 2">Category 2</option>
+            </select>
+          </div>
 
-//   const removeOption = (index) => {
-//     if (state.options.length > 1) { // Maintain at least one option
-//       const updatedOptions = state.options.filter((_, i) => i !== index);
+          <div>
+            <label className="block text-sm font-medium mb-2">Sub Category:</label>
+            <select 
+              className="p-2 border rounded w-48"
+              value={subCategory}
+              onChange={(e) => setSubCategory(e.target.value)}
+            >
+              <option value="">Select Sub Category</option>
+              <option value="Sub Category 1">Sub Category 1</option>
+              <option value="Sub Category 2">Sub Category 2</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <h6 className="font-medium mb-2">Select question type</h6>
+          <div className="relative w-48">
+            <button
+              onClick={() => setShowQuestionTypes(!showQuestionTypes)}
+              className="w-full p-2 border rounded bg-white text-left"
+            >
+              {questionType || 'Select Type'}
+            </button>
+            {showQuestionTypes && (
+              <div className="absolute top-full left-0 w-full bg-white border rounded mt-1 z-10">
+                <div 
+                  onClick={() => handleQuestionTypeSelect('MCQ')}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  Multiple Choice Questions
+                </div>
+                <div 
+                  onClick={() => handleQuestionTypeSelect('Text')}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  Text type questions
+                </div>
+                <div 
+                  onClick={() => handleQuestionTypeSelect('Match')}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  Match the following
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {questions.length > 0 && (
+          <div className="mt-6">
+            <h6 className="font-medium mb-4">Available Questions</h6>
+            <div className="border rounded">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="p-2 text-left">Sr. No.</th>
+                    <th className="p-2 text-left">Question Name</th>
+                    <th className="p-2 text-left">Details</th>
+                    <th className="p-2 text-left">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {questions.map((question, index) => (
+                    <>
+                      <tr key={`row-${question._id}`} className="border-t">
+                        <td className="p-2">{index + 1}</td>
+                        <td className="p-2">{question.title}</td>
+                        <td className="p-2">
+                          <button
+                            onClick={() => toggleQuestionDetails(question._id)}
+                            className="text-purple-700 hover:text-purple-900"
+                          >
+                            {expandedQuestion === question._id ? 'Hide Details' : 'Show Details'}
+                          </button> 
+                        </td>
+                        <td className="p-2">
+                          <button
+                            onClick={() => handleAddQuestion(question)}
+                            disabled={selectedQuestions.some(q => q._id === question._id)}
+                            className="bg-purple-700 text-white px-3 py-1 rounded flex items-center gap-2 disabled:opacity-50"
+                          >
+                            <i className="fa-solid fa-plus"></i>
+                            Add
+                          </button>
+                        </td>
+                      </tr>
+                      {expandedQuestion === question._id && (
+                        <tr key={`details-${question._id}`}>
+                          <td colSpan="4">
+                            {renderQuestionDetails(question)}
+                          </td>
+                        </tr>
+                      )}
+                    </>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
       
-//       // Ensure we still have correct answers selected
-//       if (state.multipleAnswers) {
-//         const correctCount = updatedOptions.filter(opt => opt.correct).length;
-//         if (correctCount === 0 && updatedOptions.length > 0) {
-//           updatedOptions[0].correct = true;
-//         }
-//       } else if (!updatedOptions.some(opt => opt.correct) && updatedOptions.length > 0) {
-//         updatedOptions[0].correct = true;
-//       }
-
-//       updateState('options', updatedOptions);
-//     } else {
-//       toast.warning('At least one option is required');
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <style>
-// {`
-// .question-form {
-//  display: flex;
-//  flex-direction: column;
-//  gap: 16px;
-//  max-width: 100%;
-//  margin: 1rem auto;
-//  // padding: 2rem;
-//  // border: 2px solid rgba(0,0,0,0.2);
-//  border-radius: 8px;
-//  background-color: #ffffff;
-// }
-// .footer-controls{
-//  display: flex;
-//  justify-content: space-between;
-//  padding-top: 1rem;
-//  border-top: 1px solid rgba(0,0,0,0.1);
-// }
-// .options-list {
-//  display: flex;
-//  flex-direction: column;
-//  gap: 8px;
-// }
-// .option-item {
-//  display: flex;
-//  align-items: center;
-//  gap: 8px;
-// }
-// .upload-icon {
-//  margin-left: 8px;
-//  cursor: pointer;
-//  color: #007bff;
-// }
-// .desc-del-btn {
-//  background-color: transparent;
-//  color: red;
-//  box-shadow: none;
-//  width: fit-content;
-//  border-radius: 50%;
-// }
-// .desc-del-btn:hover {
-//  background-color: red;
-//  color: #ffffff;
-// }
-// .add-option-btn {
-//  background-color: #ffffff;
-//  color: #7A1CAC;
-//  border: 1px solid #7A1CAC;
-//  width: 18%;
-//  font-weight: 500;
-// }
-// .add-option-btn:hover {
-//  background-color: #7A1CAC;
-//  color: #ffffff;
-// }
-// .btn-div button {
-//  background-color: #7A1CAC;
-// }
-// .btn-div button:hover {
-//  background-color: #2E073F;
-// }
-// input {
-//  height: 2.5rem;
-//  padding-left: 10px;
-// }
-// .dropdowns {
-//  display: flex;
-//  gap: 16px;
-//  margin-top: 16px;
-// }  
-// .dropdowns select {
-//  border-color: rgba(0,0,0,0.5);
-// }
-// `}
-//     </style>
-//     <div className="question-form">
-//       <div className="question-input">
-//         <input
-//           type="text"
-//           value={state.question}
-//           onChange={(e) => updateState('question', e.target.value)}
-//           placeholder="Enter your question"
-//           className="w-full border rounded p-2"
-//         />
-//       </div>
-
-//       <div className="options-list mt-4">
-//         {state.options.map((option, idx) => (
-//           <div key={idx} className="option-item mb-2 flex items-center gap-2">
-//             <input
-//               type="checkbox"
-//               checked={option.correct}
-//               onChange={() => toggleCorrect(idx)}
-//               className="form-checkbox"
-//             />
-//             <input
-//               type="text"
-//               value={option.text}
-//               onChange={(e) => updateOption(idx, 'text', e.target.value)}
-//               placeholder={`Option ${idx + 1}`}
-//               className="flex-1 border rounded p-2"
-//             />
-//             <button 
-//               onClick={() => removeOption(idx)}
-//               className="text-red-500 hover:text-red-700"
-//             >
-//               <i className="fa-regular fa-trash-can"></i>
-//             </button>
-//           </div>
-//         ))}
-//         <button 
-//           onClick={addOption}
-//           className="add-option-btn mt-2"
-//         >
-//           <i className="fa-solid fa-plus"></i> Add Option
-//         </button>
-//       </div>
-
-//       <div className="footer-controls mt-4">
-//         <div className="control-item">
-//           <label className="mr-2">Points:</label>
-//           <input
-//             type="number"
-//             min="1"
-//             value={state.points}
-//             onChange={(e) => updateState('points', Math.max(1, Number(e.target.value)))}
-//             className="border rounded p-1 w-20"
-//           />
-//         </div>
-
-//         <div className="control-item">
-//           <Form.Check
-//             type="switch"
-//             id="multiple-answers-switch"
-//             label="Multiple answers"
-//             checked={state.multipleAnswers}
-//             onChange={(e) => handleMultipleAnswersToggle(e.target.checked)}
-//           />
-//         </div>
-
-//         {state.multipleAnswers && (
-//           <div className="control-item">
-//             <label className="mr-2">Correct Answers:</label>
-//             <input
-//               type="number"
-//               value={state.correctAnswers}
-//               min="1"
-//               max={state.options.length}
-//               onChange={(e) => handleCorrectAnswersChange(e.target.value)}
-//               className="border rounded p-1 w-20"
-//             />
-//           </div>
-//         )}
-//       </div>
-
-//       <div className="dropdowns">
-//         <div>
-//           <label className="block mb-1">Main Category:</label>
-//           <select
-//             value={state.mainCategory}
-//             onChange={(e) => updateState('mainCategory', e.target.value)}
-//             className="border rounded p-2"
-//           >
-//             <option value="">Select Main Category</option>
-//             <option value="Category 1">Category 1</option>
-//             <option value="Category 2">Category 2</option>
-//           </select>
-//         </div>
-//         <div>
-//           <label className="block mb-1">Sub Category:</label>
-//           <select
-//             value={state.subCategory}
-//             onChange={(e) => updateState('subCategory', e.target.value)}
-//             className="border rounded p-2"
-//           >
-//             <option value="">Select Sub Category</option>
-//             <option value="Sub Category 1">Sub Category 1</option>
-//             <option value="Sub Category 2">Sub Category 2</option>
-//           </select>
-//         </div>
-//       </div>
-
-//     </div>
-//     </div>
-//   );
-// };
+      <div className="flex justify-end">
+        <button
+          onClick={onClose}
+          className="bg-gray-500 text-white px-4 py-2 rounded"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
 
 function DataAssessment() {
 
@@ -1082,6 +1113,52 @@ function DataAssessment() {
   };
 
   // Question handlers
+  // const addQuestion = (sectionId, type) => {
+  //   if (type === "Duplicate") {
+  //     setSections((prevSections) =>
+  //       prevSections.map((section) => {
+  //         if (section.id === sectionId) {
+  //           return {
+  //             ...section,
+  //             showDuplicateQuestion: true,
+  //             showQuestionTypeButtons: false,
+  //           };
+  //         }
+  //         return section;
+  //       })
+  //     );
+  //   } else {
+  //     // Your existing code for other question types
+  //     setSections((prevSections) =>
+  //       prevSections.map((section) => {
+  //         if (section.id === sectionId) {
+  //           if (type === "Duplicate") {
+  //             return {
+  //               ...section,
+  //               showDuplicateQuestion: true,
+  //               showQuestionTypeButtons: false,
+  //             };
+  //           } else {
+  //             const newQuestion = {
+  //               id: Date.now(),
+  //               type,
+  //               title: `Question ${getNextQuestionNumber()}`,
+  //               data: getInitialQuestionData(type),
+  //             };
+  //             return {
+  //               ...section,
+  //               questions: [...section.questions, newQuestion],
+  //               showQuestionTypeButtons: false,
+  //             };
+  //           }
+  //         }
+  //         return section;
+  //       })
+  //     );
+  //   }   
+  // };
+
+  // Updated addQuestion function with validation
   const addQuestion = (sectionId, type) => {
     if (type === "Duplicate") {
       setSections((prevSections) =>
@@ -1097,375 +1174,44 @@ function DataAssessment() {
         })
       );
     } else {
+      // For MCQ type, check if there's already a question in this section
+      const currentSection = sections.find(section => section.id === sectionId);
+      
+      // If we have a previous MCQ question, validate it before adding a new one
+      if (currentSection && currentSection.questions.length > 0) {
+        const lastQuestion = currentSection.questions[currentSection.questions.length - 1];
+        
+        // Only validate MCQ questions
+        if (lastQuestion.type === 'MCQ' && lastQuestion.data.validate) {
+          // Call the validation function that was attached to the question data
+          const isValid = lastQuestion.data.validate();
+          if (!isValid) {
+            // Don't add a new question if validation fails
+            return;
+          }
+        }
+      }
+      
       // Your existing code for other question types
       setSections((prevSections) =>
         prevSections.map((section) => {
           if (section.id === sectionId) {
-            if (type === "Duplicate") {
-              return {
-                ...section,
-                showDuplicateQuestion: true,
-                showQuestionTypeButtons: false,
-              };
-            } else {
-              const newQuestion = {
-                id: Date.now(),
-                type,
-                title: `Question ${getNextQuestionNumber()}`,
-                data: getInitialQuestionData(type),
-              };
-              return {
-                ...section,
-                questions: [...section.questions, newQuestion],
-                showQuestionTypeButtons: false,
-              };
-            }
+            const newQuestion = {
+              id: Date.now(),
+              type,
+              title: `Question ${getNextQuestionNumber()}`,
+              data: getInitialQuestionData(type),
+            };
+            return {
+              ...section,
+              questions: [...section.questions, newQuestion],
+              showQuestionTypeButtons: false,
+            };
           }
           return section;
         })
       );
-    }   
-  };
-
-
-  const handleDuplicateQuestionAdd = (sectionId, questionData) => {
-    setSections((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === sectionId) {
-          const newQuestion = {
-            id: Date.now(),
-            type: questionData.type,
-            title: `Question ${getNextQuestionNumber()}`,
-            data: {
-              ...questionData.data,
-              // Ensure all required fields are present based on question type
-              ...(questionData.type === 'MCQ' && {
-                question: questionData.data.question || '',
-                options: questionData.data.options || [],
-                points: questionData.data.points || 1,
-                multipleAnswers: questionData.data.multipleAnswers || false,
-                correctAnswers: questionData.data.correctAnswers || 1,
-                mainCategory: questionData.data.mainCategory || '',
-                subCategory: questionData.data.subCategory || '',
-              }),
-              ...(questionData.type === 'Text' && {
-                question: questionData.data.question || '',
-                options: questionData.data.options || [],
-                points: questionData.data.points || 1,
-                answerType: questionData.data.answerType || 'short',
-                mainCategory: questionData.data.mainCategory || '',
-                subCategory: questionData.data.subCategory || '',
-              }),
-              ...(questionData.type === 'Match' && {
-                questions: questionData.data.questions || [],
-                mainCategory: questionData.data.mainCategory || '',
-                subCategory: questionData.data.subCategory || '',
-              }),
-            },
-          };
-          return {
-            ...section,
-            questions: [...section.questions, newQuestion],
-            showDuplicateQuestion: false,
-          };
-        }
-        return section;
-      })
-    );
-  };
-
-
-  const DuplicateQuestion = ({ onUpdate, onClose }) => {
-    const [mainCategory, setMainCategory] = useState('');
-    const [subCategory, setSubCategory] = useState('');
-    const [questionType, setQuestionType] = useState('');
-    const [showQuestionTypes, setShowQuestionTypes] = useState(false);
-    const [questions, setQuestions] = useState([]);
-    const [selectedQuestions, setSelectedQuestions] = useState([]);
-    const [expandedQuestion, setExpandedQuestion] = useState(null);
-  
-    useEffect(() => {
-      if (mainCategory && subCategory && questionType) {
-        fetchQuestions();
-      }
-    }, [mainCategory, subCategory, questionType]);
-  
-    const fetchQuestions = async () => {
-      try {
-        const response = await axios.get(
-          `${base_url}/questions?mainCategory=${mainCategory}&subCategory=${subCategory}&type=${questionType}`
-        );
-        setQuestions(response.data);
-      } catch (error) {
-        console.error('Error fetching questions:', error);
-      }
-    };
-  
-    const handleQuestionTypeSelect = (type) => {
-      setQuestionType(type);
-      setQuestions([]);
-      setShowQuestionTypes(false);
-      setExpandedQuestion(null);
-    };
-  
-    const handleAddQuestion = (question) => {
-      // First ensure we have the required data
-      if (!question || !question.type) {
-        console.error('Invalid question data');
-        return;
-      }
-    
-      // Create a properly structured data object based on question type
-      let formattedData = {
-        type: question.type,
-        data: {
-          // Ensure mainCategory and subCategory are defined
-          mainCategory: mainCategory || '',
-          subCategory: subCategory || ''
-        }
-      };
-    
-      // Add type-specific data
-      switch (question.type) {
-        case 'MCQ':
-          formattedData.data = {
-            ...formattedData.data,
-            question: question.title || '',
-            options: question.options || [],
-            points: question.points || 1,
-            multipleAnswers: question.multipleAnswers || false,
-            correctAnswers: question.correctAnswers || 1
-          };
-          break;
-        case 'Text':
-          formattedData.data = {
-            ...formattedData.data,
-            question: question.title || '',
-            options: question.options || [],
-            points: question.points || 1,
-            answerType: question.answerType || 'short'
-          };
-          break;
-        case 'Match':
-          formattedData.data = {
-            ...formattedData.data,
-            questions: question.questions || []
-          };
-          break;
-        default:
-          console.error('Unknown question type:', question.type);
-          return;
-      }
-    
-      onUpdate(formattedData);
-      setSelectedQuestions(prev => [...prev, question]);
-    };
-  
-    const toggleQuestionDetails = (questionId) => {
-      setExpandedQuestion(expandedQuestion === questionId ? null : questionId);
-    };
-  
-    const renderQuestionDetails = (question) => {
-      switch (question.type) {
-        case 'MCQ':
-          return (
-            <div className="question-details p-4">
-              <h6 className="font-medium">Question: {question.data.question}</h6>
-              <div className="options-list mt-2">
-                {question.data.options.map((opt, idx) => (
-                  <div key={idx} className={`option-item ${opt.correct ? 'text-green-600' : ''}`}>
-                    <span className="mr-2">• </span>
-                    {opt.text}
-                    {opt.correct && ' (Correct)'}
-                  </div>
-                ))}
-              </div>
-              <div className="mt-2">
-                <p>Points: {question.data.points}</p>
-                <p>Multiple Answers: {question.data.multipleAnswers ? 'Yes' : 'No'}</p>
-                {question.data.multipleAnswers && (
-                  <p>Correct Answers Required: {question.data.correctAnswers}</p>
-                )}
-                <p>Main Category: {question.data.mainCategory}</p>
-                <p>Sub Category: {question.data.subCategory}</p>
-              </div>
-            </div>
-          );
-  
-        case 'Text':
-          return (
-            <div className="question-details p-4">
-              <h6 className="font-medium">Question: {question.data.question}</h6>
-              <div className="mt-2">
-                <p>Answer Type: {question.data.answerType}</p>
-                <p>Points: {question.data.points}</p>
-                {question.data.options.length > 0 && (
-                  <div>
-                    <p className="font-medium mt-2">Sample Answers:</p>
-                    <ul className="list-disc pl-4">
-                      {question.data.options.map((opt, idx) => (
-                        <li key={idx}>{opt}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                <p>Main Category: {question.data.mainCategory}</p>
-                <p>Sub Category: {question.data.subCategory}</p>
-              </div>
-            </div>
-          );
-  
-        case 'Match':
-          return (
-            <div className="question-details p-4">
-              {question.data.questions.map((q, idx) => (
-                <div key={idx} className="match-item mb-2">
-                  <p><strong>Question {idx + 1}:</strong> {q.question}</p>
-                  <p><strong>Correct Answer:</strong> {q.correctAnswer}</p>
-                  <p><strong>Points:</strong> {q.points}</p>
-                </div>
-              ))}
-              <div className="mt-2">
-                <p>Main Category: {question.data.mainCategory}</p>
-                <p>Sub Category: {question.data.subCategory}</p>
-              </div>
-            </div>
-          );
-  
-        default:
-          return null;
-      }
-    };
-  
-    return (
-      <div className="duplicate-question-container p-6">
-        <div className="mb-6">
-          <div className="flex gap-8 mb-6">
-            <div>
-              <label className="block text-sm font-medium mb-2">Main Category:</label>
-              <select 
-                className="p-2 border rounded w-48"
-                value={mainCategory}
-                onChange={(e) => setMainCategory(e.target.value)}
-              >
-                <option value="">Select Main Category</option>
-                <option value="Category 1">Category 1</option>
-                <option value="Category 2">Category 2</option>
-              </select>
-            </div>
-  
-            <div>
-              <label className="block text-sm font-medium mb-2">Sub Category:</label>
-              <select 
-                className="p-2 border rounded w-48"
-                value={subCategory}
-                onChange={(e) => setSubCategory(e.target.value)}
-              >
-                <option value="">Select Sub Category</option>
-                <option value="Sub Category 1">Sub Category 1</option>
-                <option value="Sub Category 2">Sub Category 2</option>
-              </select>
-            </div>
-          </div>
-  
-          <div className="mb-6">
-            <h6 className="font-medium mb-2">Select question type</h6>
-            <div className="relative w-48">
-              <button
-                onClick={() => setShowQuestionTypes(!showQuestionTypes)}
-                className="w-full p-2 border rounded bg-white text-left"
-              >
-                {questionType || 'Select Type'}
-              </button>
-              {showQuestionTypes && (
-                <div className="absolute top-full left-0 w-full bg-white border rounded mt-1 z-10">
-                  <div 
-                    onClick={() => handleQuestionTypeSelect('MCQ')}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    Multiple Choice Questions
-                  </div>
-                  <div 
-                    onClick={() => handleQuestionTypeSelect('Text')}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    Text type questions
-                  </div>
-                  <div 
-                    onClick={() => handleQuestionTypeSelect('Match')}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    Match the following
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-  
-          {questions.length > 0 && (
-            <div className="mt-6">
-              <h6 className="font-medium mb-4">Available Questions</h6>
-              <div className="border rounded">
-                <table className="w-full">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="p-2 text-left">Sr. No.</th>
-                      <th className="p-2 text-left">Question Name</th>
-                      <th className="p-2 text-left">Details</th>
-                      <th className="p-2 text-left">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {questions.map((question, index) => (
-                      <>
-                        <tr key={`row-${question._id}`} className="border-t">
-                          <td className="p-2">{index + 1}</td>
-                          <td className="p-2">{question.title}</td>
-                          <td className="p-2">
-                            <button
-                              onClick={() => toggleQuestionDetails(question._id)}
-                              className="text-purple-700 hover:text-purple-900"
-                            >
-                              {expandedQuestion === question._id ? 'Hide Details' : 'Show Details'}
-                            </button> 
-                          </td>
-                          <td className="p-2">
-                            <button
-                              onClick={() => handleAddQuestion(question)}
-                              disabled={selectedQuestions.some(q => q._id === question._id)}
-                              className="bg-purple-700 text-white px-3 py-1 rounded flex items-center gap-2 disabled:opacity-50"
-                            >
-                              <i className="fa-solid fa-plus"></i>
-                              Add
-                            </button>
-                          </td>
-                        </tr>
-                        {expandedQuestion === question._id && (
-                          <tr key={`details-${question._id}`}>
-                            <td colSpan="4">
-                              {renderQuestionDetails(question)}
-                            </td>
-                          </tr>
-                        )}
-                      </>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-        </div>
-        
-        <div className="flex justify-end">
-          <button
-            onClick={onClose}
-            className="bg-gray-500 text-white px-4 py-2 rounded"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    );
+    }
   };
 
   const getInitialQuestionData = (type) => {
@@ -1703,124 +1449,124 @@ function DataAssessment() {
   return (
     <div>
 
-      <style>
-        {`
-        body {
-          background-color: rgba(46, 7, 63, 0.1);
-          padding: 1.5rem;
-        }
-        .header-section {
-          height: 5rem;
-          width: 100%;
-          border-radius: 10px;
-          background-color: #ffffff;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 2rem;
-        }
-        .container {
-          // border: 2px solid rgba(0,0,0,0.2);
-          border-radius: 10px;
-          padding: 2rem 6rem;
-          background: #ffffff;
-          width: 70%;
-          margin: 1.5rem auto;
-        }
-        .section-module {
-          border-top: 5px solid #7A1CAC;
-          width: 70%;
-          margin: 1.5rem auto;
-          border-radius: 10px;
-          background-color: #ffffff;
-          box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-          position: relative;
-        }
-        .section-module .section-header{
-          padding: 10px 2rem;
-          background-color: rgba(46, 7, 63, 0.1);
-          display: flex;
-          justify-content: space-between;
-        }
-        .section-module .section-contents-div{
-          padding: 2rem 6rem;
-        }
-        .question-type-btn {
-          width: 23%;
-          height: 2rem;
-          background-color: #7A1CAC;
-          border: none;
-        }
-        .question-type-btn:hover{
-          background-color: #2E073F;
-        }
-        .add-new-questions-btn,
-        .add-new-section-btn {
-          width: 13rem;
-          height: 2rem;
-          background-color: #7A1CAC;
-          border: none;
-        }
-        .add-new-questions-btn:hover,
-        .add-new-section-btn:hover {
-          background-color: #2E073F;
-        }
-        .delete_section {
-          background-color: #dc3545;
-          width: 2rem;
-          height: 2rem;
-          border: none;
-        }
-        .delete_question{
-          background-color: transparent;
-          width: 2rem;
-          height: 2rem;
-          border: none;
-        }
-        .delete_section:hover,
-        .delete_question:hover{
-          background-color: red;
-        }
-        .all-type-questions-options{
-          border: 1px solid rgba(0,0,0,0.4);
-          display: flex;
-          padding: 1rem;
-          justify-content: space-between;
-          margin-top: 1rem;
-          border-radius: 10px;
-        }
-        .class-container-div{
-          border: 1px solid rgba(0,0,0,0.2);
-          border-radius: 10px;
-          margin-bottom: 1rem;
-        }
-        .question-header{
-          display: flex;
-          justify-content: space-between;
-          padding: 1rem;
-          background-color: #2E073F;
-          border-top-left-radius: 10px;
-          border-top-right-radius: 10px;
-        }
-        .question-header h5{
-          color: #fff;
-        }
-          .section-assessment-btn{
-          width: 70%;
-          margin: 1rem auto;
-          display: flex;
-          justify-content: space-between;
-          }
-          .section-assessment-btn button{
-          background-color: #7A1CAC;
-          }
-          .section-assessment-btn button:hover{
-          background-color: #2E073F;
-          }
-      `}
-      </style> 
+    <style>
+    {`
+    body {
+      background-color: rgba(46, 7, 63, 0.1);
+      padding: 1.5rem;
+    }
+    .header-section {
+      height: 5rem;
+      width: 100%;
+      border-radius: 10px;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+    }
+    .container {
+      // border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 10px;
+      padding: 2rem 6rem;
+      background: #ffffff;
+      width: 70%;
+      margin: 1.5rem auto;
+    }
+    .section-module {
+      border-top: 5px solid #7A1CAC;
+      width: 70%;
+      margin: 1.5rem auto;
+      border-radius: 10px;
+      background-color: #ffffff;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .section-module .section-header{
+      padding: 10px 2rem;
+      background-color: rgba(46, 7, 63, 0.1);
+      display: flex;
+      justify-content: space-between;
+    }
+    .section-module .section-contents-div{
+      padding: 2rem 6rem;
+    }
+    .question-type-btn {
+      width: 23%;
+      height: 2rem;
+      background-color: #7A1CAC;
+      border: none;
+    }
+    .question-type-btn:hover{
+      background-color: #2E073F;
+    }
+    .add-new-questions-btn,
+    .add-new-section-btn {
+      width: 13rem;
+      height: 2rem;
+      background-color: #7A1CAC;
+      border: none;
+    }
+    .add-new-questions-btn:hover,
+    .add-new-section-btn:hover {
+      background-color: #2E073F;
+    }
+    .delete_section {
+      background-color: #dc3545;
+      width: 2rem;
+      height: 2rem;
+      border: none;
+    }
+    .delete_question{
+      background-color: transparent;
+      width: 2rem;
+      height: 2rem;
+      border: none;
+    }
+    .delete_section:hover,
+    .delete_question:hover{
+      background-color: red;
+    }
+    .all-type-questions-options{
+      border: 1px solid rgba(0,0,0,0.4);
+      display: flex;
+      padding: 1rem;
+      justify-content: space-between;
+      margin-top: 1rem;
+      border-radius: 10px;
+    }
+    .class-container-div{
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+    .question-header{
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+      background-color: #2E073F;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    .question-header h5{
+      color: #fff;
+    }
+      .section-assessment-btn{
+      width: 70%;
+      margin: 1rem auto;
+      display: flex;
+      justify-content: space-between;
+      }
+      .section-assessment-btn button{
+      background-color: #7A1CAC;
+      }
+      .section-assessment-btn button:hover{
+      background-color: #2E073F;
+      }
+    `}
+    </style> 
 
-<div className="header-section">
+    <div className="header-section">
       <NavLink to={"/assessment"}>
         <span>
           <i className="fa-solid fa-arrow-left"></i>
@@ -2005,4 +1751,6 @@ function DataAssessment() {
 }
 
 export default DataAssessment;
+
+
 

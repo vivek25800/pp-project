@@ -44,7 +44,7 @@ const AssessmentAssignmentSchema = new Schema({
   },
   passing_marks: { 
     type: Number, 
-    default: 60 
+    default: 75
   },
   assigned_at: { 
     type: Date, 

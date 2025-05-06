@@ -136,6 +136,7 @@ import TrainingDetails from './Components/Employee Dashboard/TrainingDetails.js'
 import AttendanceForm from './Components/AttendanceForm.js';
 import Home from './Components/Landing Page/Home.js';
 import Header from './Components/Landing Page/Header.js';
+import AssessmentTestAttenTraining from './Components/Employee Dashboard/AssessmentTestAttenTraining.js';
 
 
 
@@ -230,6 +231,7 @@ function App() {
         <Route path='/employee-oja/:employeeId/:ojaCode/:competencyItemId' element={<EmployeeOJAPlatform/>}></Route>
         <Route path='/employee-ina/:employeeId/:inaCode/:competencyItemId' element={<EmployeeINAPlatform/>}></Route>
         <Route path='/training-details/:trainingId' element={<TrainingDetails/>}></Route>
+        <Route path='/takeAssessmentPlatform/:id' element={<AssessmentTestAttenTraining/>}></Route>
 
         <Route path='/maincourse/:id' element={<CourseList/>}></Route>
         <Route path='/maincourse' element={<CourseList/>}></Route>

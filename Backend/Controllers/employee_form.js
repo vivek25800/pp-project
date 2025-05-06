@@ -135,61 +135,24 @@ const update_data_employee = async (req, res) => {
 
 // const employee_login = async (req, res) => {
 //     try {
-//         const { email_id, password } = req.body;
-//         const user = await register_modal.findOne({ employee_email: email_id });
+//         const { email_id, employee_id, password } = req.body;
         
-//         if (!user) {
-//             return res.status(404).send({ message: "email id not registered" });
-//         }
-        
-//         if (user.employee_password === password) {
-//             // Return all necessary employee data
-//             const employeeData = {
-//                 _id: user._id,
-//                 employee_id: user.employee_id,
-//                 employee_name: user.employee_name,
-//                 employee_email: user.employee_email,
-//                 job_title: user.job_title,
-//                 date_of_join: user.date_of_join,
-//                 project_code: user.project_code,
-//                 project_name: user.project_name,
-//                 region: user.region,
-//                 project_manger: user.project_manger,
-//                 designation: user.designation,
-
-//                 job_experience_title: user.job_experience_title,
-//                 employment_type: user.employment_type,
-//                 company_name: user.company_name,
-//                 start_date: user.start_date,
-//                 end_date: user.end_date,
-//                 total_experience: user.total_experience,
-
-//                 certificate_title: user.certificate_title,
-//                 date_of_certification: user.date_of_certification,
-//                 validate_till: user.validate_till,
-//                 // Add any additional fields you want to send to frontend
-//             };
-            
-//             res.status(200).send({ 
-//                 message: "login success", 
-//                 employee: employeeData 
-//             });
+//         // Determine whether to query by email or employee_id
+//         let query = {};
+//         if (email_id) {
+//             query = { employee_email: email_id };
+//         } else if (employee_id) {
+//             query = { employee_id: employee_id };
 //         } else {
-//             res.status(400).send("password not match");
+//             return res.status(400).send({ message: "Email ID or Employee ID is required" });
 //         }
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send({ message: "Server error" });
-//     }
-// };
-
-// const employee_login = async (req, res) => {
-//     try {
-//         const { email_id, password } = req.body;
-//         const user = await register_modal.findOne({ employee_email: email_id });
+        
+//         const user = await register_modal.findOne(query);
         
 //         if (!user) {
-//             return res.status(404).send({ message: "Email ID not registered" });
+//             return res.status(404).send({ 
+//                 message: email_id ? "Email ID not registered" : "Employee ID not found" 
+//             });
 //         }
         
 //         // Check if user is approved
@@ -200,38 +163,50 @@ const update_data_employee = async (req, res) => {
 //         }
         
 //         if (user.employee_password === password) {
+//             // Generate JWT token
+//             const generatedToken = jwt.sign(
+//                 {
+//                     userId: user._id,
+//                     email: user.employee_email,
+//                     employeeId: user.employee_id
+//                 },
+//                 process.env.JWT_SECRET || 'your-secret-key',  // Use environment variable for security
+//                 { expiresIn: '24h' }  // Token expires in 24 hours
+//             );
+
 //             const employeeData = {
 //                 _id: user._id,
 //                 employee_id: user.employee_id,
 //                 employee_name: user.employee_name,
 //                 employee_email: user.employee_email,
+//                 function: user.function,
 //                 job_title: user.job_title,
-//                 // ... other fields
 //                 date_of_join: user.date_of_join,
 //                 project_code: user.project_code,
 //                 project_name: user.project_name,
+//                 department: user.department,
 //                 region: user.region,
 //                 project_manger: user.project_manger,
 //                 designation: user.designation,
-
+//                 role: user.role,
 //                 job_experience_title: user.job_experience_title,
 //                 employment_type: user.employment_type,
 //                 company_name: user.company_name,
 //                 start_date: user.start_date,
 //                 end_date: user.end_date,
 //                 total_experience: user.total_experience,
-
 //                 certificate_title: user.certificate_title,
 //                 date_of_certification: user.date_of_certification,
 //                 validate_till: user.validate_till,
 //             };
+            
 //             console.log("Sending response:", {
 //                 token: generatedToken,
 //                 employee: employeeData
-//               });
+//             });
             
 //             res.status(200).send({ 
-//                 token: generatedToken,  // Make sure this is included
+//                 token: generatedToken,
 //                 message: "Login success", 
 //                 employee: employeeData 
 //             });
@@ -246,11 +221,81 @@ const update_data_employee = async (req, res) => {
 
 const employee_login = async (req, res) => {
     try {
-        const { email_id, password } = req.body;
-        const user = await register_modal.findOne({ employee_email: email_id });
+        const { email_id, employee_id, password } = req.body;
+        
+        // Determine whether to query by email or employee_id
+        let query = {};
+        if (email_id) {
+            query = { employee_email: email_id };
+        } else if (employee_id) {
+            query = { employee_id: employee_id };
+        } else {
+            return res.status(400).send({ message: "Email ID or Employee ID is required" });
+        }
+        
+        // If an email is provided, we need to check if multiple employees have the same email
+        if (email_id) {
+            // Find all employees with the provided email
+            const matchingEmployees = await register_modal.find({ employee_email: email_id });
+            
+            if (matchingEmployees.length === 0) {
+                return res.status(404).send({ message: "Email ID not registered" });
+            }
+            
+            // If multiple employees found with the same email, handle differently
+            if (matchingEmployees.length > 1) {
+                // First verify the password matches for at least one account
+                const validPasswordAccounts = matchingEmployees.filter(employee => 
+                    employee.employee_password === password && employee.status === 'approved'
+                );
+                
+                if (validPasswordAccounts.length === 0) {
+                    return res.status(400).send({ message: "Password does not match or no approved accounts found" });
+                }
+                
+                // Send back multiple accounts (but don't include sensitive info like passwords)
+                const accountOptions = validPasswordAccounts.map(user => ({
+                    _id: user._id,
+                    employee_id: user.employee_id,
+                    employee_name: user.employee_name,
+                    department: user.department,
+                    designation: user.designation,
+                    job_title: user.job_title
+                }));
+                
+                // Return the account options to the frontend
+                return res.status(200).send({
+                    multipleAccounts: accountOptions,
+                    message: "Multiple accounts found"
+                });
+            }
+            
+            // If only one employee found, continue with the normal login flow
+            const user = matchingEmployees[0];
+            
+            // Check if user is approved
+            if (user.status !== 'approved') {
+                return res.status(403).send({ 
+                    message: "Your registration is pending approval. Please wait for admin confirmation." 
+                });
+            }
+            
+            // Check password
+            if (user.employee_password !== password) {
+                return res.status(400).send({ message: "Password does not match" });
+            }
+            
+            // Generate and send token and user data
+            return sendLoginResponse(user, res);
+        }
+        
+        // For employee_id login (direct ID lookup)
+        const user = await register_modal.findOne(query);
         
         if (!user) {
-            return res.status(404).send({ message: "Email ID not registered" });
+            return res.status(404).send({ 
+                message: email_id ? "Email ID not registered" : "Employee ID not found" 
+            });
         }
         
         // Check if user is approved
@@ -261,53 +306,7 @@ const employee_login = async (req, res) => {
         }
         
         if (user.employee_password === password) {
-            // Generate JWT token
-            const generatedToken = jwt.sign(
-                {
-                    userId: user._id,
-                    email: user.employee_email,
-                    employeeId: user.employee_id
-                },
-                process.env.JWT_SECRET || 'your-secret-key',  // Use environment variable for security
-                { expiresIn: '24h' }  // Token expires in 24 hours
-            );
-
-            const employeeData = {
-                _id: user._id,
-                employee_id: user.employee_id,
-                employee_name: user.employee_name,
-                employee_email: user.employee_email,
-                function: user.function,
-                job_title: user.job_title,
-                date_of_join: user.date_of_join,
-                project_code: user.project_code,
-                project_name: user.project_name,
-                department: user.department,
-                region: user.region,
-                project_manger: user.project_manger,
-                designation: user.designation,
-                role: user.role,
-                job_experience_title: user.job_experience_title,
-                employment_type: user.employment_type,
-                company_name: user.company_name,
-                start_date: user.start_date,
-                end_date: user.end_date,
-                total_experience: user.total_experience,
-                certificate_title: user.certificate_title,
-                date_of_certification: user.date_of_certification,
-                validate_till: user.validate_till,
-            };
-            
-            console.log("Sending response:", {
-                token: generatedToken,
-                employee: employeeData
-            });
-            
-            res.status(200).send({ 
-                token: generatedToken,
-                message: "Login success", 
-                employee: employeeData 
-            });
+            return sendLoginResponse(user, res);
         } else {
             res.status(400).send({ message: "Password does not match" });
         }
@@ -315,6 +314,57 @@ const employee_login = async (req, res) => {
         console.log(error);
         res.status(500).send({ message: "Server error" });
     }
+};
+
+// Helper function to generate token and send response
+const sendLoginResponse = (user, res) => {
+    // Generate JWT token
+    const generatedToken = jwt.sign(
+        {
+            userId: user._id,
+            email: user.employee_email,
+            employeeId: user.employee_id
+        },
+        process.env.JWT_SECRET || 'your-secret-key',  // Use environment variable for security
+        { expiresIn: '24h' }  // Token expires in 24 hours
+    );
+
+    const employeeData = {
+        _id: user._id,
+        employee_id: user.employee_id,
+        employee_name: user.employee_name,
+        employee_email: user.employee_email,
+        function: user.function,
+        job_title: user.job_title,
+        date_of_join: user.date_of_join,
+        project_code: user.project_code,
+        project_name: user.project_name,
+        department: user.department,
+        region: user.region,
+        project_manger: user.project_manger,
+        designation: user.designation,
+        role: user.role,
+        job_experience_title: user.job_experience_title,
+        employment_type: user.employment_type,
+        company_name: user.company_name,
+        start_date: user.start_date,
+        end_date: user.end_date,
+        total_experience: user.total_experience,
+        certificate_title: user.certificate_title,
+        date_of_certification: user.date_of_certification,
+        validate_till: user.validate_till,
+    };
+    
+    console.log("Sending response:", {
+        token: generatedToken,
+        employee: employeeData
+    });
+    
+    res.status(200).send({ 
+        token: generatedToken,
+        message: "Login success", 
+        employee: employeeData 
+    });
 };
 
 module.exports = {employee_details, remove_data_two, get_data_employee, get_data_employee2, update_data_employee, employeebulkregistration, employee_login};

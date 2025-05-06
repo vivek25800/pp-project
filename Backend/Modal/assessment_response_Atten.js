@@ -47,11 +47,11 @@ const AssessmentResponseSchema = new mongoose.Schema({
     ref: 'Assessment',
     required: true
   },
-  employeeId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'employee-info',
-    required: true
-  },
+    employeeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'employee-info',
+      required: true
+    },
   userId: {
     type: String,  // Changed from ObjectId to String
     required: true
@@ -109,6 +109,6 @@ const AssessmentResponseSchema = new mongoose.Schema({
   }
 });
 
-const AssessmentResponse = mongoose.model('AssessmentResponse', AssessmentResponseSchema);
+const AssessmentResponseAtten = mongoose.model('AssessmentResponseAtten', AssessmentResponseSchema);
 
-module.exports = AssessmentResponse;
+module.exports = AssessmentResponseAtten;

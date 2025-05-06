@@ -67,6 +67,8 @@ const { getAllOJAs, getOJAById, getEligibleEmployeesForOJA, submitOJARatings, ge
 const { getAllINAs, getINAById, getEligibleEmployeesForINA, submitINARatings, getEmployeeINAHistory, getINAConductDetails } = require('../Controllers/conduct_ina_CM_form');
 const { createNomination, getAllNominations, getNominationsByTraining, updateAttendance, deleteNomination, resendEmailNotification, getNominationsById, getTrainingDetails } = require('../Controllers/add_nomination_form');
 const { getAllTrainings, getEmployeesForTraining, getAssessmentsForTraining, getAttendanceById, createAttendance, assignAssessmentToEmployee, updateAttendanceStatus, getEmployeeAttendanceAssessments, getAttendanceAssessmentStatus, submitAttendanceAssessment } = require('../Controllers/attendance_training_form');
+const { saveAssessmentResponseAtten, getAllSubmittedAssessmentsAtten, getAssessmentDetailsAtten, getAssessmentResponseByIdAtten, getAssessmentStatusAtten } = require('../Controllers/assessment_response_atten_form');
+// const { getAvailableAssessments, startAssessment, submitAssessmentAtten, getAssessmentResultAtten, getAttemptHistory } = require('../Controllers/assessment_response_atten_form');
 
 const router = express.Router();
 
@@ -551,6 +553,13 @@ router.get('/employee-attendance-assessments/:employeeId', getEmployeeAttendance
 router.get('/attendance-assessment-status/:attendanceId/:employeeId', getAttendanceAssessmentStatus);
 // Submit assessment for an attendance record
 router.post('/submit-attendance-assessment', submitAttendanceAssessment);
+
+router.post('/submit/assessments/atten', saveAssessmentResponseAtten);
+router.get('/get/submitted/assessment/atten/:assessmentId', getAllSubmittedAssessmentsAtten);
+router.get('/get/assessment/response/details/:responseId', getAssessmentDetailsAtten);
+router.get('/get/assessment/response/byId/:id', getAssessmentResponseByIdAtten);
+router.get('/get/assessment/status/:assessmentId/:employeeId', getAssessmentStatusAtten);
+
 
 
 module.exports = router;

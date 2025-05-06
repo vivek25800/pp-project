@@ -1,4 +1,6 @@
 import React from 'react'
+import Header from './Header'
+// import './Header.css';
 import Banner from './Banner'
 import Client from './Client'
 import Onesec from './Onesec'
@@ -14,7 +16,10 @@ import Footer from './Footer'
 function Home() {
   return (
     <>
-       <Banner/>
+
+    {/* <h1>HGvrgsdlvondsojlvkndfs</h1> */}
+    <Header/>
+        <Banner/>
        <Client/>
        <Onesec/>
        <Twosec/>
@@ -24,7 +29,7 @@ function Home() {
       <Sixsec/>
       <Sevensec/>
       <Contect/>
-      <Footer/>
+      <Footer/> 
     </>
   )
 }

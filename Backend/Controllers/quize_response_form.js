@@ -192,6 +192,6 @@ const register_modal = require('../Modal/employee_register');  // Adjust the pat
             message: 'Error checking quiz status'
         });
     }
-};
+  };
 
 module.exports = {createResponse, getQuizResponses, getResponse, getQuizStatus};
