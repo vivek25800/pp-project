@@ -2,6 +2,14 @@ import React from 'react'
 import './LandingPage.css';
 import { Box, Grid, Typography, Button, Card, CardMedia } from '@mui/material';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import { useState } from 'react';
+import { width } from '@mui/system';
+import $ from 'jquery';
+import TestimonialSection from './TestimonialSection';
+import PricingTable from './PricingTable';
+import BlogCarousel from './BlogCarousel';
+import NewsletterSubscription from './NewsletterSubscription';
+import FooterLanding from './FooterLanding';
 
 const courses = [
     {
@@ -155,6 +163,285 @@ function LandingPage() {
         }
       ];
 
+      const [activeCategory, setActiveCategory] = useState('All Categories');
+  
+      const categories = ['All Categories', 'Business', 'Development', 'Marketing', 'Finance'];
+
+      const courses = [
+        {
+          id: 1,
+          title: 'Education Software and PHP and JS System Script',
+          weeks: '03 WEEKS',
+          rating: 4.7,
+          lesson: 8,
+          students: '60+',
+          level: 'Beginner',
+          instructor: 'Max Alexix',
+          image: 'https://weblayout.unicktheme.com/fistudy/main-html/assets/images/resources/courses-1-1.jpg',
+          category: 'Development'
+        },
+        {
+          id: 2,
+          title: 'Learn Figma – UI/UX Design Essential Training',
+          weeks: '02 WEEKS',
+          rating: 4.7,
+          lesson: 9,
+          students: '50+',
+          level: 'Beginner',
+          instructor: 'Kevin Perry',
+          image: 'https://weblayout.unicktheme.com/fistudy/main-html/assets/images/resources/courses-1-2.jpg',
+          category: 'Design'
+        },
+        {
+          id: 3,
+          title: 'Advanced Android 12 & Kotlin Development Course',
+          weeks: '04 WEEKS',
+          rating: 4.7,
+          lesson: 7,
+          students: '30+',
+          level: 'Beginner',
+          instructor: 'Max Alexix',
+          image: 'https://weblayout.unicktheme.com/fistudy/main-html/assets/images/resources/courses-1-3.jpg',
+          category: 'Development'
+        },
+        {
+          id: 4,
+          title: 'IT Statistics Data Science and Business Analysis',
+          weeks: '02 WEEKS',
+          rating: 4.7,
+          lesson: 10,
+          students: '20+',
+          level: 'Beginner',
+          instructor: 'Kevin Perry',
+          image: 'https://weblayout.unicktheme.com/fistudy/main-html/assets/images/resources/courses-1-1.jpg',
+          category: 'Business'
+        }
+      ];
+    
+      const filteredCourses = activeCategory === 'All Categories' 
+        ? courses 
+        : courses.filter(course => course.category === activeCategory);
+
+
+        const styles = {
+          container: {
+            fontFamily: 'Arial, sans-serif',
+            maxWidth: '100%',
+            overflow: 'hidden',
+            position: 'relative',
+            backgroundColor: '#f8f5ff',
+          },
+          backgroundCurve: {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '300px',
+            borderRadius: '0 0 50% 0',
+            backgroundColor: 'white',
+            zIndex: 0,
+          },
+          rightCurve: {
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '100px',
+            height: '100%',
+            borderRadius: '50% 0 0 50%',
+            borderLeft: '2px solid #0066ff',
+            zIndex: 0,
+          },
+          contentWrapper: {
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '2rem',
+            position: 'relative',
+            zIndex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '2rem',
+          },
+          whyChooseUs: {
+            color: '#0066ff',
+            fontSize: '0.9rem',
+            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          },
+          documentIcon: {
+            fontSize: '1.2rem',
+          },
+          header: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '2rem',
+            marginBottom: '2rem',
+          },
+          headingContainer: {
+            flex: 1,
+          },
+          heading: {
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            color: '#102A42',
+            marginBottom: '1rem',
+            maxWidth: '600px',
+          },
+          imageContainer: {
+            flex: 1,
+            maxWidth: '550px',
+          },
+          mainImage: {
+            width: '100%',
+            borderRadius: '8px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+          },
+          featuresGrid: {
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '1.5rem',
+            marginTop: '1rem',
+            width: '500px'
+          },
+          featureCard: {
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            padding: '1.5rem',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+          },
+          featureIcon: {
+            color: '#0066ff',
+            fontSize: '1.5rem',
+            marginBottom: '0.5rem',
+          },
+          featureTitle: {
+            fontSize: '1.2rem',
+            fontWeight: 'bold',
+            color: '#102A42',
+            marginBottom: '0.5rem',
+          },
+          featureDescription: {
+            color: '#666',
+            fontSize: '0.9rem',
+            lineHeight: '1.6',
+          },
+          dots: {
+            position: 'absolute',
+            bottom: '10%',
+            left: '5%',
+            width: '50px',
+            height: '50px',
+            backgroundImage: 'radial-gradient(#0066ff 2px, transparent 2px)',
+            backgroundSize: '10px 10px',
+          },
+        };
+
+
+  // Stats data
+  const stats = [
+    {
+      number: "3.9k+",
+      primaryLabel: "Successfully",
+      secondaryLabel: "Trained"
+    },
+    {
+      number: "15.8k+",
+      primaryLabel: "Classes",
+      secondaryLabel: "Completed"
+    },
+    {
+      number: "97.5k+",
+      primaryLabel: "Satisfaction",
+      secondaryLabel: "Rate"
+    },
+    {
+      number: "100.2k+",
+      primaryLabel: "Students",
+      secondaryLabel: "Community"
+    }
+  ];
+
+  // Step data
+  const steps = [
+    {
+      icon: "🎓",
+      title: "Choose Any Courses",
+      description: "Standards in leadership skills synergize optimal expertise rather than innovative leadership skills and better learning.",
+      image: "https://themeholy.com/html/edura/demo/assets/img/process/process-1-1.png"
+    },
+    {
+      icon: "💼",
+      title: "Purchase Your Course",
+      description: "We provide online learning program that enable learners to access high-quality education remotely.",
+      image: "https://themeholy.com/html/edura/demo/assets/img/process/process-1-2.png"
+    },
+    {
+      icon: "📚",
+      title: "Great! Start Learn",
+      description: "These programs cover a wide range of subjects and can be customized for individual learners or delivered to schools.",
+      image: "https://themeholy.com/html/edura/demo/assets/img/process/process-1-3.png"
+    }
+  ];
+
+
+  // Initialize Owl Carousel with custom settings
+$(document).ready(function() {
+  var testimonialCarousel = $(".testimonial-one__carousel");
+  
+  testimonialCarousel.owlCarousel({
+      loop: true,
+      margin: 30,
+      nav: true,
+      dots: false,
+      autoplay: false,
+      smartSpeed: 500,
+      autoplayTimeout: 6000,
+      navText: [
+          '<i class="fa fa-angle-left"></i>',
+          '<i class="fa fa-angle-right"></i>'
+      ],
+      responsive: {
+          0: {
+              items: 1
+          },
+          768: {
+              items: 1
+          },
+          992: {
+              items: 1
+          },
+          1200: {
+              items: 1
+          }
+      }
+  });
+  
+  // Add custom animation classes based on navigation direction
+  testimonialCarousel.on('changed.owl.carousel', function(event) {
+      var currentItem = event.item.index;
+      var direction = event.relatedTarget['_drag']['direction'];
+      
+      $('.testimonial-one__single').removeClass('animate-left animate-right');
+      
+      if (direction === 'left') {
+          $('.owl-item').eq(currentItem).find('.testimonial-one__single').addClass('animate-right');
+      } else {
+          $('.owl-item').eq(currentItem).find('.testimonial-one__single').addClass('animate-left');
+      }
+  });
+  
+  // Initial animation for the first item
+  $('.owl-item.active').find('.testimonial-one__single').addClass('animate-right');
+});
+
+
 
   return (
     <div>
@@ -162,7 +449,7 @@ function LandingPage() {
         <div className='landing-page-container'>
             <Box className='navbar-box' >
                 <div className='logo-div'>
-                    <h4>Landing Page</h4>
+                    <h4>Talents Builder</h4>
                 </div>
                 <div className='navbar-options'>
                     <ul>
@@ -172,7 +459,7 @@ function LandingPage() {
                         <li>Blog</li>
                         <li>Contact Us</li>
                     </ul>
-                    <Button className='start-learning-btn'>Start Learning</Button>
+                    <Button className='start-learning-btn'>Login / Register</Button>
                 </div>
             </Box>
 
@@ -196,7 +483,7 @@ function LandingPage() {
                     </Typography>
 
                     <Box className='buttons-section'>
-                        <Button>Start Course</Button>
+                        <Button>Start Learning</Button>
                         <Button><i class="fa-solid fa-arrow-right" style={{marginRight:'10px'}}></i>  View All Course</Button>
                     </Box>
                 </div>
@@ -290,81 +577,332 @@ function LandingPage() {
 
 
         <div className="edu-container">
-      <div className="edu-hero">
-        <div className="edu-hero-image">
-          <div className="edu-image-wrapper">
-            <img src="/api/placeholder/600/600" alt="Graduates celebrating" />
+        <div className="edu-hero">
+          <div className="edu-hero-image">
+            <div className="edu-image-wrapper">
+              <img src="https://themeholy.com/html/edura/demo/assets/img/normal/about_3_1.png" alt="Graduates celebrating" />
+            </div>
           </div>
-        </div>
-        <div className="edu-hero-content">
-          <div className="edu-company-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-              <line x1="16" y1="13" x2="8" y2="13"></line>
-              <line x1="16" y1="17" x2="8" y2="17"></line>
-              <polyline points="10 9 9 9 8 9"></polyline>
-            </svg>
-            <span>MORE ABOUT OUR COMPANY</span>
-          </div>
-          
-          <h1 className="edu-title">Learn About Edura Education</h1>
-          
-          <p className="edu-description">
-            Synergistically visualize alternative content before cross functional core Rapidiously administra
-            standardized value via focused benefits. Rapidiously redefine highly efficient niche markets with
-            plug-and-play materials professionally seize client centric solutions
-          </p>
-          
-          <div className="edu-features">
-            <div className="edu-feature-card">
-              <div className="edu-feature-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M16 12h-6.5"></path>
-                  <path d="M13.5 8.5L16 12l-2.5 3.5"></path>
-                  <path d="M9.5 15.5L8 14l-1.5 1.5"></path>
-                </svg>
-              </div>
-              <h3>Competitive Rates</h3>
-              <p>Join us on our journey as we continue to innovate & shape the future of education.</p>
+          <div className="edu-hero-content">
+            <div className="edu-company-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <span>MORE ABOUT OUR COMPANY</span>
             </div>
             
-            <div className="edu-feature-card">
-              <div className="edu-feature-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                  <line x1="8" y1="21" x2="16" y2="21"></line>
-                  <line x1="12" y1="17" x2="12" y2="21"></line>
-                </svg>
+            <h1 className="edu-title">Learn About Edura Education</h1>
+            
+            <p className="edu-description">
+              Synergistically visualize alternative content before cross functional core Rapidiously administra
+              standardized value via focused benefits. Rapidiously redefine highly efficient niche markets with
+              plug-and-play materials professionally seize client centric solutions
+            </p>
+            
+            <div className="edu-features">
+              <div className="edu-feature-card">
+                <div className="edu-feature-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M16 12h-6.5"></path>
+                    <path d="M13.5 8.5L16 12l-2.5 3.5"></path>
+                    <path d="M9.5 15.5L8 14l-1.5 1.5"></path>
+                  </svg>
+                </div>
+                <h3>Competitive Rates</h3>
+                <p>Join us on our journey as we continue to innovate & shape the future of education.</p>
               </div>
-              <h3>Online Certificates</h3>
-              <p>We believe that education is fundamental right and a catalyst for personal growth.</p>
+              
+              <div className="edu-feature-card">
+                <div className="edu-feature-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                  </svg>
+                </div>
+                <h3>Online Certificates</h3>
+                <p>We believe that education is fundamental right and a catalyst for personal growth.</p>
+              </div>
+            </div>
+            
+            <div className="edu-buttons">
+              <button className="edu-button edu-button-primary">
+                LEARN MORE
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </button>
+              <button className="edu-button edu-button-secondary">
+                CONTACT US
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </button>
             </div>
           </div>
-          
-          <div className="edu-buttons">
-            <button className="edu-button edu-button-primary">
-              LEARN MORE
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </button>
-            <button className="edu-button edu-button-secondary">
-              CONTACT US
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </button>
+        </div>
+        </div>
+
+
+      <div className="popular-courses-container">
+      <div className="popular-courses-header">
+        <div className="popular-courses-title">
+          <div className="popular-courses-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+            </svg>
+            <span className="popular-text">POPULAR COURSES</span>
           </div>
+          <h1>Our Popular Online Courses</h1>
+        </div>
+        <div className="categories-tabs">
+          {categories.map(category => (
+            <button 
+              key={category}
+              className={`category-tab ${activeCategory === category ? 'active' : ''}`}
+              onClick={() => setActiveCategory(category)}
+            >
+              {category}
+            </button>
+          ))}
         </div>
       </div>
+
+      <div className="courses-grid">
+        {filteredCourses.map(course => (
+          <div key={course.id} className="course-card">
+            <div className="course-image-container">
+              <img src={course.image} alt={course.title} className="course-image" />
+              <div className="course-duration">
+                <span className="duration-icon"></span>
+                <span className="duration-text">{course.weeks}</span>
+              </div>
+            </div>
+            <div className="course-content">
+              <div className="course-rating">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <span key={star} className={`star ${star <= Math.floor(course.rating) ? 'filled' : ''}`}>★</span>
+                ))}
+                <span className="rating-number">({course.rating})</span>
+              </div>
+              <h3 className="course-title">{course.title}</h3>
+              <div className="course-details">
+                <div className="detail-item">
+                  <span className="detail-icon lesson-icon"></span>
+                  <span className="detail-text">Lesson {course.lesson}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-icon students-icon"></span>
+                  <span className="detail-text">Students {course.students}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-icon level-icon"></span>
+                  <span className="detail-text">{course.level}</span>
+                </div>
+              </div>
+              <hr className="divider" />
+              <div className="course-footer">
+                <div className="instructor">
+                  <div className="instructor-avatar">
+                    <div className="avatar-placeholder"></div>
+                  </div>
+                  <span className="instructor-name">{course.instructor}</span>
+                </div>
+                <div className="course-price">FREE</div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
+      <div className="view-all-container">
+        <button className="view-all-button">
+          VIEW ALL COURSES
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="arrow-icon">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-        <div className="course-card-landing">
+    <div style={styles.container}>
+      <div style={styles.backgroundCurve}></div>
+      <div style={styles.rightCurve}></div>
+      <div style={styles.dots}></div>
+      
+      <div style={styles.contentWrapper}>
+        <div>
+        <div style={styles.whyChooseUs}>
+          <span style={styles.documentIcon}>📄</span>
+          WHY CHOOSE US
+        </div>
+        
+        <div style={styles.header}>
+          <div style={styles.headingContainer}>
+            <h1 style={styles.heading}>Transform Education Your Life, Change the World</h1>
+          </div>
+        </div>
+        
+        <div style={styles.featuresGrid}>
+          <div style={styles.featureCard}>
+            <div style={styles.featureIcon}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <h3 style={styles.featureTitle}>Expert Instruction</h3>
+            <p style={styles.featureDescription}>
+              We offer a wide range of educational products and services.
+            </p>
+          </div>
+          
+          <div style={styles.featureCard}>
+            <div style={styles.featureIcon}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h3 style={styles.featureTitle}>Find Video Courses</h3>
+            <p style={styles.featureDescription}>
+              Online education offers a wide range of courses & programs, covering.
+            </p>
+          </div>
+          
+          <div style={styles.featureCard}>
+            <div style={styles.featureIcon}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </div>
+            <h3 style={styles.featureTitle}>Online Courses</h3>
+            <p style={styles.featureDescription}>
+              Innovative market without extensive coordinate stand alone catalysts for.
+            </p>
+          </div>
+          
+          <div style={styles.featureCard}>
+            <div style={styles.featureIcon}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <h3 style={styles.featureTitle}>Learn Anywhere</h3>
+            <p style={styles.featureDescription}>
+              Online education often allows learners to study at their own pace.
+            </p>
+          </div>
+        </div>
+        </div>
+
+        <div style={styles.imageContainer}>
+            <img 
+              src="https://themeholy.com/html/edura/demo/assets/img/normal/wcu_2_1.png" 
+              alt="Diverse group of students collaborating" 
+              style={styles.mainImage}
+            />
+          </div>
+      </div>
+
+          
+    </div>
+
+
+    <div className="stats-bar-container">
+        <div className="stats-bar-wave"></div>
+        <div className="stats-bar-content">
+          {stats.map((stat, index) => (
+            <div className="stat-item" key={index}>
+              <div className="stat-number">{stat.number}</div>
+              <div className="stat-label">
+                <span className="stat-label-primary">{stat.primaryLabel}</span>
+                <span className="stat-label-secondary">{stat.secondaryLabel}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+    </div>
+
+    <div className="process-container">
+        {/* Decorative elements */}
+        <div className="geometric-shape cross-shape"></div>
+        <div className="geometric-shape square-shapes">
+          <div className="square-outer"></div>
+          <div className="square-inner"></div>
+        </div>
+        
+        {/* Header */}
+        <div className="process-header">
+          <div className="header-label">
+            <span className="header-icon">📋</span>
+            WHAT WE OFFER
+          </div>
+          <h2 className="process-title">How Does Edura Work Process?</h2>
+        </div>
+        
+        {/* Process steps */}
+        <div className="process-steps">
+          {steps.map((step, index) => (
+            <div className="process-step" key={index}>
+              <div className="step-image-container">
+                <img
+                  src={step.image}
+                  alt={`Step ${index + 1}: ${step.title}`}
+                  className="step-image"
+                />
+                <div className="step-icon">{step.icon}</div>
+              </div>
+              <h3 className="step-title">{step.title}</h3>
+              <p className="step-description">{step.description}</p>
+            </div>
+          ))}
+          
+          {/* Connecting arrows */}
+          <div className="process-arrows">
+            <svg className="arrow arrow-1" viewBox="0 0 100 20">
+              <path d="M0,10 C30,0 70,20 100,10 L95,5 M95,15 L100,10" />
+            </svg>
+            <svg className="arrow arrow-2" viewBox="0 0 100 20">
+              <path d="M0,10 C30,0 70,20 100,10 L95,5 M95,15 L100,10" />
+            </svg>
+          </div>
+        </div>
+    </div>
+
+
+        {/* <!-- Testimonial One Start--> */}
+        <TestimonialSection />
+        {/* <!-- Testimonial One End --> */}
+
+
+
+        {/* Pricing Section */}
+        <PricingTable />
+        
+        {/* Blog Section */}
+        <BlogCarousel/>
+
+        {/* NewsletterSubscription Section */}
+        <NewsletterSubscription />
+
+        {/* Footer Section */}
+        <FooterLanding/>
+
+      
+        {/* <div className="course-card-landing">
                 <div className="course-card-image">
                     <img
                     src="https://websitedemos.net/online-coding-course-02/wp-content/uploads/sites/713/2020/10/online-programming-course-featured-video.jpg" // Replace with the correct path
@@ -408,7 +946,6 @@ function LandingPage() {
                 <Button className='more-courses-btn'>Explore More Courses <TrendingFlatIcon/> </Button>
             </div>
 
-
             <div className="custom-section">
       <div className="content">
         <h1>We Provide All Facilities For Better Work Environment</h1>
@@ -435,7 +972,7 @@ function LandingPage() {
           <p>This is a short description elaborating the service you have mentioned above.</p>
         </div>
       </div>
-            </div>
+            </div> */}
     
     </div>
   )
