@@ -43,7 +43,7 @@ const { saveRecruitmentPlan, getAllRecruitmentPlans, getRecruitmentPlanById, upd
 // const auth = require('../middleware/auth'); // Assuming you have authentication middleware
 // const { createAssessment } = require('../Controllers/create_assessment_form');
 // const { create_Assessment } = require('../Controllers/create_assessment_form');
-const {protect} = require('../MiddleWare/auth');
+// const {protect} = require('../MiddleWare/auth');
 const { registerCandidate, getAllCandidates, getCandidateById, updateCandidate, deleteCandidate, getCandidateByUsername, loginCandidate } = require('../Controllers/candidate_register_form');
 const { assignCATsToCandidates, getCandidateCATs, getAllCATAssignments, updateCATAssignment, deleteCATAssignment } = require('../Controllers/candidate_cat_form');
 const { startCandidateTest, submitCandidateTest, getCandidateResponses, getCandidateResponseById, getCATResponsesCandidate, getCandidateResponseByCatAndCandidate, submitInterviewResults, getAllResponsesCandidates } = require('../Controllers/candidate_response_form');
@@ -69,6 +69,13 @@ const { createNomination, getAllNominations, getNominationsByTraining, updateAtt
 const { getAllTrainings, getEmployeesForTraining, getAssessmentsForTraining, getAttendanceById, createAttendance, assignAssessmentToEmployee, updateAttendanceStatus, getEmployeeAttendanceAssessments, getAttendanceAssessmentStatus, submitAttendanceAssessment } = require('../Controllers/attendance_training_form');
 const { saveAssessmentResponseAtten, getAllSubmittedAssessmentsAtten, getAssessmentDetailsAtten, getAssessmentResponseByIdAtten, getAssessmentStatusAtten } = require('../Controllers/assessment_response_atten_form');
 // const { getAvailableAssessments, startAssessment, submitAssessmentAtten, getAssessmentResultAtten, getAttemptHistory } = require('../Controllers/assessment_response_atten_form');
+const { 
+  register, 
+  login, 
+  getMe, 
+  logout 
+} = require('../Controllers/loginSignin_form');
+const { protect } = require('../MiddleWare/authMiddleware');
 
 const router = express.Router();
 
@@ -561,5 +568,12 @@ router.get('/get/assessment/response/byId/:id', getAssessmentResponseByIdAtten);
 router.get('/get/assessment/status/:assessmentId/:employeeId', getAssessmentStatusAtten);
 
 
+// Register and login routes
+router.post('/register', register);
+router.post('/login', login);
+router.get('/logout', logout);
+
+// Protected routes
+router.get('/me', protect, getMe);
 
 module.exports = router;

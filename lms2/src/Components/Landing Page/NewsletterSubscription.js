@@ -50,7 +50,7 @@ export default function NewsletterSubscription() {
       
       <style jsx>{`
         .newsletter-container {
-          background-color: #2E073F;
+          background-color: #164276;
           border-radius: 24px;
           padding: 50px 30px;
           position: relative;
@@ -58,7 +58,7 @@ export default function NewsletterSubscription() {
           width: 100%;
           max-width: 1200px;
           margin: 7rem auto;
-          box-shadow: 0 8px 20px rgba(46, 7, 63, 0.39);
+          box-shadow: 0 8px 20px rgba(22, 65, 118, 0.2);
         }
         
         .newsletter-content {
@@ -119,7 +119,7 @@ export default function NewsletterSubscription() {
         }
         
         .subscribe-btn {
-          background-color:rgb(101, 15, 137);
+          background-color: #0075ff;
           color: white;
           border: none;
           border-radius: 50px;
@@ -134,7 +134,7 @@ export default function NewsletterSubscription() {
         }
         
         .subscribe-btn:hover {
-          background-color: #2E073F;
+          background-color: #164276;
         }
         
         .chevron-icon {
@@ -169,7 +169,7 @@ export default function NewsletterSubscription() {
         .paper-plane {
           width: 100px;
           height: 100px;
-          background-color: rgb(101, 15, 137);
+          background-color:rgb(34, 104, 190);
           clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 65%, 0% 100%);
           transform: rotate(45deg);
           opacity: 0.7;

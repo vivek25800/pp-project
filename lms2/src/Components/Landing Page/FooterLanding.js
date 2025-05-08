@@ -13,7 +13,7 @@ const FooterLanding = () => {
 
 /* Main Footer Styles */
 .footer {
-  background: linear-gradient(to right, #2E073F, #001440);
+  background: linear-gradient(to right, #001440, #0075ff);
   color: #ffffff;
   font-family: 'Arial', sans-serif;
 }

@@ -19,29 +19,29 @@ const PricingTable = () => {
           onMouseEnter={() => setHoveredBasic(true)}
           onMouseLeave={() => setHoveredBasic(false)}
         >
-          <div className="card-header" style={{ borderColor: '#2E073F' }}>
+          <div className="card-header" style={{ borderColor: '#164276' }}>
             <h2 className="plan-name">Basic Plan</h2>
           </div>
           
           <div className="price-container">
             <div className="price">
               <span className="currency">$</span>
-              <span className="amount" style={{ color: '#2E073F' }}>156.00</span>
+              <span className="amount" style={{ color: '#164276' }}>156.00</span>
             </div>
             <div className="billing-period">/PER MONTHLY</div>
           </div>
           
           <div className="features">
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#164276' }}>✓</div>
               <span>Access to all courses</span>
             </div>
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#164276' }}>✓</div>
               <span>Example code available</span>
             </div>
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#164276' }}>✓</div>
               <span>High resolution videos</span>
             </div>
             <div className="feature">
@@ -57,7 +57,7 @@ const PricingTable = () => {
           <button 
             className="choose-plan-btn"
             style={{ 
-              backgroundColor: hoveredBasic ? '#800e06' : '#2E073F',
+              backgroundColor: hoveredBasic ? '#164276' : '#164276',
               color: '#fff'
             }}
           >
@@ -72,25 +72,25 @@ const PricingTable = () => {
           onMouseEnter={() => setHoveredStandard(true)}
           onMouseLeave={() => setHoveredStandard(false)}
         >
-          <div className="card-header" style={{ borderColor: '#800e06' }}>
-            <h2 className="plan-name" style={{ color: '#800e06' }}>For Corporate</h2>
+          <div className="card-header" style={{ borderColor: '#0075ff' }}>
+            <h2 className="plan-name" style={{ color: '#0075ff' }}>For Corporate</h2>
           </div>
           
           <div className="price-container">
             <div className="price">
-              <span className="currency" style={{ color: '#800e06' }}>$</span>
-              <span className="amount" style={{ color: '#800e06' }}>176.00</span>
+              <span className="currency" style={{ color: '#0075ff' }}>$</span>
+              <span className="amount" style={{ color: '#0075ff' }}>176.00</span>
             </div>
             <div className="billing-period">/PER MONTHLY</div>
           </div>
           
           <div className="features">
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#0075ff' }}>✓</div>
               <span style={{ color: '#000', fontWeight: 'normal' }}>Access to all courses</span>
             </div>
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#0075ff' }}>✓</div>
               <span style={{ color: '#000', fontWeight: 'normal' }}>Example code available</span>
             </div>
             <div className="feature">
@@ -110,7 +110,7 @@ const PricingTable = () => {
           <button 
             className="choose-plan-btn"
             style={{ 
-              backgroundColor: hoveredStandard ? '#2E073F' : '#800e06',
+              backgroundColor: hoveredStandard ? '#0075ff' : '#0075ff',
               color: '#fff'
             }}
           >
@@ -125,37 +125,37 @@ const PricingTable = () => {
           onMouseEnter={() => setHoveredPremium(true)}
           onMouseLeave={() => setHoveredPremium(false)}
         >
-          <div className="card-header" style={{ borderColor: '#2E073F' }}>
+          <div className="card-header" style={{ borderColor: '#6bcaff' }}>
             <h2 className="plan-name">For Academic</h2>
           </div>
           
           <div className="price-container">
             <div className="price">
-              <span className="currency">$</span>
-              <span className="amount" style={{ color: '#2E073F' }}>196.00</span>
+              <span className="currency" style={{ color: '#6bcaff' }}>$</span>
+              <span className="amount" style={{ color: '#6bcaff' }}>196.00</span>
             </div>
             <div className="billing-period">/PER MONTHLY</div>
           </div>
           
           <div className="features">
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#6bcaff' }}>✓</div>
               <span>Access to all courses</span>
             </div>
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#6bcaff' }}>✓</div>
               <span>Example code available</span>
             </div>
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#6bcaff' }}>✓</div>
               <span>High resolution videos</span>
             </div>
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#6bcaff' }}>✓</div>
               <span>Certificate after completion</span>
             </div>
             <div className="feature">
-              <div className="icon-included" style={{ color: '#2E73FF' }}>✓</div>
+              <div className="icon-included" style={{ color: '#6bcaff' }}>✓</div>
               <span>Private sessions</span>
             </div>
           </div>
@@ -163,7 +163,7 @@ const PricingTable = () => {
           <button 
             className="choose-plan-btn"
             style={{ 
-              backgroundColor: hoveredPremium ? '#800e06' : '#2E073F',
+              backgroundColor: hoveredPremium ? '#6bcaff' : '#6bcaff',
               color: '#fff'
             }}
           >
@@ -179,7 +179,7 @@ const PricingTable = () => {
           max-width: 1200px;
           margin: 4rem auto;
           padding: 40px 20px;
-          color: #2E073F;
+          color: #164276;
         //   background-color: #2E073F
         }
         
@@ -193,7 +193,7 @@ const PricingTable = () => {
           align-items: center;
           font-size: 14px;
           font-weight: 600;
-          color: #2E73FF;
+          color: #164276;
           margin-bottom: 16px;
         }
         
@@ -210,7 +210,7 @@ const PricingTable = () => {
           font-size: 38px;
           font-weight: 700;
           margin: 0;
-          color: #2E073F;
+          color: #000;
         }
         
         .pricing-cards {

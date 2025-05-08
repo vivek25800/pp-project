@@ -4,6 +4,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const bodyparsor = require('body-parser');
 const path = require('path');
+const { errorHandler } = require('./MiddleWare/errorMiddleware');
 require('dotenv').config();
 
 const app = express()
@@ -15,6 +16,17 @@ app.use(cors());
 app.use('/', require('./Routes/admin'));
 app.use(bodyparsor.json());
 app.use(morgan('dev'));
+
+app.use(cors({
+    // Replace with your frontend URL (exactly as it appears in the browser)
+    origin: 'http://localhost:3000', 
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+}));
+
+// Error handler middleware
+app.use(errorHandler);
 
 const catResponseRoutes = require('./Routes/admin');
 app.use('/api', catResponseRoutes);

@@ -126,7 +126,7 @@ export default function BlogCarousel() {
 
     <style jsx>{`
         .blog-container {
-        background-color: #f8f5ff;
+        background-color: rgba(233, 243, 255, 0.54);
         margin: 5rem auto;
         padding: 4rem 2rem;
         }
@@ -155,12 +155,12 @@ export default function BlogCarousel() {
         .blog-icon {
           width: 16px;
           height: 16px;
-          background-color: #1a56db;
+          background-color: #0075ff;
           margin-right: 8px;
         }
         
         .blog-label span {
-          color: #1a56db;
+          color: #0075ff;
           font-size: 14px;
           font-weight: 600;
         }
@@ -177,7 +177,7 @@ export default function BlogCarousel() {
           right: 0;
           top: 50%;
           transform: translateY(-50%);
-          background-color: #800e06;
+          background-color: #164276;
           color: white;
           border: none;
           padding: 12px 20px;
@@ -191,7 +191,7 @@ export default function BlogCarousel() {
         }
 
         .view-all-btn:hover {
-          background-color:rgb(87, 10, 5);
+          background-color:rgb(15, 43, 78);
         }
         
         .blog-carousel {
@@ -213,12 +213,12 @@ export default function BlogCarousel() {
           justify-content: center;
           cursor: pointer;
           z-index: 10;
-          color: #800e06;
+          color: #0075ff;
         }
 
         .nav-btn:hover {
           color: #ffffff;
-          background-color: #800e06;
+          background-color: #0075ff;
         }
         
         .blog-cards {

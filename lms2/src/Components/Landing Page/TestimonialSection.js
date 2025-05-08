@@ -62,13 +62,13 @@ const TestimonialSection = () => {
 .testimonial-one {
     position: relative;
     padding: 120px 0;
-    background-color: #f8f5ff;
+    background-color:rgba(233, 243, 255, 0.54);
     overflow: hidden;
 }
 
 /* Section Title Styles */
 .section-title__tagline {
-    color: #2E073F;
+    color: #164276;
     font-weight: 600;
     font-size: 18px;
     text-transform: uppercase;
@@ -86,7 +86,7 @@ const TestimonialSection = () => {
 }
 
 .section-title__title span {
-    color: #2E073F;
+    color: #0075ff;
     position: relative;
     display: inline-block;
 }
@@ -94,7 +94,7 @@ const TestimonialSection = () => {
 .section-title__tagline-shape {
     width: 50px;
     height: 2px;
-    background-color: #2E073F;
+    background-color: #164276;
     display: inline-block;
     margin-right: 15px;
     vertical-align: middle;
@@ -105,7 +105,7 @@ const TestimonialSection = () => {
     position: relative;
     background-color: #fff;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(46, 7, 63, 0.1);
+    box-shadow: 0 10px 30px rgba(92, 168, 255, 0.28);
     padding: 40px;
     margin: 15px;
     transition: all 0.4s ease;
@@ -114,7 +114,7 @@ const TestimonialSection = () => {
 
 .testimonial-one__single:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(46, 7, 63, 0.15);
+    box-shadow: 0 20px 40px rgba(92, 168, 255, 0.27);
 }
 
 /* Show/Hide animations */
@@ -152,7 +152,7 @@ const TestimonialSection = () => {
     right: 0;
     width: 30px;
     height: 30px;
-    background-color: #2E073F;
+    background-color: #0075ff;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -172,13 +172,13 @@ const TestimonialSection = () => {
 }
 
 .testimonial-one__client-name a {
-    color: #2E073F;
+    color: #0075ff;
     text-decoration: none;
     transition: all 0.3s ease;
 }
 
 .testimonial-one__client-name a:hover {
-    color: #4a0b66;
+    color:rgb(0, 84, 180);
 }
 
 .testimonial-one__client-sub-title {
@@ -219,18 +219,18 @@ const TestimonialSection = () => {
 .testimonial-one__social a {
     width: 35px;
     height: 35px;
-    background-color: #f1f1f1;
+    background-color: rgba(233, 243, 255, 0.54);
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #2E073F;
+    color: #0075ff;
     margin-left: 8px;
     transition: all 0.3s ease;
 }
 
 .testimonial-one__social a:hover {
-    background-color: #2E073F;
+    background-color: #0075ff;
     color: #fff;
 }
 
@@ -248,11 +248,11 @@ const TestimonialSection = () => {
     height: 50px;
     border-radius: 50%;
     background-color: #fff;
-    box-shadow: 0 5px 20px rgba(46, 7, 63, 0.1);
+    box-shadow: 0 5px 20px rgba(22, 65, 118, 0.23);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #2E073F;
+    color: #164276;
     font-size: 20px;
     transition: all 0.3s ease;
     outline: none;
@@ -261,7 +261,7 @@ const TestimonialSection = () => {
 }
 
 .testimonial-one__nav-btn:hover {
-    background-color: #2E073F;
+    background-color: #164276;
     color: #fff;
 }
 

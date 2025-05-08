@@ -10,6 +10,8 @@ import PricingTable from './PricingTable';
 import BlogCarousel from './BlogCarousel';
 import NewsletterSubscription from './NewsletterSubscription';
 import FooterLanding from './FooterLanding';
+import AuthForm from './AuthForm';
+import { useNavigate } from 'react-router-dom';
 
 const courses = [
     {
@@ -229,7 +231,7 @@ function LandingPage() {
             maxWidth: '100%',
             overflow: 'hidden',
             position: 'relative',
-            backgroundColor: '#f8f5ff',
+            backgroundColor: 'rgba(233, 243, 255, 0.54)',
           },
           backgroundCurve: {
             position: 'absolute',
@@ -442,6 +444,10 @@ $(document).ready(function() {
 });
 
 
+const navigate = useNavigate();
+const navigateLoginSign = () => {
+  navigate('/login/signin/');
+}
 
   return (
     <div>
@@ -450,6 +456,7 @@ $(document).ready(function() {
             <Box className='navbar-box' >
                 <div className='logo-div'>
                     <h4>Talents Builder</h4>
+                    {/* <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/557257/2.png" height="50" width="80" alt='logo' /> */}
                 </div>
                 <div className='navbar-options'>
                     <ul>
@@ -459,7 +466,7 @@ $(document).ready(function() {
                         <li>Blog</li>
                         <li>Contact Us</li>
                     </ul>
-                    <Button className='start-learning-btn'>Login / Register</Button>
+                    <Button className='start-learning-btn' onClick={navigateLoginSign}>Login / Register</Button>
                 </div>
             </Box>
 
@@ -901,6 +908,9 @@ $(document).ready(function() {
         {/* Footer Section */}
         <FooterLanding/>
 
+
+
+          {/* <AuthForm/> */}
       
         {/* <div className="course-card-landing">
                 <div className="course-card-image">

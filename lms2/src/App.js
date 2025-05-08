@@ -137,6 +137,7 @@ import AttendanceForm from './Components/AttendanceForm.js';
 import Home from './Components/Landing Page/Home.js';
 import Header from './Components/Landing Page/Header.js';
 import AssessmentTestAttenTraining from './Components/Employee Dashboard/AssessmentTestAttenTraining.js';
+import AuthForm from './Components/Landing Page/AuthForm.js';
 
 
 
@@ -217,6 +218,7 @@ function App() {
 
         <Route path='/landingpage' element={<LandingPage/>}></Route>
         <Route path='/landingPage-home' element={<Home/>}></Route>
+        <Route path='/login/signin/' element={<AuthForm/>}></Route>
 
         <Route path='/employeeDashboard/:id' element={<EmployeeDashboard/>}></Route>
         <Route path='/employeeTraining/:id' element={<TrainingList/>}></Route>
