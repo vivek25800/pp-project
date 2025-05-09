@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../Landing Page/Company Logo/logo1.png'
 // import './Footer.css';
 
 const FooterLanding = () => {
@@ -39,8 +40,8 @@ const FooterLanding = () => {
 }
 
 .footer-logo img {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   margin-right: 0.5rem;
 }
 
@@ -261,7 +262,7 @@ const FooterLanding = () => {
         <div className="footer-content">
             <div className="footer-logo-section">
             <div className="footer-logo">
-                <img src="/logo.png" alt="Edura Logo" />
+                <img src={logo} alt="Edura Logo" height="60" width="100" />
                 <h2>TALENTS BUILDER</h2>
             </div>
             <p>Continually optimize backward manufactured products whereas communities negotiate life compelling alignments</p>
