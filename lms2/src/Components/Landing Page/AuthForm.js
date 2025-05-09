@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import FooterLanding from './FooterLanding';
 import axios from 'axios';
 import { base_url } from '../Utils/base_url';
+import NavbarLnading from './NavbarLnading';
 // import './AuthForm.css';
 
 const AuthForm = () => {
@@ -170,9 +171,9 @@ const AuthForm = () => {
     setSuccess('');
   };
 
-  const navigateLoginSign = () => {
-    navigate('/login/signin/');
-  }
+  // const navigateLoginSign = () => {
+  //   navigate('/login/signin/');
+  // }
 
   // Social Login Handlers (for future implementation)
   const handleGoogleLogin = () => {
@@ -188,396 +189,396 @@ const AuthForm = () => {
   return (
     <div>
 
-<style>
-{`
-/* AuthForm.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+      <style>
+      {`
+      /* AuthForm.css */
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-:root {
---primary-color: #164276;
---primary-hover:rgb(17, 45, 80);
---text-color: #344767;
---text-light: #7b809a;
---background: #f8f9fe;
---card-bg: #ffffff;
---border-color: #e9ecef;
---error-color: #f5365c;
---success-color: #2dce89;
---border-radius: 12px;
---box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
---transition: all 0.3s ease;
-}
+      :root {
+      --primary-color: #164276;
+      --primary-hover:rgb(17, 45, 80);
+      --text-color: #344767;
+      --text-light: #7b809a;
+      --background: #f8f9fe;
+      --card-bg: #ffffff;
+      --border-color: #e9ecef;
+      --error-color: #f5365c;
+      --success-color: #2dce89;
+      --border-radius: 12px;
+      --box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+      --transition: all 0.3s ease;
+      }
 
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      }
 
-body {
-font-family: 'Poppins', sans-serif;
-background-color: var(--background);
-color: var(--text-color);
-line-height: 1.6;
-}
+      body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background);
+      color: var(--text-color);
+      line-height: 1.6;
+      }
 
-.auth-container {
-min-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
-padding: 2rem;
-margin: 3rem auto;
-//   background: linear-gradient(135deg, #c850c0, #4158d0);
-}
+      .auth-container {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      margin: 3rem auto;
+      //   background: linear-gradient(135deg, #c850c0, #4158d0);
+      }
 
-.auth-card {
-width: 100%;
-max-width: 450px;
-background-color: var(--card-bg);
-border-radius: var(--border-radius);
-box-shadow: var(--box-shadow);
-padding: 3rem;
-overflow: hidden;
-transition: var(--transition);
-animation: cardFadeIn 0.5s ease-out;
-}
+      .auth-card {
+      width: 100%;
+      max-width: 450px;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 3rem;
+      overflow: hidden;
+      transition: var(--transition);
+      animation: cardFadeIn 0.5s ease-out;
+      }
 
-@keyframes cardFadeIn {
-from {
-opacity: 0;
-transform: translateY(20px);
-}
-to {
-opacity: 1;
-transform: translateY(0);
-}
-}
+      @keyframes cardFadeIn {
+      from {
+      opacity: 0;
+      transform: translateY(20px);
+      }
+      to {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      }
 
-.auth-header {
-text-align: center;
-margin-bottom: 2.5rem;
-}
+      .auth-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      }
 
-.auth-header h1 {
-font-size: 2rem;
-font-weight: 700;
-color: var(--text-color);
-margin-bottom: 0.5rem;
-}
+      .auth-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+      }
 
-.auth-header p {
-color: var(--text-light);
-font-size: 1rem;
-}
+      .auth-header p {
+      color: var(--text-light);
+      font-size: 1rem;
+      }
 
-.form-group {
-margin-bottom: 1.5rem;
-}
+      .form-group {
+      margin-bottom: 1.5rem;
+      }
 
-label {
-display: block;
-font-size: 0.875rem;
-font-weight: 600;
-margin-bottom: 0.5rem;
-color: var(--text-color);
-}
+      label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+      }
 
-input {
-width: 100%;
-padding: 0.75rem 1rem;
-font-size: 1rem;
-border: 1px solid var(--border-color);
-border-radius: 8px;
-background-color: #f9fafc;
-transition: var(--transition);
-font-family: inherit;
-}
+      input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: #f9fafc;
+      transition: var(--transition);
+      font-family: inherit;
+      }
 
-input:focus {
-outline: none;
-border-color: var(--primary-color);
-box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
-}
+      input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+      }
 
-input::placeholder {
-color: #adb5bd;
-}
+      input::placeholder {
+      color: #adb5bd;
+      }
 
-.password-group {
-position: relative;
-}
+      .password-group {
+      position: relative;
+      }
 
-.password-input-container {
-position: relative;
-}
+      .password-input-container {
+      position: relative;
+      }
 
-.toggle-password {
-position: absolute;
-right: 10px;
-top: 50%;
-transform: translateY(-50%);
-background: none;
-border: none;
-cursor: pointer;
-color: var(--text-light);
-font-size: 0.8rem;
-font-weight: 500;
-padding: 0.25rem 0.5rem;
-transition: var(--transition);
-}
+      .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.25rem 0.5rem;
+      transition: var(--transition);
+      }
 
-.toggle-password:hover {
-color: var(--primary-color);
-}
+      .toggle-password:hover {
+      color: var(--primary-color);
+      }
 
-.forgot-password {
-display: flex;
-justify-content: flex-end;
-margin-bottom: 1.5rem;
-}
+      .forgot-password {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1.5rem;
+      }
 
-.forgot-password a {
-color: var(--primary-color);
-font-size: 0.875rem;
-font-weight: 500;
-text-decoration: none;
-transition: var(--transition);
-}
+      .forgot-password a {
+      color: var(--primary-color);
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: var(--transition);
+      }
 
-.forgot-password a:hover {
-text-decoration: underline;
-}
+      .forgot-password a:hover {
+      text-decoration: underline;
+      }
 
-.submit-button {
-display: block;
-width: 100%;
-padding: 0.875rem;
-font-size: 1rem;
-font-weight: 600;
-text-align: center;
-color: white;
-background-color: var(--primary-color);
-border: none;
-border-radius: 8px;
-cursor: pointer;
-transition: var(--transition);
-margin-top: 1rem;
-}
+      .submit-button {
+      display: block;
+      width: 100%;
+      padding: 0.875rem;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      color: white;
+      background-color: var(--primary-color);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 1rem;
+      }
 
-.submit-button:hover {
-background-color: var(--primary-hover);
-transform: translateY(-2px);
-box-shadow: 0 5px 15px rgba(94, 114, 228, 0.4);
-}
+      .submit-button:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(94, 114, 228, 0.4);
+      }
 
-.submit-button:active {
-transform: translateY(0);
-}
+      .submit-button:active {
+      transform: translateY(0);
+      }
 
-.social-login {
-margin-top: 2rem;
-text-align: center;
-}
+      .social-login {
+      margin-top: 2rem;
+      text-align: center;
+      }
 
-.social-login p {
-font-size: 0.875rem;
-color: var(--text-light);
-margin-bottom: 1rem;
-position: relative;
-}
+      .social-login p {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+      position: relative;
+      }
 
-.social-login p::before,
-.social-login p::after {
-content: "";
-position: absolute;
-top: 50%;
-width: 35%;
-height: 1px;
-background-color: var(--border-color);
-}
+      .social-login p::before,
+      .social-login p::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 35%;
+      height: 1px;
+      background-color: var(--border-color);
+      }
 
-.social-login p::before {
-left: 0;
-}
+      .social-login p::before {
+      left: 0;
+      }
 
-.social-login p::after {
-right: 0;
-}
+      .social-login p::after {
+      right: 0;
+      }
 
-.social-buttons {
-display: flex;
-justify-content: space-between;
-gap: 1rem;
-}
+      .social-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      }
 
-.social-button {
-flex: 1;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 0.5rem;
-padding: 0.75rem;
-border: 1px solid var(--border-color);
-border-radius: 8px;
-background-color: white;
-cursor: pointer;
-transition: var(--transition);
-font-size: 0.875rem;
-color: var(--text-color);
-}
+      .social-button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: white;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.875rem;
+      color: var(--text-color);
+      }
 
-.social-button:hover {
-background-color: #f8f9fa;
-transform: translateY(-2px);
-}
+      .social-button:hover {
+      background-color: #f8f9fa;
+      transform: translateY(-2px);
+      }
 
-.social-button .icon {
-font-size: 1rem;
-font-weight: 600;
-}
+      .social-button .icon {
+      font-size: 1rem;
+      font-weight: 600;
+      }
 
-.google .icon {
-color: #db4437;
-}
+      .google .icon {
+      color: #db4437;
+      }
 
-.facebook .icon {
-color: #4267B2;
-}
+      .facebook .icon {
+      color: #4267B2;
+      }
 
-.toggle-form {
-text-align: center;
-margin-top: 2rem;
-}
+      .toggle-form {
+      text-align: center;
+      margin-top: 2rem;
+      }
 
-.toggle-form p {
-font-size: 0.875rem;
-color: var(--text-light);
-}
+      .toggle-form p {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      }
 
-.toggle-form a {
-color: var(--primary-color);
-font-weight: 600;
-text-decoration: none;
-transition: var(--transition);
-}
+      .toggle-form a {
+      color: var(--primary-color);
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      }
 
-.toggle-form a:hover {
-text-decoration: underline;
-}
+      .toggle-form a:hover {
+      text-decoration: underline;
+      }
 
-/* Responsive Design */
-@media (max-width: 576px) {
-.auth-card {
-padding: 2rem;
-}
+      /* Responsive Design */
+      @media (max-width: 576px) {
+      .auth-card {
+      padding: 2rem;
+      }
 
-.auth-header h1 {
-font-size: 1.75rem;
-}
+      .auth-header h1 {
+      font-size: 1.75rem;
+      }
 
-.social-buttons {
-flex-direction: column;
-}
-}
+      .social-buttons {
+      flex-direction: column;
+      }
+      }
 
-/* Animation for form switch */
-@keyframes fadeIn {
-from {
-opacity: 0;
-transform: translateY(10px);
-}
-to {
-opacity: 1;
-transform: translateY(0);
-}
-}
+      /* Animation for form switch */
+      @keyframes fadeIn {
+      from {
+      opacity: 0;
+      transform: translateY(10px);
+      }
+      to {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      }
 
-/* Apply animation to form elements */
-.form-group {
-animation: fadeIn 0.3s forwards;
-}
+      /* Apply animation to form elements */
+      .form-group {
+      animation: fadeIn 0.3s forwards;
+      }
 
-.form-group:nth-child(1) {
-animation-delay: 0.1s;
-}
+      .form-group:nth-child(1) {
+      animation-delay: 0.1s;
+      }
 
-.form-group:nth-child(2) {
-animation-delay: 0.2s;
-}
+      .form-group:nth-child(2) {
+      animation-delay: 0.2s;
+      }
 
-.form-group:nth-child(3) {
-animation-delay: 0.3s;
-}
+      .form-group:nth-child(3) {
+      animation-delay: 0.3s;
+      }
 
-.form-group:nth-child(4) {
-animation-delay: 0.4s;
-}
+      .form-group:nth-child(4) {
+      animation-delay: 0.4s;
+      }
 
-/* Error state styling */
-.error input {
-border-color: var(--error-color);
-}
+      /* Error state styling */
+      .error input {
+      border-color: var(--error-color);
+      }
 
-.error-message {
-color: var(--error-color);
-font-size: 0.75rem;
-margin-top: 0.25rem;
-}
+      .error-message {
+      color: var(--error-color);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      }
 
-/* Add these new styles to your existing AuthForm.css file */
+      /* Add these new styles to your existing AuthForm.css file */
 
-/* Alert styles */
-.error-alert {
-  background-color: rgba(245, 54, 92, 0.1);
-  border-left: 4px solid var(--error-color);
-  color: var(--error-color);
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  animation: fadeIn 0.3s forwards;
-}
+      /* Alert styles */
+      .error-alert {
+        background-color: rgba(245, 54, 92, 0.1);
+        border-left: 4px solid var(--error-color);
+        color: var(--error-color);
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        animation: fadeIn 0.3s forwards;
+      }
 
-.success-alert {
-  background-color: rgba(45, 206, 137, 0.1);
-  border-left: 4px solid var(--success-color);
-  color: var(--success-color);
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  animation: fadeIn 0.3s forwards;
-}
+      .success-alert {
+        background-color: rgba(45, 206, 137, 0.1);
+        border-left: 4px solid var(--success-color);
+        color: var(--success-color);
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        animation: fadeIn 0.3s forwards;
+      }
 
-/* Disabled button state */
-.submit-button:disabled {
-  background-color: #a0aec0;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
+      /* Disabled button state */
+      .submit-button:disabled {
+        background-color: #a0aec0;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
 
-/* Loading state animation */
-@keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+      /* Loading state animation */
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
 
-.submit-button:disabled {
-  animation: pulse 1.5s infinite ease-in-out;
-}
-`}
-</style>
+      .submit-button:disabled {
+        animation: pulse 1.5s infinite ease-in-out;
+      }
+      `}
+      </style>
 
-      <Box className='navbar-box'>
+      {/* <Box className='navbar-box'>
         <div className='logo-div'>
           <h4>Talents Builder</h4>
         </div>
@@ -591,7 +592,8 @@ margin-top: 0.25rem;
           </ul>
           <Button className='start-learning-btn' onClick={navigateLoginSign}>Login / Register</Button>
         </div>
-      </Box>
+      </Box> */}
+      <NavbarLnading/>
 
       <div className="auth-container">
         <div className="auth-card">

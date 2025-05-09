@@ -244,7 +244,7 @@ ul li {
               <div className='dash-options'>
                 <EditNoteIcon/>
                 <button className='dropdown-toggle-button menu-btn'> 
-                <MenuItem label="Landing Page" link="/landingpage" />
+                <MenuItem label="Landing Page" link="/talents-bulder/landingpage" />
                 </button>
               </div>
               

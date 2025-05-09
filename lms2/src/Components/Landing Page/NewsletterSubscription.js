@@ -76,11 +76,11 @@ export default function NewsletterSubscription() {
           text-align: center;
           margin-bottom: 20px;
           font-weight: 700;
-          -webkit-text-stroke: 2px white;
-          text-stroke: 2px white;
-          color: transparent;
+          // -webkit-text-stroke: 2px white;
+          // text-stroke: 2px white;
+          // color: transparent;
           font-family: 'Arial', sans-serif;
-          text-transform: none;
+          // text-transform: none;
           line-height: 1.1;
           letter-spacing: 1px;
         }

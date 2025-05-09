@@ -134,10 +134,12 @@ import ConductINA from './Components/CompetencyMapping/ConductINA.js';
 import AddNomination from './Components/AddNomination.js';
 import TrainingDetails from './Components/Employee Dashboard/TrainingDetails.js';
 import AttendanceForm from './Components/AttendanceForm.js';
-import Home from './Components/Landing Page/Home.js';
-import Header from './Components/Landing Page/Header.js';
 import AssessmentTestAttenTraining from './Components/Employee Dashboard/AssessmentTestAttenTraining.js';
 import AuthForm from './Components/Landing Page/AuthForm.js';
+import AboutUs from './Components/Landing Page/AboutUs.js';
+import OurServices from './Components/Landing Page/OurServices.js';
+import CourseComponent from './Components/Landing Page/CourseComponent.js';
+import PricingPage from './Components/Landing Page/PricingPage.js';
 
 
 
@@ -216,9 +218,12 @@ function App() {
 
         {/* <Header/> */}
 
-        <Route path='/landingpage' element={<LandingPage/>}></Route>
-        <Route path='/landingPage-home' element={<Home/>}></Route>
-        <Route path='/login/signin/' element={<AuthForm/>}></Route>
+        <Route path='/talents-bulder/landingpage' element={<LandingPage/>}></Route>
+        <Route path='/talents-bulder/login/signin/' element={<AuthForm/>}></Route>
+        <Route path='/talents-bulder/about-Us/' element={<AboutUs/>}></Route>
+        <Route path='/talents-bulder/our-services/' element={<OurServices/>}></Route>
+        <Route path='/talents-bulder/courses/' element={<CourseComponent/>}></Route>
+        <Route path='/talents-bulder/pricing/' element={<PricingPage/>}></Route>
 
         <Route path='/employeeDashboard/:id' element={<EmployeeDashboard/>}></Route>
         <Route path='/employeeTraining/:id' element={<TrainingList/>}></Route>

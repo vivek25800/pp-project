@@ -10,7 +10,7 @@ import PricingTable from './PricingTable';
 import BlogCarousel from './BlogCarousel';
 import NewsletterSubscription from './NewsletterSubscription';
 import FooterLanding from './FooterLanding';
-import AuthForm from './AuthForm';
+import NavbarLnading from './NavbarLnading';
 import { useNavigate } from 'react-router-dom';
 
 const courses = [
@@ -95,7 +95,7 @@ const ServiceCard = ({ icon, title, description, image }) => {
         <p className="service-description">{description}</p>
         <div className="service-image-container">
           <img src={image} alt={title} className="service-image" />
-          {title === "Exclusive Advisor" && (
+          {title === "Self-Paced Learning Platform" && (
             <div className="arrow-button">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 10H16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -103,7 +103,7 @@ const ServiceCard = ({ icon, title, description, image }) => {
               </svg>
             </div>
           )}
-          {title === "Study Off Flexibly" && (
+          {title === "Knowledge Checks" && (
             <div className="arrow-button">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 10H16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -111,7 +111,7 @@ const ServiceCard = ({ icon, title, description, image }) => {
               </svg>
             </div>
           )}
-          {title === "Online Certificates" && (
+          {title === "Surveys" && (
             <div className="arrow-button">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 10H16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -119,7 +119,7 @@ const ServiceCard = ({ icon, title, description, image }) => {
               </svg>
             </div>
           )}
-          {title === "Evidence of learned" && (
+          {title === "Competency Mapping" && (
             <div className="arrow-button">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 10H16" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -138,31 +138,31 @@ function LandingPage() {
         {
           id: 1,
           icon: <BookIcon />,
-          title: "Exclusive Advisor",
-          description: "Monotonically conceptualize cutting-edge convergence whereas B2C networks.",
+          title: "Self-Paced Learning Platform",
+          description: "A flexible online platform empowers your team by enabling easy creation and addition of multiple courses to personalized learning paths.",
           image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
         },
         {
           id: 2,
           icon: <LibraryIcon />,
-          title: "Study Off Flexibly",
+          title: "Knowledge Checks",
           description: "Discover different career paths and industries, along with the required skills, education.",
           image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
         },
         {
           id: 3,
           icon: <CertificateIcon />,
-          title: "Online Certificates",
+          title: "Surveys",
           description: "Gain insights into how parents can support their childs educational journey.",
           image: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
         },
         {
           id: 4,
           icon: <AcademicIcon />,
-          title: "Evidence of learned",
+          title: "Competency Mapping",
           description: "Access a range of teaching strategies, lesson plans, classroom management.",
           image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-        }
+        },
       ];
 
       const [activeCategory, setActiveCategory] = useState('All Categories');
@@ -374,13 +374,13 @@ function LandingPage() {
   const steps = [
     {
       icon: "🎓",
-      title: "Choose Any Courses",
+      title: "Choose Any Package",
       description: "Standards in leadership skills synergize optimal expertise rather than innovative leadership skills and better learning.",
       image: "https://themeholy.com/html/edura/demo/assets/img/process/process-1-1.png"
     },
     {
       icon: "💼",
-      title: "Purchase Your Course",
+      title: "Purchase Your Domain And Get Platform",
       description: "We provide online learning program that enable learners to access high-quality education remotely.",
       image: "https://themeholy.com/html/edura/demo/assets/img/process/process-1-2.png"
     },
@@ -394,81 +394,89 @@ function LandingPage() {
 
 
   // Initialize Owl Carousel with custom settings
-$(document).ready(function() {
-  var testimonialCarousel = $(".testimonial-one__carousel");
-  
-  testimonialCarousel.owlCarousel({
-      loop: true,
-      margin: 30,
-      nav: true,
-      dots: false,
-      autoplay: false,
-      smartSpeed: 500,
-      autoplayTimeout: 6000,
-      navText: [
-          '<i class="fa fa-angle-left"></i>',
-          '<i class="fa fa-angle-right"></i>'
-      ],
-      responsive: {
-          0: {
-              items: 1
-          },
-          768: {
-              items: 1
-          },
-          992: {
-              items: 1
-          },
-          1200: {
-              items: 1
-          }
-      }
+  $(document).ready(function() {
+    var testimonialCarousel = $(".testimonial-one__carousel");
+    
+    testimonialCarousel.owlCarousel({
+        loop: true,
+        margin: 30,
+        nav: true,
+        dots: false,
+        autoplay: false,
+        smartSpeed: 500,
+        autoplayTimeout: 6000,
+        navText: [
+            '<i class="fa fa-angle-left"></i>',
+            '<i class="fa fa-angle-right"></i>'
+        ],
+        responsive: {
+            0: {
+                items: 1
+            },
+            768: {
+                items: 1
+            },
+            992: {
+                items: 1
+            },
+            1200: {
+                items: 1
+            }
+        }
+    });
+    
+    // Add custom animation classes based on navigation direction
+    testimonialCarousel.on('changed.owl.carousel', function(event) {
+        var currentItem = event.item.index;
+        var direction = event.relatedTarget['_drag']['direction'];
+        
+        $('.testimonial-one__single').removeClass('animate-left animate-right');
+        
+        if (direction === 'left') {
+            $('.owl-item').eq(currentItem).find('.testimonial-one__single').addClass('animate-right');
+        } else {
+            $('.owl-item').eq(currentItem).find('.testimonial-one__single').addClass('animate-left');
+        }
+    });
+    
+    // Initial animation for the first item
+    $('.owl-item.active').find('.testimonial-one__single').addClass('animate-right');
   });
-  
-  // Add custom animation classes based on navigation direction
-  testimonialCarousel.on('changed.owl.carousel', function(event) {
-      var currentItem = event.item.index;
-      var direction = event.relatedTarget['_drag']['direction'];
-      
-      $('.testimonial-one__single').removeClass('animate-left animate-right');
-      
-      if (direction === 'left') {
-          $('.owl-item').eq(currentItem).find('.testimonial-one__single').addClass('animate-right');
-      } else {
-          $('.owl-item').eq(currentItem).find('.testimonial-one__single').addClass('animate-left');
-      }
-  });
-  
-  // Initial animation for the first item
-  $('.owl-item.active').find('.testimonial-one__single').addClass('animate-right');
-});
 
+  const navigate = useNavigate();
+  const navigateAboutUs = () => {
+    navigate('/talents-bulder/about-Us/');
+  }
 
-const navigate = useNavigate();
-const navigateLoginSign = () => {
-  navigate('/login/signin/');
-}
+  const navigateLoginSign = () => {
+    navigate('/talents-bulder/login/signin/');
+  }
+
+  const navigateCourses = () => {
+    navigate('/talents-bulder/courses/');
+  }
 
   return (
     <div>
 
         <div className='landing-page-container'>
-            <Box className='navbar-box' >
+            {/* <Box className='navbar-box' >
                 <div className='logo-div'>
                     <h4>Talents Builder</h4>
-                    {/* <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/557257/2.png" height="50" width="80" alt='logo' /> */}
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/557257/2.png" height="50" width="80" alt='logo' />
                 </div>
                 <div className='navbar-options'>
                     <ul>
                         <li>Home</li>
-                        <li>About</li>
+                        <li onClick={navigateAboutUs}>About US</li>
                         <li>Courses</li>
                         <li>Blog</li>
                         <li>Contact Us</li>
                     </ul>
                     <Button className='start-learning-btn' onClick={navigateLoginSign}>Login / Register</Button>
                 </div>
-            </Box>
+            </Box> */}
+            <NavbarLnading/>
 
             <Box className='content-media-div'>
                 <div className='left-side-content'>
@@ -482,11 +490,10 @@ const navigateLoginSign = () => {
                         variant="h3"
                         sx={{ fontWeight: 'bold', margin: '20px 0', color: '#ffffff' }}
                     >
-                        Complete Python Masterclass for Web Development
+                        Optimize Training Management Across Your Organization
                     </Typography>
                     <Typography variant="body1" sx={{ marginBottom: '30px', color: '#ffffff' }}>
-                        Amet facilisi phasellus lacus, sit massa, erat placerat aenean
-                        aliquet ultrices eleifend enim enim lacus elit.
+                        Talents Builder is engineered to meet the specific needs of your organization. With sophisticated features for assignment, tracking, and reporting, our platform simplifies online training management, ensuring your workforce stays prepared, compliant, and secure. 
                     </Typography>
 
                     <Box className='buttons-section'>
@@ -557,9 +564,9 @@ const navigateLoginSign = () => {
                 <path d="M5 8H11" stroke="#2176FF" strokeWidth="2" strokeLinecap="round"/>
                 <path d="M8 5V11" stroke="#2176FF" strokeWidth="2" strokeLinecap="round"/>
             </svg>
-            <span>OUR SERVICES</span>
+            <span>OUR SOLUTIONS</span>
             </div>
-            <h2 className="services-title">Our Creative Education Services</h2>
+            <h2 className="services-title">Our Creative Education Solutions</h2>
         </div>
         
         <div className="services-grid">
@@ -602,12 +609,10 @@ const navigateLoginSign = () => {
               <span>MORE ABOUT OUR COMPANY</span>
             </div>
             
-            <h1 className="edu-title">Learn About Edura Education</h1>
+            <h1 className="edu-title">Learn About Talents Builder Education</h1>
             
             <p className="edu-description">
-              Synergistically visualize alternative content before cross functional core Rapidiously administra
-              standardized value via focused benefits. Rapidiously redefine highly efficient niche markets with
-              plug-and-play materials professionally seize client centric solutions
+             At Talents Builder, our mission is to empower organizations, educators, and learners with a comprehensive, integrated learning ecosystem designed to support every stage of the learning journey.
             </p>
             
             <div className="edu-features">
@@ -638,14 +643,14 @@ const navigateLoginSign = () => {
             </div>
             
             <div className="edu-buttons">
-              <button className="edu-button edu-button-primary">
+              <button className="edu-button edu-button-primary" onClick={navigateAboutUs}>
                 LEARN MORE
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14"></path>
                   <path d="m12 5 7 7-7 7"></path>
                 </svg>
               </button>
-              <button className="edu-button edu-button-secondary">
+              <button className="edu-button edu-button-secondary" onClick={navigateLoginSign}>
                 CONTACT US
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14"></path>
@@ -730,7 +735,7 @@ const navigateLoginSign = () => {
       </div>
 
       <div className="view-all-container">
-        <button className="view-all-button">
+        <button className="view-all-button" onClick={navigateCourses}>
           VIEW ALL COURSES
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="arrow-icon">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -738,7 +743,7 @@ const navigateLoginSign = () => {
           </svg>
         </button>
       </div>
-    </div>
+      </div>
 
     <div style={styles.container}>
       <div style={styles.backgroundCurve}></div>
@@ -857,7 +862,7 @@ const navigateLoginSign = () => {
             <span className="header-icon">📋</span>
             WHAT WE OFFER
           </div>
-          <h2 className="process-title">How Does Edura Work Process?</h2>
+          <h2 className="process-title">How Does Talents Builder Work Process?</h2>
         </div>
         
         {/* Process steps */}
