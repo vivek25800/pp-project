@@ -182,7 +182,7 @@ function NavbarLanding() {
                 className="dropdown-trigger"
                 onClick={toggleServicesDropdown}
               >
-                Our Services
+                Our Solutions
                 <span className={`dropdown-arrow ${servicesDropdown ? 'up' : 'down'}`}>▼</span>
               </div>
               <ul className={`dropdown-menu ${servicesDropdown ? 'show' : ''}`}>
