@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Clock, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 // Sample blog data
 const blogPosts = [
@@ -103,6 +104,17 @@ export default function BlogCarousel() {
     blogPosts[(startIndex + i) % blogPosts.length]
   );
 
+  const navigate = useNavigate();
+  const handlePostClick = (postId) => {
+    // Navigate to the blog post details page
+    navigate(`/blog-details/${postId}`);
+  };
+
+  const handleViewAllClick = () => {
+    // Navigate to the blog list page
+    navigate('/talents-bulder/blog-post/');
+  }
+
   return (
     <div className='blog-container'>
     <div className="blog-section">
@@ -117,7 +129,7 @@ export default function BlogCarousel() {
           </span>
         </div>
         <h2>Latest News & Blogs</h2>
-        <button className="view-all-btn">VIEW ALL POSTS <ChevronRight size={16} /></button>
+        <button className="view-all-btn" onClick={handleViewAllClick}>VIEW ALL POSTS <ChevronRight size={16} /></button>
       </div>
 
       <div className="blog-carousel">
@@ -127,7 +139,7 @@ export default function BlogCarousel() {
         
         <div className="blog-cards">
           {visiblePosts.map((post) => (
-            <div className="blog-card" key={post.id}>
+            <div className="blog-card" key={post.id} onClick={() => handlePostClick(post.id)}>
               <div className="blog-image" style={{ backgroundImage: `url(${post.image})` }}>
                 <div className="overlay"></div>
                 <div className="blog-meta">
@@ -272,6 +284,7 @@ export default function BlogCarousel() {
           background-color: white;
           height: 280px;
           transition: transform 0.3s ease;
+          cursor: pointer;
         }
         
         .blog-card:hover {
