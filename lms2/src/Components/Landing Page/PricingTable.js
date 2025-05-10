@@ -1,24 +1,321 @@
+// import { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+
+// const PricingTable = () => {
+//   const [hoveredBasic, setHoveredBasic] = useState(false);
+//   const [hoveredStandard, setHoveredStandard] = useState(false);
+//   const [hoveredPremium, setHoveredPremium] = useState(false);
+//   const [isYearly, setIsYearly] = useState(false);
+  
+//   // Define pricing tiers for corporate plan
+//   const corporatePricing = {
+//     '2000': { monthly: 156, yearly: 1497.60 }, // yearly with 20% discount
+//     '3000': { monthly: 234, yearly: 2246.40 },
+//     '4000': { monthly: 312, yearly: 2995.20 }
+//   };
+  
+//   // Define pricing tiers for academic plan
+//   const academicPricing = {
+//     '500-1000': { monthly: 176, yearly: 1689.60 }, // yearly with 20% discount
+//     '1000-1500': { monthly: 220, yearly: 2112.00 },
+//     '1500-2000': { monthly: 264, yearly: 2534.40 }
+//   };
+  
+//   // State for selected user counts
+//   const [corporateUsers, setCorporateUsers] = useState('2000');
+//   const [academicUsers, setAcademicUsers] = useState('500-1000');
+  
+//   // Calculate corporate price based on selected users and billing period
+//   const getCorporatePrice = () => {
+//     return isYearly ? 
+//       corporatePricing[corporateUsers].yearly : 
+//       corporatePricing[corporateUsers].monthly;
+//   };
+  
+//   // Calculate academic price based on selected users and billing period
+//   const getAcademicPrice = () => {
+//     return isYearly ? 
+//       academicPricing[academicUsers].yearly : 
+//       academicPricing[academicUsers].monthly;
+//   };
+  
+//   // Format price with commas for thousands
+//   const formatPrice = (price) => {
+//     return price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+//   };
+
+//   const navigate = useNavigate();
+//   const navigateHandler = () => {
+//     navigate('/talents-bulder/login/signin/');
+//   }
+
+//   return (
+//     <div className="pricing-container">
+//       <div className="pricing-header">
+//         <div className="pricing-label">PRICING TABLE</div>
+//         <h1 className="pricing-title">Our Membership Price Plan</h1>
+//       </div>
+      
+//       {/* Toggle button for monthly/yearly */}
+//       <div className="billing-toggle" style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 50px 0px', alignItems: 'center' }}>
+//         <span style={{ color: !isYearly ? '#0075ff' : '#666', fontWeight: !isYearly ? 'bold' : 'normal' }}>Monthly</span>
+//         <div 
+//           onClick={() => setIsYearly(!isYearly)}
+//           style={{ 
+//             width: '60px', 
+//             height: '30px', 
+//             backgroundColor: '#e1e1e1', 
+//             borderRadius: '15px', 
+//             margin: '0 15px', 
+//             position: 'relative', 
+//             cursor: 'pointer' 
+//           }}
+//         >
+//           <div 
+//             style={{ 
+//               position: 'absolute', 
+//               width: '26px', 
+//               height: '26px', 
+//               backgroundColor: '#0075ff', 
+//               borderRadius: '50%', 
+//               top: '2px', 
+//               left: isYearly ? '32px' : '2px', 
+//               transition: 'left 0.3s ease' 
+//             }} 
+//           />
+//         </div>
+//         <span style={{ color: isYearly ? '#0075ff' : '#666', fontWeight: isYearly ? 'bold' : 'normal' }}>Yearly (Save 20%)</span>
+//       </div>
+      
+//       <div className="pricing-cards">
+//         {/* Corporate Plan Card */}
+//         <div 
+//           className="pricing-card"
+//           onMouseEnter={() => setHoveredBasic(true)}
+//           onMouseLeave={() => setHoveredBasic(false)}
+//         >
+//           <div className="card-header" style={{ borderColor: '#164276' }}>
+//             <h2 className="plan-name">Corporate</h2>
+//             <p style={{padding:"16px 32px 0px 32px"}}>Harness the potential of collaborative learning to empower your employees</p>
+//             <button className='contact-for-quote-btn' onClick={navigateHandler}>Contact for Quote</button>
+//           </div>
+          
+//           <div className="price-container">
+//             <div className='users-capacity'>
+//               <select 
+//                 className='users-capacity-select'
+//                 value={corporateUsers}
+//                 onChange={(e) => setCorporateUsers(e.target.value)}
+//                 style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ddd', width: '100%' }}
+//               >
+//                 <option value="2000">2000 Users</option>
+//                 <option value="3000">3000 Users</option>
+//                 <option value="4000">4000 Users</option>
+//               </select>
+//             </div>
+
+//             <div className="price" style={{ marginTop: '15px' }}>
+//               <span className="currency">$</span>
+//               <span className="amount" style={{ color: '#164276', fontSize: '2rem', fontWeight: 'bold' }}>
+//                 {formatPrice(getCorporatePrice())}
+//               </span>
+//             </div>
+//             <div className="billing-period">
+//               {isYearly ? '/PER YEAR' : '/PER MONTH'}
+//             </div>
+//           </div>
+          
+//           <div className="features">
+//             <div className="feature">
+//               <div className="icon-included" style={{ color: '#164276' }}>✓</div>
+//               <span>Unlimited course creation</span>
+//             </div>
+//             <div className="feature">
+//               <div className="icon-included" style={{ color: '#164276' }}>✓</div>
+//               <span>Assessment and survey tools</span>
+//             </div>
+//             <div className="feature">
+//               <div className="icon-included" style={{ color: '#164276' }}>✓</div>
+//               <span>Mentoring platform for one to one or group learning</span>
+//             </div>
+//             <div className="feature">
+//               <div className="icon-excluded" style={{ color: '#164276' }}>✓</div>
+//               <span>Competency assessment tool</span>
+//             </div>
+//             <div className="feature">
+//               <div className="icon-excluded" style={{ color: '#164276' }}>✓</div>
+//               <span>Competency mapping platform</span>
+//             </div>
+//             <div className="feature">
+//               <div className="icon-included" style={{ color: '#164276' }}>✓</div>
+//               <span>Manage external trainings and budget</span>
+//             </div>
+//           </div>
+          
+//           <button 
+//             className="choose-plan-btn"
+//             style={{ 
+//               backgroundColor: '#164276',
+//               color: '#fff',
+//               padding: '12px 20px',
+//               border: 'none',
+//               borderRadius: '4px',
+//               cursor: 'pointer',
+//               fontWeight: 'bold',
+//               width: '100%',
+//               marginTop: '20px'
+//             }}
+//             onClick={() => navigateHandler()}
+//           >
+//             CHOOSE THE PLAN →
+//           </button>
+//         </div>
+
+//         {/* Academic Plan Card */}
+//         <div 
+//           className="pricing-card"
+//           onMouseEnter={() => setHoveredStandard(true)}
+//           onMouseLeave={() => setHoveredStandard(false)}
+//         >
+//           <div className="card-header" style={{ borderColor: '#0075ff' }}>
+//             <h2 className="plan-name" style={{ color: '#0075ff' }}>Academic</h2>
+//             <p style={{padding:"16px 32px 0px 32px"}}>Unlock the power of collaborative learning to empower your students</p>
+//             <button className='contact-for-quote-btn' onClick={navigateHandler}>Contact for Quote</button>
+//           </div>
+          
+//           <div className="price-container">
+//             <div className='users-capacity'>
+//               <select 
+//                 className='users-capacity-select'
+//                 value={academicUsers}
+//                 onChange={(e) => setAcademicUsers(e.target.value)}
+//                 style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ddd', width: '100%' }}
+//               >
+//                 <option value="500-1000">500 - 1000 Users</option>
+//                 <option value="1000-1500">1000 - 1500 Users</option>
+//                 <option value="1500-2000">1500 - 2000 Users</option>
+//               </select>
+//             </div>
+
+//             <div className="price" style={{ marginTop: '15px' }}>
+//               <span className="currency" style={{ color: '#0075ff' }}>$</span>
+//               <span className="amount" style={{ color: '#0075ff', fontSize: '2rem', fontWeight: 'bold' }}>
+//                 {formatPrice(getAcademicPrice())}
+//               </span>
+//             </div>
+//             <div className="billing-period">
+//               {isYearly ? '/PER YEAR' : '/PER MONTH'}
+//             </div>
+//           </div>
+          
+//           <div className="features">
+//             <div className="feature">
+//               <div className="icon-included" style={{ color: '#0075ff' }}>✓</div>
+//               <span>Unlimited course creation</span>
+//             </div>
+//             <div className="feature">
+//               <div className="icon-included" style={{ color: '#0075ff' }}>✓</div>
+//               <span>Assessment and survey tools	Assessment and survey tools	</span>
+//             </div>
+//             <div className="feature">
+//               <div className="icon-included" style={{ color: '#0075ff' }}>✓</div>
+//               <span>Mentoring platform for one to one or group learning</span>
+//             </div>
+//             <div className="feature">
+//               <div className="icon-included" style={{ color: '#0075ff' }}>✓</div>
+//               <span>Competency assessment tool	Competency assessment tool	</span>
+//             </div>
+//             <div className="feature">
+//               <div className="icon-excluded" style={{ color: '#0075ff' }}>✓</div>
+//               <span>Competency mapping platform</span>
+//             </div>
+//           </div>
+          
+//           <button 
+//             className="choose-plan-btn"
+//             style={{ 
+//               backgroundColor: '#0075ff',
+//               color: '#fff',
+//               padding: '12px 20px',
+//               border: 'none',
+//               borderRadius: '4px',
+//               cursor: 'pointer',
+//               fontWeight: 'bold',
+//               width: '100%',
+//               marginTop: '20px'
+//             }}
+//             onClick={() => navigateHandler()}
+//           >
+//             CHOOSE THE PLAN →
+//           </button>
+//         </div>
+
+//         {/* Individual Plan Card */}
+//         <div 
+//           className="pricing-card"
+//           onMouseEnter={() => setHoveredPremium(true)}
+//           onMouseLeave={() => setHoveredPremium(false)}
+//         >
+//           <div className="card-header" style={{ borderColor: '#6bcaff' }}>
+//             <h2 className="plan-name">Individual</h2>
+//             <p>Coming soon...</p>
+//           </div>
+//         </div>
+//       </div>
+
+//     </div>
+//   );
+// };
+
+// export default PricingTable;
+
+
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const PricingTable = () => {
+  // Original hover states kept intact
   const [hoveredBasic, setHoveredBasic] = useState(false);
   const [hoveredStandard, setHoveredStandard] = useState(false);
   const [hoveredPremium, setHoveredPremium] = useState(false);
-  const [isYearly, setIsYearly] = useState(false);
+  
+  // Monthly/yearly toggle functionality kept but commented out
+  // const [isYearly, setIsYearly] = useState(false);
+  
+  // Always set to yearly now
+  const isYearly = true;
   
   // Define pricing tiers for corporate plan
   const corporatePricing = {
-    '2000': { monthly: 156, yearly: 1497.60 }, // yearly with 20% discount
-    '3000': { monthly: 234, yearly: 2246.40 },
-    '4000': { monthly: 312, yearly: 2995.20 }
+    '2000': { 
+      /* monthly: 156, */ 
+      yearly: 1497.60 
+    }, // yearly with 20% discount
+    '3000': { 
+      /* monthly: 234, */ 
+      yearly: 2246.40 
+    },
+    '4000': { 
+      /* monthly: 312, */ 
+      yearly: 2995.20 
+    }
   };
   
   // Define pricing tiers for academic plan
   const academicPricing = {
-    '500-1000': { monthly: 176, yearly: 1689.60 }, // yearly with 20% discount
-    '1000-1500': { monthly: 220, yearly: 2112.00 },
-    '1500-2000': { monthly: 264, yearly: 2534.40 }
+    '500-1000': { 
+      /* monthly: 176, */ 
+      yearly: 1689.60 
+    }, // yearly with 20% discount
+    '1000-1500': { 
+      /* monthly: 220, */ 
+      yearly: 2112.00 
+    },
+    '1500-2000': { 
+      /* monthly: 264, */ 
+      yearly: 2534.40 
+    }
   };
   
   // State for selected user counts
@@ -27,16 +324,20 @@ const PricingTable = () => {
   
   // Calculate corporate price based on selected users and billing period
   const getCorporatePrice = () => {
-    return isYearly ? 
+    return corporatePricing[corporateUsers].yearly;
+    // Original code commented out
+    /* return isYearly ? 
       corporatePricing[corporateUsers].yearly : 
-      corporatePricing[corporateUsers].monthly;
+      corporatePricing[corporateUsers].monthly; */
   };
   
   // Calculate academic price based on selected users and billing period
   const getAcademicPrice = () => {
-    return isYearly ? 
+    return academicPricing[academicUsers].yearly;
+    // Original code commented out
+    /* return isYearly ? 
       academicPricing[academicUsers].yearly : 
-      academicPricing[academicUsers].monthly;
+      academicPricing[academicUsers].monthly; */
   };
   
   // Format price with commas for thousands
@@ -56,7 +357,7 @@ const PricingTable = () => {
         <h1 className="pricing-title">Our Membership Price Plan</h1>
       </div>
       
-      {/* Toggle button for monthly/yearly */}
+      {/* Toggle button for monthly/yearly - COMMENTED OUT
       <div className="billing-toggle" style={{ display: 'flex', justifyContent: 'center', margin: '20px 0 50px 0px', alignItems: 'center' }}>
         <span style={{ color: !isYearly ? '#0075ff' : '#666', fontWeight: !isYearly ? 'bold' : 'normal' }}>Monthly</span>
         <div 
@@ -85,6 +386,12 @@ const PricingTable = () => {
           />
         </div>
         <span style={{ color: isYearly ? '#0075ff' : '#666', fontWeight: isYearly ? 'bold' : 'normal' }}>Yearly (Save 20%)</span>
+      </div>
+      */}
+      
+      {/* Display "Yearly Plans (Save 20%)" label */}
+      <div style={{ textAlign: 'center', margin: '20px 0 50px 0px' }}>
+        <span style={{ color: '#0075ff', fontWeight: 'bold', fontSize: '1.2rem' }}>Yearly Plans (Save 20%)</span>
       </div>
       
       <div className="pricing-cards">
@@ -121,7 +428,9 @@ const PricingTable = () => {
               </span>
             </div>
             <div className="billing-period">
-              {isYearly ? '/PER YEAR' : '/PER MONTH'}
+              /PER YEAR
+              {/* Original code commented out */}
+              {/* {isYearly ? '/PER YEAR' : '/PER MONTH'} */}
             </div>
           </div>
           
@@ -204,7 +513,9 @@ const PricingTable = () => {
               </span>
             </div>
             <div className="billing-period">
-              {isYearly ? '/PER YEAR' : '/PER MONTH'}
+              /PER YEAR
+              {/* Original code commented out */}
+              {/* {isYearly ? '/PER YEAR' : '/PER MONTH'} */}
             </div>
           </div>
           
@@ -263,7 +574,7 @@ const PricingTable = () => {
         </div>
       </div>
 
-      <style jsx>{`
+            <style jsx>{`
   .pricing-container {
     font-family: 'Arial', sans-serif;
     max-width: 1200px;
@@ -464,11 +775,14 @@ const PricingTable = () => {
       margin-bottom: 24px;
     }
   }
-      `}</style>
+           `}</style>
+
+
     </div>
   );
 };
 
 export default PricingTable;
+
 
 
