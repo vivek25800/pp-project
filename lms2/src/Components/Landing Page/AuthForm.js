@@ -593,7 +593,7 @@ const AuthForm = () => {
           <Button className='start-learning-btn' onClick={navigateLoginSign}>Login / Register</Button>
         </div>
       </Box> */}
-      <NavbarLnading/>
+      {/* <NavbarLnading/> */}
 
       <div className="auth-container">
         <div className="auth-card">
@@ -710,7 +710,7 @@ const AuthForm = () => {
         </div>
       </div>
 
-      <FooterLanding/>
+      {/* <FooterLanding/> */}
     </div>
   );
 };

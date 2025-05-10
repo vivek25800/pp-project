@@ -48,31 +48,66 @@ const blogPosts = [
 export default function BlogCarousel() {
   const [startIndex, setStartIndex] = useState(0);
   
+  // Calculate how many posts to show based on screen size
+  // Default to 3 for desktop, will be adjusted in CSS for smaller screens
+  const [visibleCount, setVisibleCount] = useState(3);
+  
+  // Update visible count on window resize
+  const updateVisibleCount = () => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 576) {
+        return 1;
+      } else if (window.innerWidth < 992) {
+        return 2;
+      } else {
+        return 3;
+      }
+    }
+    return 3;
+  };
+  
+  // Effect to update visible count on resize
+  useState(() => {
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        setVisibleCount(updateVisibleCount());
+      };
+      
+      // Set initial count
+      setVisibleCount(updateVisibleCount());
+      
+      // Add resize listener
+      window.addEventListener('resize', handleResize);
+      
+      // Clean up
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
+  }, []);
+  
   const goToPrevious = () => {
     setStartIndex((prevIndex) => 
-      prevIndex === 0 ? blogPosts.length - 3 : prevIndex - 1
+      prevIndex === 0 ? blogPosts.length - visibleCount : prevIndex - 1
     );
   };
   
   const goToNext = () => {
     setStartIndex((prevIndex) => 
-      prevIndex === blogPosts.length - 3 ? 0 : prevIndex + 1
+      prevIndex === blogPosts.length - visibleCount ? 0 : prevIndex + 1
     );
   };
   
-  // Get the visible posts based on current index
-  const visiblePosts = [
-    blogPosts[(startIndex) % blogPosts.length],
-    blogPosts[(startIndex + 1) % blogPosts.length],
-    blogPosts[(startIndex + 2) % blogPosts.length]
-  ];
+  // Get the visible posts based on current index and visible count
+  const visiblePosts = Array.from({ length: visibleCount }, (_, i) => 
+    blogPosts[(startIndex + i) % blogPosts.length]
+  );
 
   return (
     <div className='blog-container'>
     <div className="blog-section">
       <div className="blog-header">
         <div className="blog-label">
-          {/* <div className="blog-icon"></div> */}
           <span>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
@@ -81,7 +116,7 @@ export default function BlogCarousel() {
             OUR NEWS & BLOGS
           </span>
         </div>
-        <h2>Latests News & Blogs</h2>
+        <h2>Latest News & Blogs</h2>
         <button className="view-all-btn">VIEW ALL POSTS <ChevronRight size={16} /></button>
       </div>
 
@@ -120,23 +155,24 @@ export default function BlogCarousel() {
           <ChevronRight size={24} />
         </button>
       </div>
-
-     
     </div>
 
     <style jsx>{`
         .blog-container {
-        background-color: rgba(233, 243, 255, 0.54);
-        margin: 5rem auto;
-        padding: 4rem 2rem;
+          background-color: rgba(233, 243, 255, 0.54);
+          margin: 5rem auto;
+          padding: 4rem 2rem;
+          width: 100%;
+          box-sizing: border-box;
         }
+        
         .blog-section {
           max-width: 1200px;
           margin: 0 auto;
           padding: 40px 20px;
           font-family: 'Arial', sans-serif;
-        //   background-color: #f8f5ff;
-        //   border: 2px solid #000;
+          position: relative;
+          box-sizing: border-box;
         }
         
         .blog-header {
@@ -152,17 +188,13 @@ export default function BlogCarousel() {
           margin-bottom: 10px;
         }
         
-        .blog-icon {
-          width: 16px;
-          height: 16px;
-          background-color: #0075ff;
-          margin-right: 8px;
-        }
-        
         .blog-label span {
           color: #0075ff;
           font-size: 14px;
           font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 8px;
         }
         
         .blog-header h2 {
@@ -182,8 +214,7 @@ export default function BlogCarousel() {
           border: none;
           padding: 12px 20px;
           border-radius: 4px;
-        //   font-weight: 600;
-        font-size: 14px;
+          font-size: 14px;
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -191,7 +222,7 @@ export default function BlogCarousel() {
         }
 
         .view-all-btn:hover {
-          background-color:rgb(15, 43, 78);
+          background-color: rgb(15, 43, 78);
         }
         
         .blog-carousel {
@@ -214,6 +245,8 @@ export default function BlogCarousel() {
           cursor: pointer;
           z-index: 10;
           color: #0075ff;
+          transition: all 0.2s ease;
+          flex-shrink: 0;
         }
 
         .nav-btn:hover {
@@ -226,15 +259,23 @@ export default function BlogCarousel() {
           gap: 20px;
           width: calc(100% - 100px);
           margin: 0 auto;
+          overflow: hidden;
+          transition: all 0.3s ease;
         }
         
         .blog-card {
           flex: 1;
+          min-width: 0; /* Prevents flex items from growing beyond container */
           border-radius: 8px;
           overflow: hidden;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
           background-color: white;
           height: 280px;
+          transition: transform 0.3s ease;
+        }
+        
+        .blog-card:hover {
+          transform: translateY(-5px);
         }
         
         .blog-image {
@@ -260,6 +301,7 @@ export default function BlogCarousel() {
           left: 20px;
           display: flex;
           gap: 15px;
+          flex-wrap: wrap;
         }
         
         .author-info, .date-info {
@@ -292,6 +334,138 @@ export default function BlogCarousel() {
           display: flex;
           align-items: center;
           gap: 5px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+          .blog-section {
+            padding: 40px 15px;
+          }
+          
+          .blog-header h2 {
+            font-size: 32px;
+          }
+        }
+        
+        @media (max-width: 992px) {
+          .blog-cards {
+            width: calc(100% - 90px);
+          }
+          
+          .blog-header h2 {
+            font-size: 28px;
+          }
+          
+          .blog-card {
+            height: 250px;
+          }
+          
+          .blog-title {
+            font-size: 16px;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .blog-container {
+            padding: 3rem 1.5rem;
+          }
+          
+          .blog-header {
+            margin-bottom: 30px;
+          }
+          
+          .blog-header h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+          }
+          
+          .view-all-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            transform: none;
+            align-self: flex-end;
+            margin-top: 15px;
+            padding: 10px 16px;
+            font-size: 12px;
+          }
+          
+          .blog-cards {
+            gap: 15px;
+          }
+        }
+        
+        @media (max-width: 576px) {
+          .blog-container {
+            padding: 2rem 1rem;
+            margin: 3rem auto;
+          }
+          
+          .blog-section {
+            padding: 20px 10px;
+          }
+          
+          .blog-carousel {
+            flex-direction: column;
+            gap: 20px;
+          }
+          
+          .blog-cards {
+            width: 100%;
+            order: 2;
+          }
+          
+          .nav-btn {
+            order: 3;
+          }
+          
+          .nav-btn.prev-btn {
+            order: 1;
+          }
+          
+          .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+          }
+          
+          .blog-meta {
+            top: 15px;
+            left: 15px;
+            gap: 10px;
+          }
+          
+          .blog-title {
+            bottom: 20px;
+            left: 15px;
+            right: 15px;
+            font-size: 16px;
+          }
+          
+          .read-more {
+            bottom: 15px;
+            left: 15px;
+            font-size: 12px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .blog-header h2 {
+            font-size: 22px;
+          }
+          
+          .blog-label span {
+            font-size: 12px;
+          }
+          
+          .blog-card {
+            height: 230px;
+          }
+          
+          .author-info, .date-info {
+            font-size: 12px;
+          }
         }
       `}</style>
     </div>

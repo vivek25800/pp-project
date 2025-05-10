@@ -322,7 +322,7 @@ function OurServices() {
                     <span>Our Services</span>
                     </div>
                 </div>
-            </div>
+        </div>
 
        <div>
                 <div className="education-services-container">

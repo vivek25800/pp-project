@@ -745,92 +745,90 @@ function LandingPage() {
       </div>
       </div>
 
-    <div style={styles.container}>
-      <div style={styles.backgroundCurve}></div>
-      <div style={styles.rightCurve}></div>
-      <div style={styles.dots}></div>
-      
-      <div style={styles.contentWrapper}>
-        <div>
-        <div style={styles.whyChooseUs}>
-          <span style={styles.documentIcon}>📄</span>
-          WHY CHOOSE US
-        </div>
-        
-        <div style={styles.header}>
-          <div style={styles.headingContainer}>
-            <h1 style={styles.heading}>Transform Education Your Life, Change the World</h1>
-          </div>
-        </div>
-        
-        <div style={styles.featuresGrid}>
-          <div style={styles.featureCard}>
-            <div style={styles.featureIcon}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-            </div>
-            <h3 style={styles.featureTitle}>Expert Instruction</h3>
-            <p style={styles.featureDescription}>
-              We offer a wide range of educational products and services.
-            </p>
-          </div>
+      <div class="container">
+          <div class="background-curve"></div>
+          <div class="right-curve"></div>
+          <div class="dots"></div>
           
-          <div style={styles.featureCard}>
-            <div style={styles.featureIcon}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
-              </svg>
+          <div class="content-wrapper">
+            <div class="content-section">
+              <div class="why-choose-us">
+                <span class="document-icon">📄</span>
+                WHY CHOOSE US
+              </div>
+              
+              <div class="header">
+                <div class="heading-container">
+                  <h1 class="heading">Transform Education Your Life, Change the World</h1>
+                </div>
+              </div>
+              
+              <div class="features-grid">
+                <div class="feature-card">
+                  <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                  </div>
+                  <h3 class="feature-title">Expert Instruction</h3>
+                  <p class="feature-description">
+                    We offer a wide range of educational products and services.
+                  </p>
+                </div>
+                
+                <div class="feature-card">
+                  <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                      <line x1="8" y1="21" x2="16" y2="21"></line>
+                      <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                  </div>
+                  <h3 class="feature-title">Find Video Courses</h3>
+                  <p class="feature-description">
+                    Online education offers a wide range of courses & programs, covering.
+                  </p>
+                </div>
+                
+                <div class="feature-card">
+                  <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                  </div>
+                  <h3 class="feature-title">Online Courses</h3>
+                  <p class="feature-description">
+                    Innovative market without extensive coordinate stand alone catalysts for.
+                  </p>
+                </div>
+                
+                <div class="feature-card">
+                  <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                      <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                  </div>
+                  <h3 class="feature-title">Learn Anywhere</h3>
+                  <p class="feature-description">
+                    Online education often allows learners to study at their own pace.
+                  </p>
+                </div>
+              </div>
             </div>
-            <h3 style={styles.featureTitle}>Find Video Courses</h3>
-            <p style={styles.featureDescription}>
-              Online education offers a wide range of courses & programs, covering.
-            </p>
-          </div>
-          
-          <div style={styles.featureCard}>
-            <div style={styles.featureIcon}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-              </svg>
-            </div>
-            <h3 style={styles.featureTitle}>Online Courses</h3>
-            <p style={styles.featureDescription}>
-              Innovative market without extensive coordinate stand alone catalysts for.
-            </p>
-          </div>
-          
-          <div style={styles.featureCard}>
-            <div style={styles.featureIcon}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                <polyline points="21 15 16 10 5 21"></polyline>
-              </svg>
-            </div>
-            <h3 style={styles.featureTitle}>Learn Anywhere</h3>
-            <p style={styles.featureDescription}>
-              Online education often allows learners to study at their own pace.
-            </p>
-          </div>
-        </div>
-        </div>
 
-        <div style={styles.imageContainer}>
-            <img 
-              src="https://themeholy.com/html/edura/demo/assets/img/normal/wcu_2_1.png" 
-              alt="Diverse group of students collaborating" 
-              style={styles.mainImage}
-            />
-          </div>
+            <div class="image-container">
+              <img 
+                src="https://themeholy.com/html/edura/demo/assets/img/normal/wcu_2_1.png" 
+                alt="Diverse group of students collaborating" 
+                class="main-image"
+              />
+            </div>
+          </div>      
       </div>
-
-          
-    </div>
 
 
     <div className="stats-bar-container">

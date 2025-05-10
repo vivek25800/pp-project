@@ -217,9 +217,9 @@ function NavbarLanding() {
               </ul>
             </li>
             
-            <li onClick={() => navigateTo('/about-Us')}>About Us</li>
-            <li onClick={() => navigateTo('/blog')}>Blog</li>
-            <li onClick={() => navigateTo('/contact-us')}>Contact Us</li>
+            <li onClick={() => navigateTo('/about-Us/')}>About Us</li>
+            <li onClick={() => navigateTo('/blog-post/')}>Blog</li>
+            <li onClick={() => navigateTo('/contact-us/')}>Contact Us</li>
           </ul>
           
           <button className="login-button" onClick={() => navigateTo('/login/signin')}>
